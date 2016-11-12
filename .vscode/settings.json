@@ -1,0 +1,19 @@
+{
+  "eslint.enable": true,
+  "eslint.options": {
+    "ext": [".jsx", ".js"]
+  },
+   "javascript.validate.enable": false,
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true
+  }
+}

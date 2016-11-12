@@ -1,0 +1,36 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    "arrow-parens": [2, "as-needed"],
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "multiline-ternary": [0],
+    "no-confusing-arrow": [0],
+    "no-plusplus": [0],
+    "no-magic-numbers": [2, {"ignore": [0, 1]}],
+    "no-mixed-operators": [0],
+    "no-return-assign": [0],
+    "no-ternary": [0],
+    "object-curly-newline": [0],
+    "object-property-newline": [2, {"allowMultiplePropertiesPerLine": true}],
+    "one-var": [2, "never"],
+    "padded-blocks": [2, "never"],
+    "quote-props": [2, "as-needed"],
+    "quotes": [2, "single"],
+    "react/jsx-no-bind": [2, {"ignoreRefs": true}],
+    "react/jsx-indent": [2, 2],
+    "react/jsx-indent-props": [2, 2],
+    "react/jsx-sort-props": [0],
+    "react/no-unused-prop-types": [2, {"skipShapeProps": true}],
+    "react/prefer-stateless-function": [2, {"ignorePureComponents": true}],
+    "react/sort-prop-types": [0],
+    "semi": [2, "never"],
+    "sort-imports": [0],
+    "sort-keys": [0]
+  },
+  "parser": "babel-eslint",
+  "plugins": ["react"],
+  "extends": ["eslint:all", "plugin:react/all"]
+}
