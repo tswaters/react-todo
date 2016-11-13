@@ -35,7 +35,7 @@ const front = {
   debug: true,
   name: 'front-end',
   entry: {
-    todo: './src/assets/index.jsx'
+    todo: './src/client/index.jsx'
   },
   output: {
     path: './dist/public',
