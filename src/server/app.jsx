@@ -8,7 +8,7 @@ import {createMemoryHistory, match, RouterContext} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import {renderToString} from 'react-dom/server'
 
-import routes from '../common/routes.jsx'
+import routes from '../common/routes'
 import configureStore from '../common/store'
 
 const app = express()

@@ -3,7 +3,7 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 
 import {editTodo} from '../actions'
-import Item from './Item.jsx'
+import Item from './Item'
 
 const mapDispatchToProps = {
   onTodoClick: editTodo

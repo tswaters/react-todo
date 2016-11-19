@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router'
 
-import Layout from './components/layout.jsx'
+import Layout from './components/layout'
 import {Todo, NotFound} from './pages'
 
 const Routes = (

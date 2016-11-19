@@ -1,7 +1,7 @@
 
 
-import Add from './Add.jsx'
-import List from './List.jsx'
-import Item from './Item.jsx'
+import Add from './Add'
+import List from './List'
+import Item from './Item'
 
 export {Add, List, Item}

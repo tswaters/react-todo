@@ -1,5 +1,5 @@
 
-import NotFound from './NotFound.jsx'
-import Todo from './Todo.jsx'
+import NotFound from './NotFound'
+import Todo from './Todo'
 
 export {NotFound, Todo}

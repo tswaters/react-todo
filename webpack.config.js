@@ -11,8 +11,14 @@ const commonLoaders = [
   {test: /\.json$/, loader: 'json-loader'}
 ]
 
-const back = {
+const common = {
   debug: true,
+  resolve: {
+    extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.less']
+  }
+}
+
+const back = Object.assign({}, common, {
   name: 'back-end',
   target: 'node',
   entry: './src/server/index.js',
@@ -29,13 +35,12 @@ const back = {
     filename: 'index.js'
   },
   externals
-}
+})
 
-const front = {
-  debug: true,
+const front = Object.assign({}, common, {
   name: 'front-end',
   entry: {
-    todo: './src/client/index.jsx'
+    todo: './src/client/index'
   },
   output: {
     path: './dist/public',
@@ -58,7 +63,7 @@ const front = {
     }),
     new ExtractTextPlugin('styles.css')
   ]
-}
+})
 
 module.exports = [
   front,
