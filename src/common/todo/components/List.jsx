@@ -3,13 +3,13 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 
 import {editTodo} from '../actions'
-import TodoItem from './TodoItem.jsx'
+import Item from './Item.jsx'
 
 const mapDispatchToProps = {
   onTodoClick: editTodo
 }
 
-class TodoList extends PureComponent {
+class List extends PureComponent {
 
   static propTypes = {
     list: PropTypes.arrayOf(PropTypes.shape({
@@ -26,10 +26,7 @@ class TodoList extends PureComponent {
     return (
       <ol>
         {this.props.list.map(todo =>
-          <TodoItem
-            key={todo.id}
-            todo={todo}
-          />
+          <Item key={todo.id} todo={todo} />
         )}
       </ol>
     )
@@ -37,4 +34,4 @@ class TodoList extends PureComponent {
 
 }
 
-export default connect(null, mapDispatchToProps)(TodoList)
+export default connect(null, mapDispatchToProps)(List)

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {createTodo, updateTodo, updateTodoText} from '../actions'
 
 const mapStateToProps = state => ({
-  todo: state.current
+  todo: state.item
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -13,7 +13,7 @@ const mapDispatchToProps = dispatch => ({
   onTextChange: text => dispatch(updateTodoText(text))
 })
 
-class AddTodo extends PureComponent {
+class Add extends PureComponent {
 
   static propTypes = {
     onCreateTodo: PropTypes.func.isRequired,
@@ -65,4 +65,4 @@ class AddTodo extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddTodo)
+export default connect(mapStateToProps, mapDispatchToProps)(Add)

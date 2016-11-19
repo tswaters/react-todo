@@ -2,25 +2,25 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
-import {container} from './app.css'
+import {components, styles} from '../todo'
 
-import TodoAdd from './TodoAdd.jsx'
-import TodoList from './TodoList.jsx'
+const {container} = styles
+const {Add, List} = components
 
 const mapStateToProps = state => ({
-  current: state.current,
+  item: state.item,
   list: state.list
 })
 
-const App = ({current, list}) =>
+const TodoPage = ({item, list}) =>
   <div className={container}>
     <h1>{'Todo Application'}</h1>
-    <TodoList list={list} />
-    <TodoAdd todo={current} />
+    <List list={list} />
+    <Add todo={item} />
   </div>
 
-App.propTypes = {
-  current: PropTypes.shape({
+TodoPage.propTypes = {
+  item: PropTypes.shape({
     id: PropTypes.number,
     text: PropTypes.string.isRequired
   }),
@@ -30,4 +30,4 @@ App.propTypes = {
   })).isRequired
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(TodoPage)

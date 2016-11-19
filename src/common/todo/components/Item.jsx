@@ -9,7 +9,7 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   handleRemoveTodo: () => dispatch(removeTodo(ownProps.todo.id))
 })
 
-class TodoItem extends PureComponent {
+class Item extends PureComponent {
 
   static propTypes = {
     handleEditTodo: PropTypes.func.isRequired,
@@ -32,4 +32,4 @@ class TodoItem extends PureComponent {
 
 }
 
-export default connect(null, mapDispatchToProps)(TodoItem)
+export default connect(null, mapDispatchToProps)(Item)

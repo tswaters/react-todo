@@ -1,13 +1,20 @@
 
 import React from 'react'
 import {render} from 'react-dom'
+
 import {Provider} from 'react-redux'
-import App from '../common/components/app.jsx'
-import store from '../common/store'
+import {Router, browserHistory} from 'react-router'
+import {syncHistoryWithStore} from 'react-router-redux'
+
+import configueStore from '../common/store'
+import routes from '../common/routes.jsx'
+
+const store = configueStore(browserHistory, window.LOCALS)
+const history = syncHistoryWithStore(browserHistory, store)
 
 render(
-  <Provider store={store(window.LOCALS)}>
-    <App />
+  <Provider store={store}>
+    <Router history={history} routes={routes} />
   </Provider>,
   document.getElementById('root')
 )
