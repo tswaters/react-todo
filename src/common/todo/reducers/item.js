@@ -2,6 +2,7 @@
 import {
   ADD_TODO,
   CREATE_TODO,
+  REMOVE_TODO,
   UPDATE_TODO,
   UPDATE_TODO_TEXT,
   EDIT_TODO
@@ -13,6 +14,9 @@ export default (state = null, action) => {
     case CREATE_TODO:
     case UPDATE_TODO:
       return null
+
+    case REMOVE_TODO:
+      return state && state.id === action.id ? null : state
 
     case UPDATE_TODO_TEXT:
       return Object.assign({}, state, {text: action.text})
