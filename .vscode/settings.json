@@ -5,15 +5,21 @@
   },
    "javascript.validate.enable": false,
   "files.eol": "\n",
+  "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,
     "**/.DS_Store": true,
-    "**/node_modules": true
+    "**/node_modules": true,
+    "**/.nyc_output": true,
+    "**/.tmp": true,
+    "**/coverage": true
   },
   "search.exclude": {
     "**/node_modules": true,
-    "**/dist": true
+    "**/dist": true,
+    "**/.tmp": true,
+    "**/coverage": true
   }
 }
