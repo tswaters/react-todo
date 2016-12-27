@@ -15,6 +15,13 @@ const mapDispatchToProps = dispatch => ({
 
 class Add extends PureComponent {
 
+  static defaultProps = {
+    todo: {
+      id: null,
+      text: ''
+    }
+  }
+
   static propTypes = {
     onCreateTodo: PropTypes.func.isRequired,
     onTextChange: PropTypes.func.isRequired,
@@ -40,7 +47,8 @@ class Add extends PureComponent {
     event.preventDefault()
     if (this.props.todo.id) {
       this.props.onUpdateTodo({id: this.props.todo.id, text: this.input.value})
-    } else {
+    }
+    else {
       this.props.onCreateTodo(this.input.value)
     }
   }

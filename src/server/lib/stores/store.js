@@ -99,12 +99,16 @@ class DataStore {
    * Updates a todo and saves to persistent storage.
    * @param {string} id the uuid of the todo to fetch.
    * @param {Todo} body the new todo's body
-   * @returns {Promise<Item|void>} promise; can resolve to undefined if not found
+   * @returns {Promise<Item|void>} promise; resolves to undefined if not found
    */
   update (id, body) {
     let updated = null
     return this.load()
-      .then(() => this.data = this.data.map(item => item.id === id ? updated = Object.assign({}, item, body) : item))
+      .then(() =>
+        this.data = this.data.map(item =>
+          item.id === id ? updated = Object.assign({}, item, body) : item
+        )
+      )
       .then(() => {
         if (!updated) {
           throw this.notFound

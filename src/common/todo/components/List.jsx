@@ -26,7 +26,10 @@ class List extends PureComponent {
     return (
       <ol>
         {this.props.list.map(todo =>
-          <Item key={todo.id} todo={todo} />
+          <Item
+            key={todo.id}
+            todo={todo}
+          />
         )}
       </ol>
     )

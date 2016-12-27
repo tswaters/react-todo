@@ -1,3 +1,5 @@
+/* eslint react/jsx-max-props-per-line: 0 */
+
 import React from 'react'
 import {Route} from 'react-router'
 

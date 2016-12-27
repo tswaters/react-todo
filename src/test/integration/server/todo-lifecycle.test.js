@@ -33,11 +33,11 @@ describe('todo-lifecycle integration test', () => {
     async.series([
 
       // Register
-      next => client.post('/api/auth/register').send(user1).expect(200).end(logError(next)),
+      next => client.post('/api/auth/register').send(user1).expect(200).end(next),
 
       // Create todos
-      next => client.post('/api/todo').send(newTodo).expect(200).end(logError(next)),
-      next => client.post('/api/todo').send(newTodo).expect(200).end(logError(next)),
+      next => client.post('/api/todo').send(newTodo).expect(200).end(next),
+      next => client.post('/api/todo').send(newTodo).expect(200).end(next),
 
       // List todo
       next => client.get('/api/todo').expect(200).end((err, res) => {
@@ -50,50 +50,40 @@ describe('todo-lifecycle integration test', () => {
       }),
 
       // Update todo
-      next => client.put(`/api/todo/${id1}`).send(updatedTodo).expect(200).end(logError(next)),
+      next => client.put(`/api/todo/${id1}`).send(updatedTodo).expect(200).end(next),
 
       // Fetch todo
-      next => client.get(`/api/todo/${id1}`).expect(200, Object.assign({}, updatedTodo, {id: id1})).end(logError(next)),
+      next => client.get(`/api/todo/${id1}`).expect(200, Object.assign({}, updatedTodo, {id: id1})).end(next),
 
       // Delete todo
-      next => client.delete(`/api/todo/${id1}`).expect(200).end(logError(next)),
+      next => client.delete(`/api/todo/${id1}`).expect(200).end(next),
 
       // Fetch todo (should be gone)
-      next => client.get(`/api/todo/${id1}`).expect(404).end(logError(next)),
+      next => client.get(`/api/todo/${id1}`).expect(404).end(next),
 
       // Logout
-      next => client.post('/api/auth/logout').expect(200).end(logError(next)),
+      next => client.post('/api/auth/logout').expect(200).end(next),
 
       // Attempt to create, should fail
-      next => client.post('/api/todo').send(newTodo).expect(401).end(logError(next)),
+      next => client.post('/api/todo').send(newTodo).expect(401).end(next),
 
       // Register as different user
-      next => client.post('/api/auth/register').send(user2).expect(200).end(logError(next)),
+      next => client.post('/api/auth/register').send(user2).expect(200).end(next),
 
       // Attempt to act upon the existing user's todos, should be 404
-      next => client.get(`/api/todo/${id2}`).expect(404).end(logError(next)),
-      next => client.delete(`/api/todo/${id2}`).expect(404).end(logError(next)),
-      next => client.put(`/api/todo/${id2}`).expect(404).end(logError(next)),
+      next => client.get(`/api/todo/${id2}`).expect(404).end(next),
+      next => client.delete(`/api/todo/${id2}`).expect(404).end(next),
+      next => client.put(`/api/todo/${id2}`).expect(404).end(next),
 
       // Logout
-      next => client.post('/api/auth/logout').expect(200).end(logError(next)),
+      next => client.post('/api/auth/logout').expect(200).end(next),
 
       // Login (again)
-      next => client.post('/api/auth/login').send(user1).expect(200).end(logError(next)),
+      next => client.post('/api/auth/login').send(user1).expect(200).end(next),
 
       // Make sure we can still get one of the todos
-      next => client.get(`/api/todo/${id2}`).expect(200, Object.assign({}, newTodo, {id: id2})).end(logError(next))
+      next => client.get(`/api/todo/${id2}`).expect(200, Object.assign({}, newTodo, {id: id2})).end(next)
 
     ], done)
   })
 })
-
-function logError (next) {
-  return (err, res) => {
-    if (err) {
-      console.log(res.body)
-      return next(err)
-    }
-    next()
-  }
-}

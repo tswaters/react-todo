@@ -19,6 +19,13 @@ const TodoPage = ({item, list}) =>
     <Add todo={item} />
   </div>
 
+TodoPage.defaultProps = {
+  item: {
+    id: null,
+    text: ''
+  }
+}
+
 TodoPage.propTypes = {
   item: PropTypes.shape({
     id: PropTypes.number,

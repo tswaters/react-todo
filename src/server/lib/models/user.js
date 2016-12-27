@@ -85,8 +85,10 @@ export default class UserModel extends UserStore {
       return Promise.reject(this.badRequest)
     }
 
+    const roles = ['public']
+
     return hashifier.hash(password)
-      .then(({hash, salt}) => this.create({userName, salt, hash, roles: ['public']}))
+      .then(({hash, salt}) => this.create({userName, salt, hash, roles}))
       .then(user => this.tokens.create({userId: user.id}))
       .then(token => token.id)
   }

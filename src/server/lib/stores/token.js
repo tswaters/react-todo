@@ -2,6 +2,17 @@
 import Store from './store'
 
 /**
+ * Retrieves an updated expiry date for a login token.
+ * @param {Date} [date] date it is expiring
+ * @returns {Date} updated expiry
+ */
+const getExpiry = date => {
+  date = date ? new Date(date) : new Date()
+  date.setDate(date.getDate() + 1)
+  return date.getTime()
+}
+
+/**
  * @class LoginTokenStore
  * @description Model for the todos, supports simple crud operations.
  */
@@ -65,18 +76,6 @@ class LoginTokenStore extends Store {
     return super.update(id, body)
   }
 
-}
-
-
-/**
- * Retrieves an updated expiry date for a login token.
- * @param {Date} [date] date it is expiring
- * @returns {Date} updated expiry
- */
-const getExpiry = date => {
-  date = date ? new Date(date) : new Date()
-  date.setDate(date.getDate() + 1)
-  return date.getTime()
 }
 
 export default LoginTokenStore

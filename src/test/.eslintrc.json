@@ -3,6 +3,7 @@
     "mocha": true
   },
   "rules": {
+    "no-magic-numbers": [0],
     "max-len": [0],
     "max-statements": [0],
     "newline-per-chained-call": [0]
