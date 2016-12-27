@@ -1,6 +1,7 @@
 node_modules
 dist
 npm-debug.*
+data
 .tmp
 .nyc_output
 coverage

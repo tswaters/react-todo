@@ -14,12 +14,14 @@
     "**/node_modules": true,
     "**/.nyc_output": true,
     "**/.tmp": true,
-    "**/coverage": true
+    "**/coverage": true,
+    "**/data": true
   },
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true,
     "**/.tmp": true,
-    "**/coverage": true
+    "**/coverage": true,
+    "**/data": true
   }
 }
