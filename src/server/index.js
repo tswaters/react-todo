@@ -3,6 +3,8 @@
 
 import app from './app'
 
-import config from 'root/config.json'
+const {
+  PORT
+} = process.env
 
-app.listen(config.port, () => console.log(`listening on ${config.port}`))
+app.listen(PORT, () => console.log(`listening on ${PORT}`))
