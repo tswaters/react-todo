@@ -5,8 +5,11 @@ import 'sinon-as-promised'
 import {agent} from 'supertest'
 
 import appFactory from '../test-app'
-import config from 'root/config-test.json'
 import authMiddleware from 'server/lib/middleware/authorization'
+
+const {
+  PORT = 3001
+} = process.env
 
 describe('authentication middleware', () => {
   let client = null
@@ -28,7 +31,7 @@ describe('authentication middleware', () => {
     ])
 
     client = agent(app)
-    server = app.listen(config.port, done)
+    server = app.listen(PORT, done)
   })
 
   afterEach(() => {

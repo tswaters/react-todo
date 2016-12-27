@@ -5,9 +5,12 @@ import 'sinon-as-promised'
 import supertest from 'supertest'
 
 import appFactory from '../test-app'
-import config from 'root/config-test.json'
 import {TodoStore} from 'server/lib/stores'
 import injector from 'inject?-express!server/lib/api/todo'
+
+const {
+  PORT = 3001
+} = process.env
 
 describe('todo controller', () => {
   let client = null
@@ -34,7 +37,7 @@ describe('todo controller', () => {
     context.use('/api/todo', todoController)
 
     client = supertest(app)
-    server = app.listen(config.port, done)
+    server = app.listen(PORT, done)
   })
 
   afterEach(() => {

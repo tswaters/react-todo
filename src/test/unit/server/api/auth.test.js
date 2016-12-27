@@ -5,9 +5,12 @@ import 'sinon-as-promised'
 import * as assert from 'assert'
 
 import appFactory from '../test-app'
-import config from 'root/config-test.json'
 import UserModel from 'server/lib/models/user'
 import authInjector from 'inject?-express!server/lib/api/auth'
+
+const {
+  PORT = 3001
+} = process.env
 
 describe('auth controller', () => {
   let client = null
@@ -24,7 +27,7 @@ describe('auth controller', () => {
     const {app, context} = appFactory()
     context.use('/api/auth', authController)
     client = supertest(app)
-    server = app.listen(config.port, done)
+    server = app.listen(PORT, done)
   })
 
   afterEach(() => {

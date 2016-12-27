@@ -2,9 +2,11 @@
 import * as assert from 'assert'
 import * as async from 'async'
 import {agent} from 'supertest'
-
-import config from 'root/config-test.json'
 import app from 'server/app'
+
+const {
+  PORT = 3001
+} = process.env
 
 describe('todo-lifecycle integration test', () => {
   const user1 = {userName: 'test1', password: 'test'}
@@ -17,7 +19,7 @@ describe('todo-lifecycle integration test', () => {
 
   before(done => {
     client = agent(app)
-    server = app.listen(config.port, done)
+    server = app.listen(PORT, done)
   })
 
   after(done => {
