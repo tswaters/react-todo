@@ -12,7 +12,7 @@ module.exports = Object.assign({}, common, {
   externals: [nodeExternals()],
   module: {
     loaders: loaders.concat([
-      {test: /\.(css|less)$/, loader: 'css/locals?module'}
+      {test: /\.(css|less)$/, loader: 'css-loader/locals?module'}
     ])
   },
   devtool: 'cheap-module-source-map'
