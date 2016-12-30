@@ -2,5 +2,8 @@
   "env": {
     "node": false,
     "browser": true
+  },
+  "rules": {
+    "react/no-set-state": [0]
   }
 }

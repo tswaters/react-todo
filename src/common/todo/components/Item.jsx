@@ -16,7 +16,7 @@ class Item extends PureComponent {
     handleRemoveTodo: PropTypes.func.isRequired,
     todo: PropTypes.shape({
       text: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired
+      id: PropTypes.string.isRequired
     }).isRequired
   }
 

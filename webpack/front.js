@@ -15,7 +15,7 @@ const common = require('./common')
 module.exports = Object.assign({}, common, {
   name: 'front-end',
   entry: {
-    todo: './src/client/index'
+    app: './src/client/index'
   },
   output: {
     path: './dist/public',

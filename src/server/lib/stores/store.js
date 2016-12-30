@@ -133,6 +133,7 @@ class DataStore {
         this.data = data
       })
       .then(() => this.save())
+      .then(() => ({id}))
   }
 
 }

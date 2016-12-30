@@ -2,10 +2,8 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 
-import {components, styles} from '../todo'
-
-const {container} = styles
-const {Add, List} = components
+import {Add, List} from 'common/todo/components'
+import {container} from 'common/todo/styles'
 
 const mapStateToProps = state => ({
   item: state.item,
@@ -28,12 +26,12 @@ TodoPage.defaultProps = {
 
 TodoPage.propTypes = {
   item: PropTypes.shape({
-    id: PropTypes.number,
-    text: PropTypes.string.isRequired
+    id: PropTypes.string,
+    text: PropTypes.string
   }),
   list: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number,
-    text: PropTypes.text
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
   })).isRequired
 }
 

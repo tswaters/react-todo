@@ -13,8 +13,8 @@ class List extends PureComponent {
 
   static propTypes = {
     list: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      text: PropTypes.text
+      id: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired
     })).isRequired
   }
 

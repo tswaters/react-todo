@@ -1,16 +1,44 @@
-/* eslint react/jsx-max-props-per-line: 0 */
-
-import React from 'react'
-import {Route} from 'react-router'
 
 import Layout from './components/layout'
-import {Todo, NotFound} from './pages'
+import NotFound from './pages/NotFound'
 
-const Routes = (
-  <Route component={Layout}>
-    <Route path="/" component={Todo} />
-    <Route path="*" component={NotFound} />
-  </Route>
-)
-
-export default Routes
+export default {
+  childRoutes: [{
+    component: Layout,
+    childRoutes: [{
+      path: '/',
+      getComponent (nextState, cb) {
+        System.import('./pages/Home')
+          .then(module => cb(null, module.default))
+          .catch(err => console.warn(err))
+      }
+    }, {
+      path: 'todo',
+      getComponent (nextState, cb) {
+        System.import('./pages/Todo')
+          .then(module => cb(null, module.default))
+          .catch(err => console.warn(err))
+      }
+    }, {
+      path: 'auth',
+      childRoutes: [{
+        path: 'login',
+        getComponent (nextState, cb) {
+          System.import('./pages/Login')
+            .then(module => cb(null, module.default))
+            .catch(err => console.warn(err))
+        }
+      }, {
+        path: 'register',
+        getComponent (nextState, cb) {
+          System.import('./pages/Register')
+            .then(module => cb(null, module.default))
+            .catch(err => console.warn(err))
+        }
+      }]
+    }]
+  }, {
+    path: '*',
+    component: NotFound
+  }]
+}

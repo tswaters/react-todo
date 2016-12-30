@@ -27,7 +27,7 @@ class Add extends PureComponent {
     onTextChange: PropTypes.func.isRequired,
     onUpdateTodo: PropTypes.func.isRequired,
     todo: PropTypes.shape({
-      id: PropTypes.number,
+      id: PropTypes.string,
       text: PropTypes.string.isRequired
     })
   }
