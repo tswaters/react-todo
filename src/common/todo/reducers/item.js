@@ -13,7 +13,7 @@ export default (state = null, action) => {
     case ADD_TODO:
     case CREATE_TODO:
     case UPDATE_TODO:
-      return null
+      return {id: '', text: ''}
 
     case REMOVE_TODO:
       return state && state.id === action.id ? null : state

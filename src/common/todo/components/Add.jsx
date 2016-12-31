@@ -3,38 +3,31 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {createTodo, updateTodo, updateTodoText} from '../actions'
 
+import FormInput from 'common/components/FormInput'
+
 const mapStateToProps = state => ({
-  todo: state.item
+  id: state.item ? state.item.id : '',
+  text: state.item ? state.item.text : ''
 })
 
 const mapDispatchToProps = dispatch => ({
-  onCreateTodo: text => dispatch(createTodo(text)),
-  onUpdateTodo: text => dispatch(updateTodo(text)),
+  createTodo: text => dispatch(createTodo(text)),
+  updateTodo: text => dispatch(updateTodo(text)),
   onTextChange: text => dispatch(updateTodoText(text))
 })
 
 class Add extends PureComponent {
 
-  static defaultProps = {
-    todo: {
-      id: null,
-      text: ''
-    }
-  }
-
   static propTypes = {
-    onCreateTodo: PropTypes.func.isRequired,
+    createTodo: PropTypes.func.isRequired,
     onTextChange: PropTypes.func.isRequired,
-    onUpdateTodo: PropTypes.func.isRequired,
-    todo: PropTypes.shape({
-      id: PropTypes.string,
-      text: PropTypes.string.isRequired
-    })
+    updateTodo: PropTypes.func.isRequired,
+    id: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired
   }
 
   constructor (props) {
     super(props)
-    this.input = null
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
   }
@@ -45,29 +38,27 @@ class Add extends PureComponent {
 
   handleSubmit (event) {
     event.preventDefault()
-    if (this.props.todo.id) {
-      this.props.onUpdateTodo({id: this.props.todo.id, text: this.input.value})
+    if (this.props.id) {
+      this.props.updateTodo({id: this.props.id, text: this.props.text})
     }
     else {
-      this.props.onCreateTodo(this.input.value)
+      this.props.createTodo(this.props.text)
     }
   }
 
   render () {
-    const label = this.props.todo && this.props.todo.id
-      ? 'Update Todo'
-      : 'Create Todo'
-
     return (
       <form onSubmit={this.handleSubmit}>
-        <input
-          ref={_ref => this.input = _ref}
+        <FormInput
+          id="todo"
           required
-          type="text"
+          label={'Todo'}
           onChange={this.handleTextChange}
-          value={this.props.todo && this.props.todo.text || ''}
+          value={this.props.text}
         />
-        <button type="submit">{label}</button>
+        <button type="submit" className="btn btn-default">
+          {this.props.id ? 'Update Todo' : 'Create Todo'}
+        </button>
       </form>
     )
   }

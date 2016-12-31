@@ -5,6 +5,10 @@ import {connect} from 'react-redux'
 import {editTodo} from '../actions'
 import Item from './Item'
 
+const mapStateToProps = state => ({
+  list: state.list
+})
+
 const mapDispatchToProps = {
   onTodoClick: editTodo
 }
@@ -37,4 +41,4 @@ class List extends PureComponent {
 
 }
 
-export default connect(null, mapDispatchToProps)(List)
+export default connect(mapStateToProps, mapDispatchToProps)(List)
