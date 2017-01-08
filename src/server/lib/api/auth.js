@@ -31,6 +31,7 @@ router.post('/logout', (req, res, next) => {
   res.locals.userModel.logout(req.session.token)
     .then(() => {
       req.session.destroy()
+      res.clearCookie('connect.sid')
       res.json({})
     })
     .catch(next)
