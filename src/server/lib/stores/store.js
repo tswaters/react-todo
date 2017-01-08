@@ -3,6 +3,8 @@ import * as path from 'path'
 import fs from 'fs-extra'
 import uuid from 'uuid'
 
+import {NotFound} from 'server/lib/errors'
+
 /**
  * @class TodoModel
  * @description Model for the todos, supports simple crud operations.
@@ -12,8 +14,6 @@ class DataStore {
 
   constructor (table) {
     this.path = path.resolve(`${process.env.DATA_PATH}/${table}/data.json`)
-    this.notFound = new Error('not found')
-    this.notFound.status = 404
   }
 
   initialize () {
@@ -77,7 +77,7 @@ class DataStore {
     return this.load()
       .then(() => this.data.find(item => item.id === id))
       .then(item => {
-        if (!item) { throw this.notFound }
+        if (!item) { throw new NotFound('could not find todo') }
         return item
       })
   }
@@ -111,7 +111,7 @@ class DataStore {
       )
       .then(() => {
         if (!updated) {
-          throw this.notFound
+          throw new NotFound('could not find todo')
         }
       })
       .then(() => this.save())
@@ -128,7 +128,7 @@ class DataStore {
       .then(() => this.data.filter(item => item.id !== id))
       .then(data => {
         if (data.length === this.data.length) {
-          throw this.notFound
+          throw new NotFound('could not find todo')
         }
         this.data = data
       })

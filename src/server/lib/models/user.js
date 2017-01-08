@@ -1,4 +1,5 @@
 
+import {BadRequest, Unauthorized} from 'server/lib/errors'
 import {UserStore, LoginTokenStore} from 'server/lib/stores'
 
 import * as hashifier from 'hashifier'
@@ -8,10 +9,6 @@ export default class UserModel extends UserStore {
   constructor () {
     super()
     this.tokens = new LoginTokenStore()
-    this.unauthorized = new Error('invalid user')
-    this.unauthorized.status = 401
-    this.badRequest = new Error('invalid request')
-    this.badRequest.status = 400
   }
 
   /**
@@ -20,17 +17,17 @@ export default class UserModel extends UserStore {
    * @returns {Promise<User>} resolves to use or throws unauthorized
    */
   authorize (token = null) {
-    if (token == null) {
-      return Promise.reject(this.badRequest)
+    if (token == null || typeof token !== 'string' || token.trim() === '') {
+      return Promise.reject(new BadRequest('token must be provided'))
     }
     return this.tokens.fetch(token)
       .then(loginToken => {
-        if (!loginToken) { throw this.unauthorized }
+        if (!loginToken) { throw new Unauthorized('login token not found') }
         return loginToken.userId
       })
       .then(userId => this.fetch(userId))
       .then(user => {
-        if (!user) { throw this.unauthorized }
+        if (!user) { throw new Unauthorized('user not found') }
         return user
       })
   }
@@ -42,20 +39,23 @@ export default class UserModel extends UserStore {
    * @returns {Promise<User>} resovles to a user or throws unauthorized
    */
   login ({userName = null, password = null} = {}) {
-    if (userName == null || password == null) {
-      return Promise.reject(this.badRequest)
+    if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
+      return Promise.reject(new BadRequest('userName must be provided'))
+    }
+    if (password == null || typeof password !== 'string' || password.trim() === '') {
+      return Promise.reject(new BadRequest('password must be provided'))
     }
 
     let userId = null
 
     return this.find(userName)
       .then(user => {
-        if (!user) { throw this.unauthorized }
+        if (!user) { throw new Unauthorized('user not found') }
         userId = user.id
         return user
       })
       .then(user => hashifier.compare(password, user.hash, user.salt))
-      .then(authorized => { if (!authorized) { throw this.unauthorized } })
+      .then(authorized => { if (!authorized) { throw new Unauthorized('user not found') } })
       .then(() => this.tokens.create({userId}))
       .then(token => token.id)
   }
@@ -81,8 +81,12 @@ export default class UserModel extends UserStore {
    * @returns {Promise<string>} resolves to id of login token
    */
   register ({userName = null, password = null} = {}) {
-    if (userName == null || password == null) {
-      return Promise.reject(this.badRequest)
+    if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
+      return Promise.reject(new BadRequest('userName must be provided'))
+    }
+
+    if (password == null || typeof password !== 'string' || password.trim() === '') {
+      return Promise.reject(new BadRequest('password must be provided'))
     }
 
     const roles = ['public']
