@@ -4,6 +4,7 @@
     ["es2015", {"modules": false}]
   ],
   "plugins": [
+    "transform-runtime",
     "transform-class-properties",
     "transform-object-rest-spread"
   ],

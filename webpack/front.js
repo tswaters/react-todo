@@ -42,6 +42,6 @@ module.exports = Object.assign({}, common, {
         collapseWhitespace: true
       }
     }),
-    new ExtractTextPlugin('styles.css')
+    new ExtractTextPlugin({filename: 'styles.css', allChunks: true})
   ])
 })
