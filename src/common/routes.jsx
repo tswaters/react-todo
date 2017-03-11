@@ -1,6 +1,9 @@
 
+import store from './store'
 import Layout from './components/layout'
 import NotFound from './pages/NotFound'
+
+import {logout} from './actions'
 
 export default {
   childRoutes: [{
@@ -22,6 +25,13 @@ export default {
     }, {
       path: 'auth',
       childRoutes: [{
+        path: 'logout',
+        getComponent (nextState, cb) {
+          System.import('./pages/Logout')
+            .then(module => cb(null, module.default))
+            .catch(err => console.warn(err))
+        }
+      }, {
         path: 'login',
         getComponent (nextState, cb) {
           System.import('./pages/Login')

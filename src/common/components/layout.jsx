@@ -3,6 +3,8 @@ import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import Header from './header'
 import Footer from './footer'
+import Navbar from './navbar'
+
 
 import * as bootstrap from 'common/styles/bootstrap'
 
@@ -17,6 +19,7 @@ const mapStateToProps = state => ({
 const Layout = ({children, requestInProgress, requestError}) =>
   <div>
     <div className={bootstrap.container}>
+      <Navbar />
       <Header />
       {children}
       {requestInProgress ? '...' : ''}

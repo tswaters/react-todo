@@ -5,19 +5,15 @@ import {createMemoryHistory, match, RouterContext} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import {renderToString} from 'react-dom/server'
 
-import {TodoModel} from 'server/lib/models'
-import {authentication} from 'server/lib/middleware'
+import {authentication, storeInit, storeList, storeUser} from 'server/lib/middleware'
 import routes from 'common/routes'
 import configureStore from 'common/store'
 
 export default [
   authentication(false),
-  (req, res, next) => {
-    if (!res.locals.user) { return next() }
-    new TodoModel(res.locals.user.id).list()
-      .then(list => { res.locals.state = {list}; next() })
-      .catch(next)
-  },
+  storeInit(),
+  storeUser(),
+  storeList(),
   (req, res) => {
     const memoryHistory = createMemoryHistory(req.url)
     const store = configureStore(memoryHistory, res.locals.state || {})
