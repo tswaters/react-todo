@@ -1,7 +1,7 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import classNames from 'classNames/bind'
+import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
 

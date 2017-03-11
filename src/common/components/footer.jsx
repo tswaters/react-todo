@@ -1,6 +1,7 @@
 
 import React from 'react'
 
+import {footer} from 'common/styles/footer'
 import {container} from 'common/styles/bootstrap'
 
 /**
@@ -8,7 +9,7 @@ import {container} from 'common/styles/bootstrap'
  */
 export default function Footer () {
   return (
-    <footer>
+    <footer className={footer}>
       <div className={container}>
         <p>{'By Tyler'}</p>
       </div>

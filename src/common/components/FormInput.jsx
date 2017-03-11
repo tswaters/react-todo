@@ -1,6 +1,6 @@
 
 import React, {PropTypes, PureComponent} from 'react'
-import classNames from 'classNames/bind'
+import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
 const cx = classNames.bind(bootstrap)

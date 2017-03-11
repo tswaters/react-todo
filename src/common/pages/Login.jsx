@@ -2,7 +2,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import classNames from 'classNames/bind'
+import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
 import FormInput from 'common/components/FormInput'
