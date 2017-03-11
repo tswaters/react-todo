@@ -26,8 +26,12 @@ class Add extends PureComponent {
     createTodo: PropTypes.func.isRequired,
     onTextChange: PropTypes.func.isRequired,
     updateTodo: PropTypes.func.isRequired,
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     text: PropTypes.string.isRequired
+  }
+
+  static defaultProps = {
+    id: null
   }
 
   constructor (props) {
