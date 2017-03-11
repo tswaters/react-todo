@@ -2,11 +2,11 @@
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 
-import {editTodo} from '../actions'
+import {editTodo} from 'common/todo/redux'
 import Item from './Item'
 
 const mapStateToProps = state => ({
-  list: state.list
+  list: state.todo.list
 })
 
 const mapDispatchToProps = {

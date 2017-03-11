@@ -4,12 +4,12 @@ import {routerReducer, routerMiddleware} from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
 
 import * as api from './reducers'
-import * as todo from './todo/reducers'
+import todo from './todo/redux'
 
 export default (history, state) => createStore(
   combineReducers({
     ...api,
-    ...todo,
+    todo,
     routing: routerReducer
   }),
   state,

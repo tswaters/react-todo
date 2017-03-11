@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
-import {editTodo, removeTodo} from '../actions'
+import {editTodo, removeTodo} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 

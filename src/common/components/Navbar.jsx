@@ -25,8 +25,7 @@ const Navbar = ({user}) => {
         {'Logout'}
       </NavLink>
     )
-  }
-  else {
+  } else {
     navs.push(
       <NavLink key="register" activeClassName={cx('active')} to="/auth/register">
         {'Register'}

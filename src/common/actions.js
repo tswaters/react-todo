@@ -2,7 +2,7 @@
 import ajax from 'common/ajax'
 import {push} from 'react-router-redux'
 
-import {clearTodoList, updateTodoList} from 'common/todo/actions'
+import {clearTodoList, updateTodoList} from 'common/todo/redux'
 
 export const REQUEST_IN_PROGRESS = 'REQUEST_IN_PROGRESS'
 export const initiateRequest = () => ({type: REQUEST_IN_PROGRESS})

@@ -6,7 +6,7 @@ export default () => (req, res, next) => {
 
   new TodoModel(res.locals.user.id).list()
     .then(list => {
-      res.locals.state.list = list
+      res.locals.state.todo = {list}
       next()
     })
     .catch(next)

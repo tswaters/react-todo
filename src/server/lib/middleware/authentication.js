@@ -10,8 +10,7 @@ export default (required = true) => (req, res, next) => {
   unauthorized.status = 401
   if (!token && required) {
     return next(unauthorized)
-  }
-  else if (!token) {
+  } else if (!token) {
     return next()
   }
 

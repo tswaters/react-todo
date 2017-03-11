@@ -3,15 +3,15 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import classNames from 'classNames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
-import {createTodo, updateTodo, updateTodoText} from '../actions'
+import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
 
 import FormInput from 'common/components/FormInput'
 
 const cx = classNames.bind(bootstrap)
 
 const mapStateToProps = state => ({
-  id: state.item ? state.item.id : '',
-  text: state.item ? state.item.text : ''
+  id: state.todo.item ? state.todo.item.id : '',
+  text: state.todo.item ? state.todo.item.text : ''
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -48,8 +48,7 @@ class Add extends PureComponent {
     event.preventDefault()
     if (this.props.id) {
       this.props.updateTodo({id: this.props.id, text: this.props.text})
-    }
-    else {
+    } else {
       this.props.createTodo(this.props.text)
     }
   }
