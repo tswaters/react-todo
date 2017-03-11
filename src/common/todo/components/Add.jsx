@@ -1,9 +1,13 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import classNames from 'classNames/bind'
+import * as bootstrap from 'common/styles/bootstrap'
 import {createTodo, updateTodo, updateTodoText} from '../actions'
 
 import FormInput from 'common/components/FormInput'
+
+const cx = classNames.bind(bootstrap)
 
 const mapStateToProps = state => ({
   id: state.item ? state.item.id : '',
@@ -56,7 +60,7 @@ class Add extends PureComponent {
           onChange={this.handleTextChange}
           value={this.props.text}
         />
-        <button type="submit" className="btn btn-default">
+        <button type="submit" className={cx('btn', 'btn-default')}>
           {this.props.id ? 'Update Todo' : 'Create Todo'}
         </button>
       </form>

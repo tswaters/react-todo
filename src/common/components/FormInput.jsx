@@ -1,5 +1,9 @@
 
 import React, {PropTypes, PureComponent} from 'react'
+import classNames from 'classNames/bind'
+import * as bootstrap from 'common/styles/bootstrap'
+
+const cx = classNames.bind(bootstrap)
 
 class FormInput extends PureComponent {
 
@@ -18,15 +22,15 @@ class FormInput extends PureComponent {
 
   render () {
     return (
-      <div className="form-group">
+      <div className={cx('form-group')}>
         <label
-          className="control-label"
+          className={cx('control-label')}
           htmlFor={this.props.id}
         >
           {this.props.label}
         </label>
         <input
-          className="form-control"
+          className={cx('form-control')}
           id={this.props.id}
           type={this.props.type}
           value={this.props.value}

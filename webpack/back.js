@@ -16,7 +16,7 @@ module.exports = Object.assign({}, common, {
   },
   module: {
     loaders: loaders.concat([
-      {test: /\.(css|less)$/, loader: 'css-loader/locals?module'}
+      {test: /\.(css|less)$/, loader: 'css-loader/locals?module!less-loader'}
     ])
   },
   plugins,

@@ -1,8 +1,12 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import classNames from 'classnames/bind'
+import * as bootstrap from 'common/styles/bootstrap'
 
 import {editTodo, removeTodo} from '../actions'
+
+const cx = classNames.bind(bootstrap)
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
   handleEditTodo: () => dispatch(editTodo(ownProps.todo)),
@@ -24,8 +28,12 @@ class Item extends PureComponent {
     return (
       <li>
         {this.props.todo.text}
-        <button onClick={this.props.handleEditTodo}>{'Edit'}</button>
-        <button onClick={this.props.handleRemoveTodo}>{'Delete'}</button>
+        <button className={cx('btn', 'btn-default')} onClick={this.props.handleEditTodo}>
+          {'Edit'}
+        </button>
+        <button className={cx('btn', 'btn-danger')} onClick={this.props.handleRemoveTodo}>
+          {'Delete'}
+        </button>
       </li>
     )
   }

@@ -1,9 +1,14 @@
 
 import React, {Component, PropTypes} from 'react'
+import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import * as bootstrap from 'common/styles/bootstrap'
+import classNames from 'classnames/bind'
 
 import FormInput from 'common/components/FormInput'
 import {register} from 'common/actions'
+
+const cx = classNames.bind(bootstrap)
 
 class RegisterForm extends Component {
 
@@ -49,9 +54,13 @@ class RegisterForm extends Component {
             value={this.state.password}
             onChange={this.handleFieldChange('password')}
           />
-          <button type="submit">
+          <button type="submit" className={cx('btn', 'btn-default')}>
             {'Register'}
           </button>
+          <p className={cx('help-block')}>
+            {'Have an Account? '}
+            <Link to="/auth/login">{'Login'}</Link>
+          </p>
         </form>
       </div>
     )

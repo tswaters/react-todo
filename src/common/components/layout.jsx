@@ -4,6 +4,8 @@ import {connect} from 'react-redux'
 import Header from './header'
 import Footer from './footer'
 
+import * as bootstrap from 'common/styles/bootstrap'
+
 const mapStateToProps = state => ({
   requestInProgress: state.api.inProgress,
   requestError: state.api.error
@@ -13,11 +15,13 @@ const mapStateToProps = state => ({
  * @returns {string} layout of the application
  */
 const Layout = ({children, requestInProgress, requestError}) =>
-  <div id="container">
-    <Header />
-    {children}
-    {requestInProgress ? '...' : ''}
-    {requestError}
+  <div>
+    <div className={bootstrap.container}>
+      <Header />
+      {children}
+      {requestInProgress ? '...' : ''}
+      {requestError}
+    </div>
     <Footer />
   </div>
 
