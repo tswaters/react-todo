@@ -1,6 +1,7 @@
 
 import React from 'react'
 
+import {FormattedMessage} from 'react-intl'
 import * as bootstrap from 'common/styles/bootstrap'
 
 /**
@@ -9,7 +10,9 @@ import * as bootstrap from 'common/styles/bootstrap'
 export default function Header () {
   return (
     <header className={bootstrap['page-header']}>
-      <h1>{'Todo Application'}</h1>
+      <h1>
+        <FormattedMessage id="application-name" />
+      </h1>
     </header>
   )
 }

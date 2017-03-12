@@ -2,6 +2,7 @@
 import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
+import {FormattedMessage, intlShape} from 'react-intl'
 import * as bootstrap from 'common/styles/bootstrap'
 import classNames from 'classnames/bind'
 
@@ -11,6 +12,10 @@ import {register} from 'common/actions'
 const cx = classNames.bind(bootstrap)
 
 class RegisterForm extends Component {
+
+  static contextTypes = {
+    intl: intlShape.isRequired
+  }
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired
@@ -39,27 +44,31 @@ class RegisterForm extends Component {
   render () {
     return (
       <div>
-        <h2>{'Register'}</h2>
+        <h2>
+          <FormattedMessage id="register.title" />
+        </h2>
         <form onSubmit={this.handleFormSubmit}>
           <FormInput
-            label="Username"
+            label={this.context.intl.formatMessage({id: 'auth.userName'})}
             id="userName"
             value={this.state.userName}
             onChange={this.handleFieldChange('userName')}
           />
           <FormInput
-            label="Password"
+            label={this.context.intl.formatMessage({id: 'auth.password'})}
             id="password"
             type="password"
             value={this.state.password}
             onChange={this.handleFieldChange('password')}
           />
           <button type="submit" className={cx('btn', 'btn-default')}>
-            {'Register'}
+            <FormattedMessage id="menu.register" />
           </button>
           <p className={cx('help-block')}>
-            {'Have an Account? '}
-            <Link to="/auth/login">{'Login'}</Link>
+            <FormattedMessage id="register.have-account" />
+            <Link to="/auth/login">
+              <FormattedMessage id="menu.login" />
+            </Link>
           </p>
         </form>
       </div>

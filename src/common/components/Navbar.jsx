@@ -2,6 +2,7 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
+import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
@@ -17,23 +18,23 @@ const Navbar = ({user}) => {
   if (user) {
     navs.push(
       <NavLink key="todo" activeClassName={cx('active')} to="/todo">
-        {'Todos'}
+        <FormattedMessage id="menu.todo" />
       </NavLink>
     )
     navs.push(
       <NavLink key="logout" activeClassName={cx('active')} to="/auth/logout">
-        {'Logout'}
+        <FormattedMessage id="menu.logout" />
       </NavLink>
     )
   } else {
     navs.push(
       <NavLink key="register" activeClassName={cx('active')} to="/auth/register">
-        {'Register'}
+        <FormattedMessage id="menu.register" />
       </NavLink>
     )
     navs.push(
       <NavLink key="login" activeClassName={cx('active')} to="/auth/login">
-        {'Login'}
+        <FormattedMessage id="menu.login" />
       </NavLink>
     )
   }
@@ -42,7 +43,7 @@ const Navbar = ({user}) => {
       <div className={cx('container')}>
         <div className={cx('navbar-header')}>
           <Link className={cx('navbar-brand')} activeClassName={cx('active')} to="/">
-            {'Todo'}
+            <FormattedMessage id="menu.brand" />
           </Link>
         </div>
         <ul className={cx('navbar-nav', 'nav')}>

@@ -1,17 +1,23 @@
 
 import React from 'react'
-import {Provider} from 'react-redux'
+import {Provider} from 'react-intl-redux'
 import {createMemoryHistory, match, RouterContext} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
 import {renderToString} from 'react-dom/server'
 
-import {authentication, storeInit, storeList, storeUser} from 'server/lib/middleware'
+import localization from 'server/lib/middleware/localization'
+import authentication from 'server/lib/middleware/authentication'
+import storeInit from 'server/lib/middleware/store-init'
+import storeList from 'server/lib/middleware/store-list'
+import storeUser from 'server/lib/middleware/store-user'
+
 import routes from 'common/routes'
 import configureStore from 'common/store'
 
 export default [
   authentication(false),
   storeInit(),
+  localization(),
   storeUser(),
   storeList(),
   (req, res) => {

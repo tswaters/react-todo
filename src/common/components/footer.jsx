@@ -1,5 +1,6 @@
 
 import React from 'react'
+import {FormattedMessage} from 'react-intl'
 
 import {footer} from 'common/styles/footer'
 import {container} from 'common/styles/bootstrap'
@@ -11,7 +12,9 @@ export default function Footer () {
   return (
     <footer className={footer}>
       <div className={container}>
-        <p>{'By Tyler'}</p>
+        <p>
+          <FormattedMessage id="footer-name" />
+        </p>
       </div>
     </footer>
   )

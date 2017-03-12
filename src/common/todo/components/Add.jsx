@@ -1,6 +1,7 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {FormattedMessage, intlShape} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
@@ -21,6 +22,10 @@ const mapDispatchToProps = dispatch => ({
 })
 
 class Add extends PureComponent {
+
+  static contextTypes = {
+    intl: intlShape.isRequired
+  }
 
   static propTypes = {
     createTodo: PropTypes.func.isRequired,
@@ -59,12 +64,12 @@ class Add extends PureComponent {
         <FormInput
           id="todo"
           required
-          label={'Todo'}
+          label={this.context.intl.formatMessage({id: 'todo.todo'})}
           onChange={this.handleTextChange}
           value={this.props.text}
         />
         <button type="submit" className={cx('btn', 'btn-default')}>
-          {this.props.id ? 'Update Todo' : 'Create Todo'}
+          <FormattedMessage id={this.props.id ? 'todo.update' : 'todo.create'} />
         </button>
       </form>
     )

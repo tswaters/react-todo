@@ -1,6 +1,7 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
@@ -29,10 +30,10 @@ class Item extends PureComponent {
       <li>
         {this.props.todo.text}
         <button className={cx('btn', 'btn-default')} onClick={this.props.handleEditTodo}>
-          {'Edit'}
+          <FormattedMessage id="todo.edit" />
         </button>
         <button className={cx('btn', 'btn-danger')} onClick={this.props.handleRemoveTodo}>
-          {'Delete'}
+          <FormattedMessage id="todo.delete" />
         </button>
       </li>
     )

@@ -1,6 +1,7 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
+import {FormattedMessage} from 'react-intl'
 
 import {editTodo} from 'common/todo/redux'
 import Item from './Item'
@@ -24,7 +25,11 @@ class List extends PureComponent {
 
   render () {
     if (this.props.list.length === 0) {
-      return <p>{'No Todos!'}</p>
+      return (
+        <p>
+          <FormattedMessage id="todo.no-items" />
+        </p>
+      )
     }
 
     return (

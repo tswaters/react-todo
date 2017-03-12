@@ -19,7 +19,10 @@ class NavLink extends PureComponent {
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]).isRequired,
     onlyActiveOnIndex: PropTypes.bool,
     index: PropTypes.bool,
-    children: PropTypes.string.isRequired
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.node),
+      React.PropTypes.node
+    ]).isRequired
   }
 
   render () {
