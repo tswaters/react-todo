@@ -4,16 +4,14 @@ import {connect} from 'react-redux'
 import {FormattedMessage, intlShape} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
-import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
-
 import FormInput from 'common/components/FormInput'
+
+import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
+import {getEditing} from 'common/todo/selectors'
 
 const cx = classNames.bind(bootstrap)
 
-const mapStateToProps = state => ({
-  id: state.todo.item ? state.todo.item.id : '',
-  text: state.todo.item ? state.todo.item.text : ''
-})
+const mapStateToProps = state => getEditing(state)
 
 const mapDispatchToProps = dispatch => ({
   createTodo: text => dispatch(createTodo(text)),

@@ -6,9 +6,13 @@ import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
+import {getUser} from 'common/selectors/user'
 import NavLink from './NavLink'
 
+
 const cx = classNames.bind(bootstrap)
+
+const mapStateToProps = state => getUser(state)
 
 /**
  * @returns {string} Navbar for the application
@@ -65,6 +69,5 @@ Navbar.propTypes = {
   })
 }
 
-const mapStateToProps = state => ({user: state.user})
 
 export default connect(mapStateToProps)(Navbar)

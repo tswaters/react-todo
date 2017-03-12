@@ -5,13 +5,11 @@ import Header from './header'
 import Footer from './footer'
 import Navbar from './navbar'
 
-
 import * as bootstrap from 'common/styles/bootstrap'
 
-const mapStateToProps = state => ({
-  requestInProgress: state.api.inProgress,
-  requestError: state.api.error
-})
+import {getRequestStats} from 'common/selectors/ajax'
+
+const mapStateToProps = state => getRequestStats(state)
 
 /**
  * @returns {string} layout of the application

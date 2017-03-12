@@ -3,16 +3,11 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
 
-import {editTodo} from 'common/todo/redux'
+import {getList} from 'common/todo/selectors'
+
 import Item from './Item'
 
-const mapStateToProps = state => ({
-  list: state.todo.list
-})
-
-const mapDispatchToProps = {
-  onTodoClick: editTodo
-}
+const mapStateToProps = state => getList(state)
 
 class List extends PureComponent {
 
@@ -34,16 +29,11 @@ class List extends PureComponent {
 
     return (
       <ol>
-        {this.props.list.map(todo =>
-          <Item
-            key={todo.id}
-            todo={todo}
-          />
-        )}
+        {this.props.list.map(todo => <Item key={todo.id} id={todo.id} />)}
       </ol>
     )
   }
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(List)
+export default connect(mapStateToProps)(List)

@@ -31,8 +31,8 @@ export const removeTodo = id => dispatch =>
   ajax(dispatch)(`/api/todo/${id}`, 'DELETE')
     .then(() => dispatch({type: REMOVE_TODO, id}))
 
-export const editTodo = todo => dispatch =>
-  ajax(dispatch)(`/api/todo/${todo.id}`, 'GET')
+export const editTodo = id => dispatch =>
+  ajax(dispatch)(`/api/todo/${id}`, 'GET')
     .then(data => dispatch({type: EDIT_TODO, todo: data}))
 
 export default (state = [], action) => {
