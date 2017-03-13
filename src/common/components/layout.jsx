@@ -25,10 +25,6 @@ class Layout extends PureComponent {
     requestError: PropTypes.string
   }
 
-  constructor (props) {
-    super(props)
-  }
-
   render () {
     return (
       <div>
