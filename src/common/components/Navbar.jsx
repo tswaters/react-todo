@@ -29,8 +29,20 @@ class Navbar extends PureComponent {
     user: null
   }
 
+  constructor (props) {
+    super(props)
+
+    this.handleToggleClick = this.handleToggleClick.bind(this)
+    this.state = {
+      collapsed: false
+    }
+  }
+
+  handleToggleClick () {
+    this.setState({collapsed: !this.state.collapsed})
+  }
+
   render () {
-    let welcome = null
     const leftNavs = []
     const rightNavs = []
     if (this.props.user) {
@@ -44,10 +56,10 @@ class Navbar extends PureComponent {
           <FormattedMessage id="menu.logout" />
         </NavLink>
       )
-      welcome = (
-        <p key="welcome" className={cx('navbar-text')}>
-          <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
-        </p>
+      rightNavs.push(
+        <li key="welcome" className={cx('navbar-text')}>
+          <a><FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} /></a>
+        </li>
       )
     } else {
       rightNavs.push(
@@ -62,20 +74,39 @@ class Navbar extends PureComponent {
       )
     }
     return (
-      <nav className={cx('navbar', 'navbar-default')}>
-        <div className={cx('container-fluid')}>
+      <nav className={cx('navbar', 'navbar-default', 'navbar-fixed-top')}>
+        <div className={cx('container')}>
           <div className={cx('navbar-header')}>
             <Link className={cx('navbar-brand')} activeClassName={cx('active')} to="/">
               <FormattedMessage id="menu.brand" />
             </Link>
+            <button
+              type="button"
+              onClick={this.handleToggleClick}
+              className={cx('navbar-toggle', 'collapsed')}
+              aria-expanded={this.state.collapsed ? 'true' : 'false'}
+              aria-controls="navbar"
+            >
+              <span className={cx('sr-only')}>
+                <FormattedMessage id="toggle-navigation" />
+              </span>
+              <span className={cx('icon-bar')} />
+              <span className={cx('icon-bar')} />
+              <span className={cx('icon-bar')} />
+            </button>
           </div>
-          <ul className={cx('navbar-nav', 'nav')}>
-            {leftNavs}
-          </ul>
-          <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
-            {rightNavs}
-          </ul>
-          {welcome}
+          <div
+            id="navbar"
+            className={cx('navbar-collapse', 'collapse', {in: this.state.collapsed})}
+            aria-expanded={this.state.collapsed ? 'true' : 'false'}
+          >
+            <ul className={cx('navbar-nav', 'nav')}>
+              {leftNavs}
+            </ul>
+            <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
+              {rightNavs}
+            </ul>
+          </div>
         </div>
       </nav>
     )
