@@ -9,6 +9,8 @@ import {syncHistoryWithStore} from 'react-router-redux'
 import configureStore from 'common/store'
 import routes from 'common/routes'
 
+import 'common/styles/base'
+
 const store = configureStore(browserHistory, window.LOCALS)
 const history = syncHistoryWithStore(browserHistory, store)
 
