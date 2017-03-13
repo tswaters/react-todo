@@ -4,5 +4,5 @@ export default (err, req, res, next) => {
     return next(err)
   }
   const {message, stack, status = 500} = err
-  res.status(status).send({message, stack})
+  res.status(status).send({status, message, stack})
 }
