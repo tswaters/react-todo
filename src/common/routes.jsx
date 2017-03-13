@@ -3,7 +3,7 @@ import store from './store'
 import Layout from './components/layout'
 import NotFound from './pages/NotFound'
 
-import {logout} from './actions'
+import {logout} from 'common/redux/user'
 
 export default {
   childRoutes: [{

@@ -1,5 +1,5 @@
 
-import {initiateRequest, finishRequest, errorRequest} from './actions'
+import {initiateRequest, finishRequest, errorRequest} from 'common/redux/api'
 
 const credentials = 'same-origin'
 

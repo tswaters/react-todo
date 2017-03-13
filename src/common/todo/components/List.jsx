@@ -3,7 +3,7 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
 
-import {getList} from 'common/todo/selectors'
+import {getList} from 'common/todo/redux'
 
 import Item from './Item'
 

@@ -7,7 +7,7 @@ import Navbar from './navbar'
 
 import * as bootstrap from 'common/styles/bootstrap'
 
-import {getRequestStats} from 'common/selectors/ajax'
+import {getRequestStats} from 'common/redux/api'
 
 /**
  * @returns {string} layout of the application

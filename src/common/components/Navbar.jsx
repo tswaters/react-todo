@@ -6,7 +6,7 @@ import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
-import {getUser} from 'common/selectors/user'
+import {getUser} from 'common/redux/user'
 import NavLink from './NavLink'
 
 const cx = classNames.bind(bootstrap)

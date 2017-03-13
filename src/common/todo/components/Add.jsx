@@ -6,8 +6,7 @@ import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 import FormInput from 'common/components/FormInput'
 
-import {createTodo, updateTodo, updateTodoText} from 'common/todo/redux'
-import {getEditing} from 'common/todo/selectors'
+import {createTodo, updateTodo, updateTodoText, getEditing} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 

@@ -7,7 +7,7 @@ import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
 import FormInput from 'common/components/FormInput'
-import {login} from 'common/actions'
+import {login} from 'common/redux/user'
 
 const cx = classNames.bind(bootstrap)
 

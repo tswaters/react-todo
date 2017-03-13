@@ -1,6 +1,6 @@
 import {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {logout} from 'common/actions'
+import {logout} from 'common/redux/user'
 
 class LogoutPage extends PureComponent {
 

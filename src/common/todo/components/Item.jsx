@@ -5,8 +5,7 @@ import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
-import {getItem} from 'common/todo/selectors'
-import {editTodo, removeTodo} from 'common/todo/redux'
+import {getItem, editTodo, removeTodo} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 
