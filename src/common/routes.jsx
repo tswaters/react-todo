@@ -1,9 +1,6 @@
 
-import store from './store'
 import Layout from './components/layout'
 import NotFound from './pages/NotFound'
-
-import {logout} from 'common/redux/user'
 
 export default {
   childRoutes: [{
@@ -13,14 +10,14 @@ export default {
       getComponent (nextState, cb) {
         System.import('./pages/Home')
           .then(module => cb(null, module.default))
-          .catch(err => console.warn(err))
+          .catch(err => cb(err))
       }
     }, {
       path: 'todo',
       getComponent (nextState, cb) {
         System.import('./pages/Todo')
           .then(module => cb(null, module.default))
-          .catch(err => console.warn(err))
+          .catch(err => cb(err))
       }
     }, {
       path: 'auth',
@@ -29,21 +26,21 @@ export default {
         getComponent (nextState, cb) {
           System.import('./pages/Logout')
             .then(module => cb(null, module.default))
-            .catch(err => console.warn(err))
+            .catch(err => cb(err))
         }
       }, {
         path: 'login',
         getComponent (nextState, cb) {
           System.import('./pages/Login')
             .then(module => cb(null, module.default))
-            .catch(err => console.warn(err))
+            .catch(err => cb(err))
         }
       }, {
         path: 'register',
         getComponent (nextState, cb) {
           System.import('./pages/Register')
             .then(module => cb(null, module.default))
-            .catch(err => console.warn(err))
+            .catch(err => cb(err))
         }
       }]
     }]
