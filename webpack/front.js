@@ -4,8 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const cssLoader = ExtractTextPlugin.extract({
-  fallbackLoader: 'style-loader',
-  loader: 'css-loader?modules!less-loader?relativeUrls&noIeCompat'
+  fallback: 'style-loader',
+  use: 'css-loader?modules!less-loader?relativeUrls&noIeCompat'
 })
 
 const plugins = require('./plugins')
