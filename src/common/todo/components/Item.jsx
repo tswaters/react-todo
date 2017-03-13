@@ -10,13 +10,13 @@ import {editTodo, removeTodo} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 
-const mapStateToProps = (state, ownProps) => getItem(state, ownProps)
-
-const mapDispatchToProps = dispatch => ({
-  handleEditTodo: id => dispatch(editTodo(id)),
-  handleRemoveTodo: id => dispatch(removeTodo(id))
-})
-
+@connect(
+  (state, ownProps) => getItem(state, ownProps),
+  dispatch => ({
+    handleEditTodo: id => dispatch(editTodo(id)),
+    handleRemoveTodo: id => dispatch(removeTodo(id))
+  })
+)
 class Item extends PureComponent {
 
   static propTypes = {
@@ -60,4 +60,4 @@ class Item extends PureComponent {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Item)
+export default Item

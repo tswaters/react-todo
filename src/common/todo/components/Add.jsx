@@ -11,14 +11,14 @@ import {getEditing} from 'common/todo/selectors'
 
 const cx = classNames.bind(bootstrap)
 
-const mapStateToProps = state => getEditing(state)
-
-const mapDispatchToProps = dispatch => ({
-  createTodo: text => dispatch(createTodo(text)),
-  updateTodo: text => dispatch(updateTodo(text)),
-  onTextChange: text => dispatch(updateTodoText(text))
-})
-
+@connect(
+  state => getEditing(state),
+  dispatch => ({
+    createTodo: text => dispatch(createTodo(text)),
+    updateTodo: text => dispatch(updateTodo(text)),
+    onTextChange: text => dispatch(updateTodoText(text))
+  })
+)
 class Add extends PureComponent {
 
   static contextTypes = {
@@ -74,4 +74,4 @@ class Add extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Add)
+export default Add

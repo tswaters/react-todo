@@ -1,5 +1,5 @@
 
-import React, {PropTypes} from 'react'
+import React, {PropTypes, PureComponent} from 'react'
 import {connect} from 'react-redux'
 import Header from './header'
 import Footer from './footer'
@@ -9,31 +9,40 @@ import * as bootstrap from 'common/styles/bootstrap'
 
 import {getRequestStats} from 'common/selectors/ajax'
 
-const mapStateToProps = state => getRequestStats(state)
-
 /**
  * @returns {string} layout of the application
  */
-const Layout = ({children, requestInProgress, requestError}) =>
-  <div>
-    <div className={bootstrap.container}>
-      <Navbar />
-      <Header />
-      {children}
-      {requestInProgress ? '...' : ''}
-      {requestError}
-    </div>
-    <Footer />
-  </div>
+@connect(state => getRequestStats(state))
+class Layout extends PureComponent {
 
-Layout.defaultProps = {
-  requestError: ''
+  static defaultProps = {
+    requestError: ''
+  }
+
+  static propTypes = {
+    children: PropTypes.element.isRequired,
+    requestInProgress: PropTypes.bool.isRequired,
+    requestError: PropTypes.string
+  }
+
+  constructor (props) {
+    super(props)
+  }
+
+  render () {
+    return (
+      <div>
+        <div className={bootstrap.container}>
+          <Navbar />
+          <Header />
+          {this.props.children}
+          {this.props.requestInProgress ? '...' : ''}
+          {this.props.requestError}
+        </div>
+        <Footer />
+      </div>
+    )
+  }
 }
 
-Layout.propTypes = {
-  children: PropTypes.element.isRequired,
-  requestInProgress: PropTypes.bool.isRequired,
-  requestError: PropTypes.string
-}
-
-export default connect(mapStateToProps)(Layout)
+export default Layout

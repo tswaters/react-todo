@@ -7,8 +7,9 @@ import {getList} from 'common/todo/selectors'
 
 import Item from './Item'
 
-const mapStateToProps = state => getList(state)
-
+@connect(
+  state => getList(state)
+)
 class List extends PureComponent {
 
   static propTypes = {
@@ -36,4 +37,4 @@ class List extends PureComponent {
 
 }
 
-export default connect(mapStateToProps)(List)
+export default List
