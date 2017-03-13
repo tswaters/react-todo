@@ -57,8 +57,10 @@ class Navbar extends PureComponent {
         </NavLink>
       )
       rightNavs.push(
-        <li key="welcome" className={cx('navbar-text')}>
-          <a><FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} /></a>
+        <li key="welcome">
+          <span className={cx('navbar-text')}>
+            <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
+          </span>
         </li>
       )
     } else {
