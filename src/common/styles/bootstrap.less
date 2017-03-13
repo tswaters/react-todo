@@ -49,3 +49,10 @@
 // Utility classes
 @import "~bootstrap/less/utilities.less";
 @import "~bootstrap/less/responsive-utilities.less";
+
+/* bootstrap adds this to desktop, missing on mobile and it fucks with everything */
+.navbar .navbar-text {
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 15px;
+}
