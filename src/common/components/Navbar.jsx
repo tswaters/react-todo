@@ -30,6 +30,7 @@ class Navbar extends PureComponent {
   }
 
   render () {
+    let welcome = null
     const leftNavs = []
     const rightNavs = []
     if (this.props.user) {
@@ -43,7 +44,7 @@ class Navbar extends PureComponent {
           <FormattedMessage id="menu.logout" />
         </NavLink>
       )
-      rightNavs.push(
+      welcome = (
         <p key="welcome" className={cx('navbar-text')}>
           <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
         </p>
@@ -74,6 +75,7 @@ class Navbar extends PureComponent {
           <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
             {rightNavs}
           </ul>
+          {welcome}
         </div>
       </nav>
     )
