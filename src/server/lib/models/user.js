@@ -28,7 +28,9 @@ export default class UserModel extends UserStore {
       .then(userId => this.fetch(userId))
       .then(user => {
         if (!user) { throw new Unauthorized('user not found') }
-        return user
+        delete user.salt
+        delete user.hash
+        return {...user, token}
       })
   }
 
@@ -46,18 +48,20 @@ export default class UserModel extends UserStore {
       return Promise.reject(new BadRequest('password must be provided'))
     }
 
+    let user = null
     let userId = null
 
     return this.find(userName)
-      .then(user => {
-        if (!user) { throw new Unauthorized('user not found') }
+      .then(_user => {
+        if (!_user) { throw new Unauthorized('user not found') }
+        user = _user
         userId = user.id
         return user
       })
-      .then(user => hashifier.compare(password, user.hash, user.salt))
+      .then(() => hashifier.compare(password, user.hash, user.salt))
       .then(authorized => { if (!authorized) { throw new Unauthorized('user not found') } })
       .then(() => this.tokens.create({userId}))
-      .then(token => token.id)
+      .then(token => ({...user, token: token.id}))
   }
 
   /**

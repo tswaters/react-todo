@@ -20,9 +20,12 @@ router.post('/register', (req, res, next) => {
 
 router.post('/login', (req, res, next) => {
   res.locals.userModel.login(req.body)
-    .then(tokenId => {
-      req.session.token = tokenId
-      res.json({})
+    .then(user => {
+      req.session.token = user.token
+      delete user.salt
+      delete user.hash
+      delete user.roles
+      res.json(user)
     })
     .catch(next)
 })

@@ -1,6 +1,7 @@
 
 import {createStore, combineReducers, compose, applyMiddleware} from 'redux'
 import {routerReducer, routerMiddleware} from 'react-router-redux'
+import {reducer as reduxAsyncConnect} from 'redux-connect'
 import thunkMiddleware from 'redux-thunk'
 import {intlReducer} from 'react-intl-redux'
 
@@ -14,6 +15,7 @@ export default (history, state) => createStore(
     user,
     todo,
     intl: intlReducer,
+    reduxAsyncConnect,
     routing: routerReducer
   }),
   state,

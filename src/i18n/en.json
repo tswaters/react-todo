@@ -1,6 +1,7 @@
 {
   "404": "Can't find it!",
   "application-name": "Todo Application",
+  "auth-welcome": "Welcome {name}",
   "auth.userName": "Username",
   "auth.password": "Password",
   "footer-name": "By Tyler",

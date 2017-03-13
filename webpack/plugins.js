@@ -8,6 +8,8 @@ const vars = Object.keys(obj).reduce((memo, item) => {
   return memo
 }, {})
 
+vars['process.env.BASE_URL'] = `"${obj.PROTOCOL}://${obj.HOST}:${obj.PORT}"`
+
 module.exports = [
   new webpack.DefinePlugin(vars)
 ]

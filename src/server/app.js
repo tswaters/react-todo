@@ -5,7 +5,7 @@ import session from 'express-session'
 import fileStore from 'session-file-store'
 import {json} from 'body-parser'
 
-import {errors} from './lib/middleware'
+import errors from './lib/middleware/errors'
 import api from './lib/api'
 import router from './lib/router.jsx'
 

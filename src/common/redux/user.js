@@ -18,20 +18,20 @@ export const updateUser = user => ({type: UPDATE_USER, user})
 
 export const clearUser = () => ({type: CLEAR_USER, user: null})
 
-export const logout = () => dispatch =>
-  ajax(dispatch)('/api/auth/logout', 'POST')
+export const logout = () => (dispatch, getState) =>
+  ajax(dispatch, getState)('/api/auth/logout', 'POST')
     .then(() => dispatch(clearUser({})))
     .then(() => dispatch(clearTodoList()))
     .then(() => dispatch(push('/')))
 
-export const login = credentials => dispatch =>
-  ajax(dispatch)('/api/auth/login', 'POST', credentials)
+export const login = credentials => (dispatch, getState) =>
+  ajax(dispatch, getState)('/api/auth/login', 'POST', credentials)
     .then(user => dispatch(updateUser(user)))
     .then(() => dispatch(updateTodoList()))
     .then(() => dispatch(push('/todo')))
 
-export const register = credentials => dispatch =>
-  ajax(dispatch)('/api/auth/register', 'POST', credentials)
+export const register = credentials => (dispatch, getState) =>
+  ajax(dispatch, getState)('/api/auth/register', 'POST', credentials)
     .then(user => dispatch(updateUser(user)))
     .then(() => dispatch(updateTodoList()))
     .then(() => dispatch(push('/todo')))

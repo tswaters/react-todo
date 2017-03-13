@@ -30,25 +30,31 @@ class Navbar extends PureComponent {
   }
 
   render () {
-    const navs = []
+    const leftNavs = []
+    const rightNavs = []
     if (this.props.user) {
-      navs.push(
+      leftNavs.push(
         <NavLink key="todo" activeClassName={cx('active')} to="/todo">
           <FormattedMessage id="menu.todo" />
         </NavLink>
       )
-      navs.push(
+      rightNavs.push(
         <NavLink key="logout" activeClassName={cx('active')} to="/auth/logout">
           <FormattedMessage id="menu.logout" />
         </NavLink>
       )
+      rightNavs.push(
+        <p key="welcome" className={cx('navbar-text')}>
+          <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
+        </p>
+      )
     } else {
-      navs.push(
+      rightNavs.push(
         <NavLink key="register" activeClassName={cx('active')} to="/auth/register">
           <FormattedMessage id="menu.register" />
         </NavLink>
       )
-      navs.push(
+      rightNavs.push(
         <NavLink key="login" activeClassName={cx('active')} to="/auth/login">
           <FormattedMessage id="menu.login" />
         </NavLink>
@@ -56,14 +62,17 @@ class Navbar extends PureComponent {
     }
     return (
       <nav className={cx('navbar', 'navbar-default')}>
-        <div className={cx('container')}>
+        <div className={cx('container-fluid')}>
           <div className={cx('navbar-header')}>
             <Link className={cx('navbar-brand')} activeClassName={cx('active')} to="/">
               <FormattedMessage id="menu.brand" />
             </Link>
           </div>
           <ul className={cx('navbar-nav', 'nav')}>
-            {navs}
+            {leftNavs}
+          </ul>
+          <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
+            {rightNavs}
           </ul>
         </div>
       </nav>
