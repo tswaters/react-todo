@@ -11,12 +11,14 @@ class NavLink extends PureComponent {
 
   static defaultProps = {
     index: false,
-    onlyActiveOnIndex: false
+    onlyActiveOnIndex: false,
+    onClick: () => {}
   }
 
   static propTypes = {
     activeClassName: PropTypes.string.isRequired,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]).isRequired,
+    onClick: PropTypes.func,
     onlyActiveOnIndex: PropTypes.bool,
     index: PropTypes.bool,
     children: React.PropTypes.oneOfType([
@@ -34,7 +36,7 @@ class NavLink extends PureComponent {
 
     return (
       <li className={classNames({[activeClassName]: isActive})}>
-        <LinkComponent to={to}>{children}</LinkComponent>
+        <LinkComponent onClick={this.props.onClick} to={to}>{children}</LinkComponent>
       </li>
     )
   }

@@ -42,6 +42,10 @@ class Navbar extends PureComponent {
     this.setState({collapsed: !this.state.collapsed})
   }
 
+  renderLink (link) {
+    return React.cloneElement(link, {onClick: this.handleToggleClick})
+  }
+
   render () {
     const leftNavs = []
     const rightNavs = []
@@ -79,9 +83,9 @@ class Navbar extends PureComponent {
       <nav className={cx('navbar', 'navbar-default', 'navbar-fixed-top')}>
         <div className={cx('container')}>
           <div className={cx('navbar-header')}>
-            <Link className={cx('navbar-brand')} activeClassName={cx('active')} to="/">
+            <a href="#" className={cx('navbar-brand')} onClick={this.handleToggleClick}>
               <FormattedMessage id="menu.brand" />
-            </Link>
+            </a>
             <button
               type="button"
               onClick={this.handleToggleClick}
@@ -103,10 +107,10 @@ class Navbar extends PureComponent {
             aria-expanded={this.state.collapsed ? 'true' : 'false'}
           >
             <ul className={cx('navbar-nav', 'nav')}>
-              {leftNavs}
+              {leftNavs.map(link => this.renderLink(link))}
             </ul>
             <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
-              {rightNavs}
+              {rightNavs.map(link => this.renderLink(link))}
             </ul>
           </div>
         </div>
