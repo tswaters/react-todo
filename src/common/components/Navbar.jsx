@@ -1,7 +1,6 @@
 
 import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
 import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'

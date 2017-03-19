@@ -11,14 +11,13 @@ class NavLink extends PureComponent {
 
   static defaultProps = {
     index: false,
-    onlyActiveOnIndex: false,
-    onClick: () => {}
+    onlyActiveOnIndex: false
   }
 
   static propTypes = {
     activeClassName: PropTypes.string.isRequired,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]).isRequired,
-    onClick: PropTypes.func,
+    onClick: PropTypes.func.isRequired,
     onlyActiveOnIndex: PropTypes.bool,
     index: PropTypes.bool,
     children: React.PropTypes.oneOfType([

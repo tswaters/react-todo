@@ -3,6 +3,9 @@
     "node": false,
     "browser": true
   },
+  "globals": {
+    "process": true
+  },
   "rules": {
     "react/forbid-component-props": [0],
     "react/jsx-max-props-per-line": [2, {"maximum": 3}],
