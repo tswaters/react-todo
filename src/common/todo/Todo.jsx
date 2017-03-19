@@ -2,8 +2,10 @@
 import React, {PureComponent} from 'react'
 import {FormattedMessage} from 'react-intl'
 import {asyncConnect} from 'redux-connect'
-import {Add, List} from 'common/todo/components'
-import {updateTodoList} from 'common/todo/redux'
+
+import Add from './components/Add'
+import List from './components/List'
+import {updateTodoList} from './redux'
 
 const preloadDataActions = [{
   key: 'list', promise: ({store: {dispatch}}) => dispatch(updateTodoList())

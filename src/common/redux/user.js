@@ -6,9 +6,6 @@ import {clearTodoList, updateTodoList} from 'common/todo/redux'
 
 export const UPDATE_USER = 'UPDATE_USER'
 export const CLEAR_USER = 'CLEAR_USER'
-export const AUTH_LOGOUT = 'AUTH_LOGOUT'
-export const AUTH_LOGIN = 'AUTH_LOGIN'
-export const AUTH_REGISTER = 'AUTH_REGISTER'
 
 export const getUser = createSelector([
   state => state.user

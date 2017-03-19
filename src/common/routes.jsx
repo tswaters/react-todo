@@ -15,7 +15,7 @@ export default {
     }, {
       path: 'todo',
       getComponent (nextState, cb) {
-        System.import('./pages/Todo')
+        System.import('./todo/Todo')
           .then(module => cb(null, module.default))
           .catch(err => cb(err))
       }
