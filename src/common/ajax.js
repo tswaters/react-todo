@@ -21,11 +21,15 @@ export default (dispatch, getState) => (url, method, body) => {
     {body: body ? JSON.stringify(body) : null}
   )
 
+  let response = null
+
   return fetch(`${baseUrl}${url}`, options)
-    .then(res => { dispatch(finishRequest()); return res })
-    .then(res => {
-      if (!res.ok) { return res.json().then(err => { throw err }) }
-      return res.json()
-    })
-    .catch(err => { dispatch(errorRequest(err.message)); throw err })
+    .then(res => res.json(data => {
+      if (!res.ok) { throw data }
+      return data
+    }))
+    .then(data => response = data)
+    .then(() => dispatch(finishRequest()))
+    .catch(err => dispatch(errorRequest(err.message)))
+    .then(() => response)
 }
