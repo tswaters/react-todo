@@ -3,27 +3,26 @@ import React from 'react'
 import {render} from 'react-dom'
 
 import {Provider} from 'react-intl-redux'
-import {match, Router, browserHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
-import {ReduxAsyncConnect} from 'redux-connect'
+import createHistory from 'history/createBrowserHistory'
+import {ConnectedRouter} from 'react-router-redux'
+import {preload} from 'react-router-server'
 
 import configureStore from 'common/store'
-import routes from 'common/routes'
+import App from 'common/App'
 
 import 'common/styles/base'
 
-const store = configureStore(browserHistory, window.LOCALS)
-const history = syncHistoryWithStore(browserHistory, store)
+const history = createHistory()
+const store = configureStore(history, window.LOCALS)
 
-match({history, routes}, (err, redirectLocation, renderProps) => {
-  if (err) { throw err }
-  render(
-    <Provider store={store}>
-      <Router
-        {...renderProps}
-        render={props => <ReduxAsyncConnect {...props} />}
-      />
-    </Provider>,
-    document.getElementById('root')
-  )
+const app = (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>
+)
+
+preload(window.MODULES).then(() => {
+  render(app, document.getElementById('root'))
 })

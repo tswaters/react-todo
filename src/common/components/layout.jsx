@@ -20,7 +20,10 @@ class Layout extends PureComponent {
   }
 
   static propTypes = {
-    children: PropTypes.element.isRequired,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.node),
+      React.PropTypes.node
+    ]).isRequired,
     requestInProgress: PropTypes.bool.isRequired,
     requestError: PropTypes.string
   }

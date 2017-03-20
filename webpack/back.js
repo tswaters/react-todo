@@ -1,5 +1,5 @@
 
-const webpack = require('webpack')
+const path = require('path')
 const webpackNodeExternals = require('webpack-node-externals')
 const externals = [webpackNodeExternals()]
 
@@ -21,7 +21,7 @@ module.exports = Object.assign({}, common, {
   },
   plugins,
   output: {
-    path: './dist/server',
+    path: path.resolve('./dist/server'),
     filename: 'index.js'
   },
   externals

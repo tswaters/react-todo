@@ -1,7 +1,5 @@
 import React, {PureComponent, PropTypes} from 'react'
-import {Link, IndexLink, withRouter} from 'react-router'
-
-import classNames from 'classnames'
+import {Route, Link} from 'react-router-dom'
 
 class NavLink extends PureComponent {
 
@@ -10,16 +8,15 @@ class NavLink extends PureComponent {
   }
 
   static defaultProps = {
-    index: false,
-    onlyActiveOnIndex: false
+    exact: true,
+    strict: true
   }
 
   static propTypes = {
     activeClassName: PropTypes.string.isRequired,
+    exact: PropTypes.bool,
+    strict: PropTypes.bool,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]).isRequired,
-    onClick: PropTypes.func.isRequired,
-    onlyActiveOnIndex: PropTypes.bool,
-    index: PropTypes.bool,
     children: React.PropTypes.oneOfType([
       React.PropTypes.arrayOf(React.PropTypes.node),
       React.PropTypes.node
@@ -27,18 +24,24 @@ class NavLink extends PureComponent {
   }
 
   render () {
-    const {router} = this.context
-    const {activeClassName, index, onlyActiveOnIndex, to, children} = this.props
 
-    const isActive = router.isActive(to, onlyActiveOnIndex)
-    const LinkComponent = index ? IndexLink : Link
+    const {
+      to,
+      exact,
+      strict,
+      activeClassName,
+      ...rest
+    } = this.props
 
     return (
-      <li className={classNames({[activeClassName]: isActive})}>
-        <LinkComponent onClick={this.props.onClick} to={to}>{children}</LinkComponent>
-      </li>
+      <Route path={to} exact={exact} strict={strict} children={({match}) => (
+        <li className={match ? activeClassName : null} {...rest}>
+          <Link to={to}>{this.props.children}</Link>
+        </li>
+      )}
+      />
     )
   }
 }
 
-export default withRouter(NavLink)
+export default NavLink

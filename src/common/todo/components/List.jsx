@@ -12,11 +12,15 @@ import Item from './Item'
 )
 class List extends PureComponent {
 
+  static defaultProps = {
+    list: []
+  }
+
   static propTypes = {
     list: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
       text: PropTypes.string.isRequired
-    })).isRequired
+    }))
   }
 
   render () {

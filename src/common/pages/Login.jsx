@@ -1,6 +1,6 @@
 
 import React, {Component, PropTypes} from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {FormattedMessage, intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import classNames from 'classnames/bind'

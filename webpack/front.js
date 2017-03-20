@@ -1,7 +1,9 @@
 
+const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const StatsPlugin = require('stats-webpack-plugin')
 
 const cssLoader = ExtractTextPlugin.extract({
   fallback: 'style-loader',
@@ -18,7 +20,7 @@ module.exports = Object.assign({}, common, {
     app: './src/client/index'
   },
   output: {
-    path: './dist/public',
+    path: path.resolve('./dist/public'),
     filename: '[name].js',
     chunkFilename: '[id].chunk.js',
     publicPath: '/'
@@ -42,6 +44,10 @@ module.exports = Object.assign({}, common, {
         collapseWhitespace: true
       }
     }),
-    new ExtractTextPlugin({filename: 'styles.css', allChunks: true})
+    new ExtractTextPlugin({filename: 'styles.css', allChunks: true}),
+    new StatsPlugin('../server/stats.json', {
+      chunkModules: true,
+      exclude: [/^\.\/~/]
+    })
   ])
 })

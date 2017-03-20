@@ -82,7 +82,7 @@ class Navbar extends PureComponent {
       <nav className={cx('navbar', 'navbar-default', 'navbar-fixed-top')}>
         <div className={cx('container')}>
           <div className={cx('navbar-header')}>
-            <a href="#" className={cx('navbar-brand')} onClick={this.handleToggleClick}>
+            <a className={cx('navbar-brand')} onClick={this.handleToggleClick}>
               <FormattedMessage id="menu.brand" />
             </a>
             <button

@@ -1,50 +1,43 @@
 
 import React from 'react'
 import {Provider} from 'react-intl-redux'
-import {createMemoryHistory, match} from 'react-router'
-import {ReduxAsyncConnect, loadOnServer} from 'redux-connect'
-import {syncHistoryWithStore} from 'react-router-redux'
-import {renderToString} from 'react-dom/server'
+import {StaticRouter} from 'react-router'
+import {ConnectedRouter} from 'react-router-redux'
+import createMemoryHistory from 'history/createMemoryHistory'
+import {renderToString, extractModules} from 'react-router-server'
 
 import localization from './middleware/localization'
 import authentication from './middleware/authentication'
+import App from 'common/App'
 
-import routes from 'common/routes'
 import configureStore from 'common/store'
 
 export default [
   localization(),
   authentication(false),
-  (req, res, next) => {
+  (req, res) => {
     const {user, intl} = res.locals
     if (user) { delete user.roles }
 
-    const memoryHistory = createMemoryHistory(req.url)
-    const store = configureStore(memoryHistory, {intl, user})
-    const history = syncHistoryWithStore(memoryHistory, store)
+    const history = createMemoryHistory(req.url)
+    const store = configureStore(history, {intl, user})
 
-    match({history, routes, location: req.url}, (matchErr, redirect, renderProps) => {
-      if (matchErr) { return next(matchErr) }
+    const app = (
+      <Provider store={store}>
+        <ConnectedRouter history={history}>
+          <StaticRouter location={req.url} context={store.getState()}>
+            <App />
+          </StaticRouter>
+        </ConnectedRouter>
+      </Provider>
+    )
 
-      if (redirect) {
-        return res.redirect(redirect.pathname + redirect.search)
-      }
-
-      loadOnServer({...renderProps, store}).then(() => {
-        const state = store.getState()
-        const {loadState} = state.reduxAsyncConnect
-
-        const error = Object.keys(loadState).reduce((memo, key) => memo || loadState[key].error, null)
-        if (error) { throw error }
-
-        const body = renderToString(
-          <Provider store={store} key="provider">
-            <ReduxAsyncConnect {...renderProps} />
-          </Provider>
-        )
-        return res.render('index', {body, state})
+    renderToString(app).then(({html, modules}) => {
+      res.render('index', {
+        body: html,
+        state: store.getState(),
+        modules: extractModules(modules, res.app.locals.stats)
       })
-      .catch(err => next(err))
     })
   }
 ]

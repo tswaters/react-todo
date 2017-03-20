@@ -14,7 +14,7 @@ class LogoutPage extends PureComponent {
 
   componentWillMount () {
     this.props.dispatch(logout())
-    this.context.router.replace('/')
+    this.context.router.history.replace('/')
   }
 
   render () {

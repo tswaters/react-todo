@@ -1,17 +1,31 @@
 
-import React, {PureComponent} from 'react'
+import React, {PropTypes, PureComponent} from 'react'
 import {FormattedMessage} from 'react-intl'
-import {asyncConnect} from 'redux-connect'
+import {fetchState} from 'react-router-server'
+import {connect} from 'react-redux'
 
-import Add from './components/Add'
-import List from './components/List'
-import {updateTodoList} from './redux'
+import Add from 'common/todo/components/Add'
+import List from 'common/todo/components/List'
+import {updateTodoList} from 'common/todo/redux'
 
-const preloadDataActions = [{
-  key: 'list', promise: ({store: {dispatch}}) => dispatch(updateTodoList())
-}]
-
+export default
+@fetchState(
+  state => state,
+  actions => ({done: actions.done})
+)
+@connect()
 class TodoPage extends PureComponent {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    done: PropTypes.func.isRequired
+  }
+
+  componentWillMount () {
+    this.props.dispatch(updateTodoList())
+      .then(() => this.props.done({}))
+  }
+
   render () {
     return (
       <div>
@@ -24,5 +38,3 @@ class TodoPage extends PureComponent {
     )
   }
 }
-
-export default asyncConnect(preloadDataActions)(TodoPage)
