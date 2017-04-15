@@ -28,7 +28,6 @@ const App = () => (
       <Route exact path="/auth/register" render={renderer(() => System.import('common/pages/Register'))} />
       <Route exact path="/auth/login" render={renderer(() => System.import('common/pages/Login'))} />
       <Route exact path="/auth/logout" render={renderer(() => System.import('common/pages/Logout'))} />
-      <Route exact path="/error" render={renderer(() => System.import('common/pages/Error'))} />
       <Route render={renderer(() => System.import('common/pages/NotFound'))} />
     </Switch>
   </Layout>
