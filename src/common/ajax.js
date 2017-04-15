@@ -24,12 +24,12 @@ export default (dispatch, getState) => (url, method, body) => {
   let response = null
 
   return fetch(`${baseUrl}${url}`, options)
-    .then(res => res.json(data => {
+    .then(res => res.json().then(data => {
       if (!res.ok) { throw data }
       return data
     }))
     .then(data => response = data)
     .then(() => dispatch(finishRequest()))
-    .catch(err => dispatch(errorRequest(err.message)))
+    .catch(err => { dispatch(errorRequest(err.message)); throw err })
     .then(() => response)
 }

@@ -4,8 +4,9 @@ import {connect} from 'react-redux'
 import Header from './header'
 import Footer from './footer'
 import Navbar from './navbar'
-
+import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
+const cx = classNames.bind(bootstrap)
 
 import {getRequestStats} from 'common/redux/api'
 
@@ -16,7 +17,7 @@ import {getRequestStats} from 'common/redux/api'
 class Layout extends PureComponent {
 
   static defaultProps = {
-    requestError: ''
+    requestError: null
   }
 
   static propTypes = {
@@ -25,18 +26,24 @@ class Layout extends PureComponent {
       React.PropTypes.node
     ]).isRequired,
     requestInProgress: PropTypes.bool.isRequired,
-    requestError: PropTypes.string
+    requestError: PropTypes.object
   }
 
   render () {
+    const errorFlash = this.props.requestError ? (
+      <div className={cx('alert', 'alert-danger')}>
+        {this.props.requestError.message}
+      </div>
+     ) : null
+
     return (
       <div>
         <div className={bootstrap.container}>
           <Navbar />
           <Header />
+          {errorFlash}
           {this.props.children}
           {this.props.requestInProgress ? '...' : ''}
-          {this.props.requestError}
         </div>
         <Footer />
       </div>

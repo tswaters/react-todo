@@ -4,6 +4,7 @@ import express from 'express'
 import session from 'express-session'
 import fileStore from 'session-file-store'
 import {json} from 'body-parser'
+import flash from 'connect-flash'
 
 import errors from './lib/middleware/errors'
 import api from './lib/api'
@@ -25,6 +26,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false
 }))
+app.use(flash())
 app.use('/api', api)
 app.use(router)
 app.use(errors)

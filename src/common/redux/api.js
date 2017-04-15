@@ -24,8 +24,15 @@ const defaultState = {
   error: null
 }
 
-export default (state = defaultState, action) => ({
-  inProgress: action.type === REQUEST_IN_PROGRESS,
-  failed: action.type === REQUEST_FAILED,
-  error: action.type === REQUEST_FAILED ? action.error : null
-})
+export default (state = defaultState, action) => {
+  switch (action.type) {
+    case REQUEST_IN_PROGRESS:
+      return {...state, inProgress: true}
+    case REQUEST_FAILED:
+      return {...state, inProgress: false, failed: true, error: action.error}
+    case REQUEST_COMPLETED:
+      return {...state, inProgress: false}
+    default:
+      return state
+  }
+}

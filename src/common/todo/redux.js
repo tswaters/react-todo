@@ -83,7 +83,7 @@ export default (state = [], action) => {
   // Update the state of the list
 
   if (action.type === UPDATE_TODO_LIST) {
-    newState.list = action.list
+    newState.list = action.list || []
   } else if (action.type === CREATE_TODO) {
     newState.list = [...state.list, {id: action.id, text: action.text}]
   } else if (action.type === REMOVE_TODO) {

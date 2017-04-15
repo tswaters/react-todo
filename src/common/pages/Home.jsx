@@ -3,7 +3,7 @@ import React from 'react'
 import {FormattedMessage} from 'react-intl'
 
 /**
- * @returns {string} Not found page
+ * @returns {string} Home page
  */
 export default function Home () {
   return (
