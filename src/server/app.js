@@ -10,6 +10,10 @@ import errors from './lib/middleware/errors'
 import api from './lib/api'
 import router from './lib/router.jsx'
 
+process.on('unhandledRejection', r => console.log('unhandledRejection', r))
+
+process.on('uncaughtException', r => console.log('unhandledException', r))
+
 const SessionStore = fileStore(session)
 
 const app = express()
