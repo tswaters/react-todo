@@ -1,9 +1,10 @@
 
 import React, {PropTypes, PureComponent} from 'react'
-import {FormattedMessage} from 'react-intl'
+import {intlShape} from 'react-intl'
 import {fetchState} from 'react-router-server'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
+import {Helmet} from 'react-helmet'
 
 import Add from 'common/todo/components/Add'
 import List from 'common/todo/components/List'
@@ -15,6 +16,10 @@ import {updateTodoList} from 'common/todo/redux'
 )
 @connect()
 class TodoPage extends PureComponent {
+
+  static contextTypes = {
+    intl: intlShape.isRequired
+  }
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -34,11 +39,13 @@ class TodoPage extends PureComponent {
   }
 
   render () {
+    const title = this.context.intl.formatMessage({id: 'todo.title'})
     return (
       <div>
-        <h2>
-          <FormattedMessage id="todo.title" />
-        </h2>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <h2>{title}</h2>
         <List />
         <Add />
       </div>

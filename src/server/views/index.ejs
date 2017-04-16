@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+<%- helmet.title %>
 <script>
 window.MODULES = <%- JSON.stringify(modules).replace(/</g, '\\x3c')%>;
 window.LOCALS = <%- JSON.stringify(state).replace(/</g, '\\x3c') %>

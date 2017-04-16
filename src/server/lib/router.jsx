@@ -5,6 +5,7 @@ import {StaticRouter} from 'react-router'
 import {ConnectedRouter} from 'react-router-redux'
 import createMemoryHistory from 'history/createMemoryHistory'
 import {renderToString, extractModules} from 'react-router-server'
+import {Helmet} from 'react-helmet'
 
 import localization from './middleware/localization'
 import authentication from './middleware/authentication'

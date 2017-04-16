@@ -3,6 +3,7 @@ import React, {Component, PropTypes} from 'react'
 import {Link} from 'react-router-dom'
 import {FormattedMessage, intlShape} from 'react-intl'
 import {connect} from 'react-redux'
+import {Helmet} from 'react-helmet'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
@@ -42,11 +43,13 @@ class LoginForm extends Component {
   }
 
   render () {
+    const title = this.context.intl.formatMessage({id: 'login.title'})
     return (
       <div>
-        <h2>
-          <FormattedMessage id="login.title" />
-        </h2>
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+        <h2>{title}</h2>
         <form onSubmit={this.handleFormSubmit}>
           <FormInput
             label={this.context.intl.formatMessage({id: 'auth.userName'})}

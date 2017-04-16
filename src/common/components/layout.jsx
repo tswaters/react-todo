@@ -1,6 +1,8 @@
 
 import React, {PropTypes, PureComponent} from 'react'
 import {connect} from 'react-redux'
+import {Helmet} from 'react-helmet'
+
 import Header from './header'
 import Footer from './footer'
 import Navbar from './navbar'
@@ -38,6 +40,7 @@ class Layout extends PureComponent {
 
     return (
       <div>
+        <Helmet titleTemplate="%s | Todo" defaultTitle="Todo" />
         <div className={bootstrap.container}>
           <Navbar />
           <Header />
