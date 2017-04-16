@@ -39,21 +39,29 @@ export default [
       </Provider>
     )
 
-    renderToString(app).then(({html, modules}) => {
-      if (context.error) {
-        req.flash('error', context.error)
-      }
-      if (context.status) {
-        res.status(context.status)
-      }
-      if (context.url) {
-        return res.redirect(context.url)
-      }
-      res.render('index', {
-        body: html,
-        state: store.getState(),
-        modules: extractModules(modules, res.app.locals.stats)
+    renderToString(app)
+      .then(({html, modules}) => {
+        if (context.error) {
+          req.flash('error', context.error)
+        }
+        if (context.status) {
+          res.status(context.status)
+        }
+        if (context.url) {
+          return res.redirect(context.url)
+        }
+
+        const helmet = Helmet.renderStatic()
+        res.render('index', {
+          body: html,
+          state: store.getState(),
+          modules: extractModules(modules, res.app.locals.stats),
+          helmet
+        })
       })
-    })
+      .catch(err => {
+        req.flash('error', {message: err.message, stack: err.stack})
+        req.session.save(() => res.status(500).redirect('/error'))
+      })
   }
 ]

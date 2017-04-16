@@ -1,5 +1,6 @@
 {
   "404": "Can't find it!",
+  "500": "Something blew up",
   "application-name": "Todo Application",
   "auth-welcome": "Welcome {name}",
   "auth.userName": "Username",

@@ -28,6 +28,7 @@ const App = () => (
       <Route exact path="/auth/register" render={renderer('/auth/register', () => System.import('common/pages/Register'))} />
       <Route exact path="/auth/login" render={renderer('/auth/login', () => System.import('common/pages/Login'))} />
       <Route exact path="/auth/logout" render={renderer('/auth/logout', () => System.import('common/pages/Logout'))} />
+      <Route exact path="/error" render={renderer('/error', () => System.import('common/pages/Error'))} />
       <Route component={NotFound} />
     </Switch>
   </Layout>

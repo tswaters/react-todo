@@ -30,6 +30,6 @@ export default (dispatch, getState) => (url, method, body) => {
     }))
     .then(data => response = data)
     .then(() => dispatch(finishRequest()))
-    .catch(err => { dispatch(errorRequest(err.message)); throw err })
+    .catch(err => { dispatch(errorRequest(err)); throw err })
     .then(() => response)
 }
