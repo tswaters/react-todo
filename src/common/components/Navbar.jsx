@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
+import {withRouter} from 'react-router'
 
 import {getUser} from 'common/redux/user'
 import NavLink from './NavLink'
@@ -14,6 +15,7 @@ const cx = classNames.bind(bootstrap)
  * @returns {string} Navbar for the application
  */
 
+@withRouter
 @connect(state => getUser(state))
 class Navbar extends PureComponent {
 
