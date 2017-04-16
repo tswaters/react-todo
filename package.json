@@ -82,6 +82,7 @@
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.4",
     "session-file-store": "^1.0.0",
+    "strip-sourcemap-loader": "0.0.1",
     "uuid": "^3.0.1"
   },
   "nyc": {
