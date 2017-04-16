@@ -40,6 +40,7 @@ module.exports = Object.assign({}, common, {
     new HtmlWebpackPlugin({
       template: 'src/server/views/index.ejs',
       filename: '../server/views/index.ejs',
+      favicon: 'src/client/favicon.ico',
       minify: {
         collapseWhitespace: true
       }
