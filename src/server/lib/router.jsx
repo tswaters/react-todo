@@ -47,7 +47,8 @@ export default [
           res.status(context.status)
         }
         if (context.url) {
-          return res.redirect(context.url)
+          // If we have flash, ensure sesion is saved prior to redirect
+          return req.session.save(() => res.redirect(context.url))
         }
 
         const helmet = Helmet.renderStatic()
