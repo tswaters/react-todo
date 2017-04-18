@@ -3,7 +3,7 @@
 
 - [x] authenticated / authorized handling on front-end  (currently attempts to load & blows up when no response received)
 
-- [ ] figure out how to populate `<title>` tag maybe other meta tags based on location
+- [x] figure out how to populate `<title>` tag maybe other meta tags based on location
 
 - [ ] better UI for todo list. allow inline editing of elements, checkbox + x button to cancel.
 
@@ -11,6 +11,13 @@
 
 - [ ] add a profile page that users can visit to change userName / password
 
+- [ ] add interface for administrators to modify locale data - also, supported locales; ability for user to change locale
+
+Bugs:
+
+- [ ] /todo is loading data when it doesn't need to.
+- [ ] {api: {inProgress: true}} on /todo ??
+- [ ] getting message about `todo.no-items` unavailable from react-intl
 
 Maybe later:
 

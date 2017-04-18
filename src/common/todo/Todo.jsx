@@ -34,11 +34,8 @@ class TodoPage extends PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    done: PropTypes.func.isRequired,
-    staticContext: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired
+    done: PropTypes.func.isRequired
   }
-
 
   render () {
     const title = this.context.intl.formatMessage({id: 'todo.title'})
