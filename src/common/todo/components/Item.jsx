@@ -5,10 +5,17 @@ import {FormattedMessage} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
+import initialData from 'common/initial-data'
 import {getItem, editTodo, removeTodo} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 
+@initialData({
+  keys: [
+    'todo.edit',
+    'todo.delete'
+  ]
+})
 @connect(
   (state, ownProps) => getItem(state, ownProps),
   dispatch => ({

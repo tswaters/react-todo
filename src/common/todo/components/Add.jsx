@@ -6,10 +6,18 @@ import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 import FormInput from 'common/components/FormInput'
 
+import initialData from 'common/initial-data'
 import {createTodo, updateTodo, updateTodoText, getEditing} from 'common/todo/redux'
 
 const cx = classNames.bind(bootstrap)
 
+@initialData({
+  keys: [
+    'todo.update',
+    'todo.create',
+    'todo.todo'
+  ]
+})
 @connect(
   state => getEditing(state),
   dispatch => ({

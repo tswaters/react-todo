@@ -7,7 +7,6 @@ import createMemoryHistory from 'history/createMemoryHistory'
 import {renderToString, extractModules} from 'react-router-server'
 import {Helmet} from 'react-helmet'
 
-import localization from './middleware/localization'
 import authentication from './middleware/authentication'
 import App from 'common/App'
 import {errorRequest} from 'common/redux/api'
@@ -15,14 +14,13 @@ import {errorRequest} from 'common/redux/api'
 import configureStore from 'common/store'
 
 export default [
-  localization(),
   authentication(false),
   (req, res) => {
-    const {user, intl} = res.locals
+    const {user} = res.locals
     if (user) { delete user.roles }
 
     const history = createMemoryHistory(req.url)
-    const store = configureStore(history, {intl, user})
+    const store = configureStore(history, {user})
 
     // If erorrs encountered during a render they will show here
     // Make sure to display these message to the user.
@@ -41,7 +39,7 @@ export default [
     )
 
     renderToString(app)
-      .then(({html, modules}) => {
+      .then(({html, modules, state: serverState}) => {
         if (context.error) {
           req.flash('error', context.error)
         }
@@ -56,6 +54,7 @@ export default [
         res.render('index', {
           body: html,
           state: store.getState(),
+          serverState,
           modules: extractModules(modules, res.app.locals.stats),
           helmet
         })

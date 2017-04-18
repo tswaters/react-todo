@@ -5,7 +5,7 @@ import {render} from 'react-dom'
 import {Provider} from 'react-intl-redux'
 import createHistory from 'history/createBrowserHistory'
 import {ConnectedRouter} from 'react-router-redux'
-import {preload} from 'react-router-server'
+import {ServerStateProvider, preload} from 'react-router-server'
 
 import configureStore from 'common/store'
 import App from 'common/App'
@@ -17,9 +17,11 @@ const store = configureStore(history, window.LOCALS)
 
 const app = (
   <Provider store={store}>
-    <ConnectedRouter history={history} context={{}}>
-      <App />
-    </ConnectedRouter>
+    <ServerStateProvider state={SERVER_STATE}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </ServerStateProvider>
   </Provider>
 )
 

@@ -7,11 +7,23 @@ import {Helmet} from 'react-helmet'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
 
+import initialData from 'common/initial-data'
 import FormInput from 'common/components/FormInput'
 import {login} from 'common/redux/user'
 
 const cx = classNames.bind(bootstrap)
 
+@initialData({
+  keys: [
+    'login.title',
+    'login.no-account',
+    'auth.userName',
+    'auth.password',
+    'menu.register',
+    'menu.login'
+  ]
+})
+@connect()
 class LoginForm extends Component {
 
   static contextTypes = {
@@ -79,4 +91,4 @@ class LoginForm extends Component {
   }
 }
 
-export default connect()(LoginForm)
+export default LoginForm

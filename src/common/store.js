@@ -2,11 +2,11 @@
 import {createStore, combineReducers, applyMiddleware} from 'redux'
 import {routerReducer, routerMiddleware} from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
-import {intlReducer} from 'react-intl-redux'
 import createLogger from 'redux-logger'
 
 import api from './redux/api'
 import user from './redux/user'
+import intl from './redux/intl'
 import todo from './todo/redux'
 
 export default (history, state) => {
@@ -27,7 +27,7 @@ export default (history, state) => {
       api,
       user,
       todo,
-      intl: intlReducer,
+      intl,
       router: routerReducer
     }),
     state,

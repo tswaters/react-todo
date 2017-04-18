@@ -3,10 +3,14 @@ import React, {PureComponent, PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
 
+import initialData from 'common/initial-data'
 import {getList} from 'common/todo/redux'
 
 import Item from './Item'
 
+@initialData({
+  keys: ['todo.no-items']
+})
 @connect(
   state => getList(state)
 )
