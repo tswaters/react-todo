@@ -1,5 +1,5 @@
 
 module.exports = [
-  {test: /\.jsx?$/, loader: ['babel-loader', 'strip-sourcemap-loader']},
+  {test: /\.jsx?$/, exclude: /node_modules/, loader: 'babel-loader'},
   {test: /\.json$/, loader: 'json-loader'}
 ]
