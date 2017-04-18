@@ -21,6 +21,7 @@ import {updateTodoList} from 'common/todo/redux'
           staticContext.error = err
           staticContext.url = `/auth/login?from=${location.pathname}`
           history.replace(staticContext.url)
+          throw err
         })
   ]
 })

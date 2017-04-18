@@ -36,6 +36,7 @@ export default ({keys = [], promises = []} = {}) => Component => {
       Promise.all(promises.map(promise => promise(dispatch)(this.props)))
         .then(() => dispatch(getKeys(locale, needs)))
         .then(() => this.props.done({ready: true}))
+        .catch(() => this.props.done({ready: false}))
     }
 
     render () {
