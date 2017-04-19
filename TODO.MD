@@ -13,12 +13,6 @@
 
 - [ ] add interface for administrators to modify locale data - also, supported locales; ability for user to change locale
 
-Bugs:
-
-- [ ] /todo is loading data when it doesn't need to.
-- [ ] {api: {inProgress: true}} on /todo ??
-- [ ] getting message about `todo.no-items` unavailable from react-intl
-
 Maybe later:
 
 - [ ] get rid of everything under `./server/lib/stores` and `./server/lib/models`.  use an orm for this stuff... maybe investigate data store / docker-compose... or just make sure orm can use json files

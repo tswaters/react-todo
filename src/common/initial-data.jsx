@@ -7,6 +7,8 @@ import {getKeys} from 'common/redux/intl'
 
 export default ({keys = [], promises = []} = {}) => Component => {
 
+  const name = `${Component.displayName || Component.name}`
+
   @withRouter
   @fetchState(
     state => state,
@@ -20,34 +22,35 @@ export default ({keys = [], promises = []} = {}) => Component => {
     }
 
     static defaultProps = {
-      ready: false
+      [name]: false
     }
 
     static propTypes = {
       done: PropTypes.func.isRequired,
-      ready: PropTypes.bool.isRequired
+      [name]: PropTypes.bool.isRequired
     }
 
     componentWillMount () {
+      if (this.props[name]) { return }
       const {store, intl} = this.context
       const {messages, locale} = intl
       const {dispatch} = store
       const needs = keys.filter(item => Object.keys(messages).indexOf(item) === -1)
       Promise.all(promises.map(promise => promise(dispatch)(this.props)))
         .then(() => dispatch(getKeys(locale, needs)))
-        .then(() => this.props.done({ready: true}))
-        .catch(() => this.props.done({ready: false}))
+        .then(() => this.props.done({[name]: true}))
+        .catch(() => this.props.done({[name]: false}))
     }
 
     render () {
-      if (!this.props.ready) { return null }
+      if (!this.props[name]) { return null }
       return (
         <Component {...this.props} />
       )
     }
   }
 
-  Loaded.displayName = `Loaded(${Component.displayName || Component.name})`
+  Loaded.displayName = `Loaded(${name})`
   Loaded.WrappedComponent = Component
 
   return Loaded
