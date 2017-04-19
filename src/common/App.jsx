@@ -2,7 +2,6 @@
 import React from 'react'
 import {Switch, Route} from 'react-router'
 import {Module} from 'react-router-server'
-import NotFound from 'common/pages/NotFound'
 import Layout from './components/layout'
 
 const renderer = (key, importer) => matchProps => {
@@ -29,7 +28,7 @@ const App = () => (
       <Route exact path="/auth/login" render={renderer('/auth/login', () => System.import('common/pages/Login'))} />
       <Route exact path="/auth/logout" render={renderer('/auth/logout', () => System.import('common/pages/Logout'))} />
       <Route exact path="/error" render={renderer('/error', () => System.import('common/pages/Error'))} />
-      <Route component={NotFound} />
+      <Route render={renderer('/NotFound', () => System.import('common/pages/NotFound'))} />
     </Switch>
   </Layout>
 )
