@@ -1,5 +1,6 @@
 
-import React, {PureComponent, PropTypes} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {withRouter} from 'react-router'
 import {fetchState} from 'react-router-server'
 import {intlShape} from 'react-intl'

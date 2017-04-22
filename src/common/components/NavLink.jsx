@@ -1,10 +1,11 @@
-import React, {PureComponent, PropTypes} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {Route, Link} from 'react-router-dom'
 
 class NavLink extends PureComponent {
 
   static contextTypes = {
-    router: React.PropTypes.object
+    router: PropTypes.object
   }
 
   static defaultProps = {
@@ -17,9 +18,9 @@ class NavLink extends PureComponent {
     exact: PropTypes.bool,
     strict: PropTypes.bool,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object, PropTypes.func]).isRequired,
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
     ]).isRequired
   }
 
