@@ -1,5 +1,6 @@
 
-import React, {PropTypes, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
 
@@ -23,9 +24,9 @@ class Layout extends PureComponent {
   }
 
   static propTypes = {
-    children: React.PropTypes.oneOfType([
-      React.PropTypes.arrayOf(React.PropTypes.node),
-      React.PropTypes.node
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
     ]).isRequired,
     requestInProgress: PropTypes.bool.isRequired,
     requestError: PropTypes.object

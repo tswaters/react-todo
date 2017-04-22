@@ -1,5 +1,6 @@
 
-import React, {PropTypes, PureComponent} from 'react'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
 import {intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'

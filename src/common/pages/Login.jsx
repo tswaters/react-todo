@@ -1,5 +1,6 @@
 
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {FormattedMessage, intlShape} from 'react-intl'
 import {connect} from 'react-redux'
