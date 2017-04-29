@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 import {FormattedMessage, intlShape} from 'react-intl'
 import classNames from 'classnames/bind'
 import * as bootstrap from 'common/styles/bootstrap'
+
+import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 
 import initialData from 'common/initial-data'
@@ -47,8 +49,15 @@ class Add extends PureComponent {
 
   constructor (props) {
     super(props)
+    this.todo = null
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleTextChange = this.handleTextChange.bind(this)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    if (this.props.id !== nextProps.id) {
+      this.setState({error: null, validating: false})
+    }
   }
 
   handleTextChange (event) {
@@ -62,14 +71,16 @@ class Add extends PureComponent {
     } else {
       this.props.createTodo(this.props.text)
     }
+    this.todo.setState({error: null, validating: false})
   }
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         <FormInput
           id="todo"
           required
+          ref={_ref => this.todo = _ref}
           label={this.context.intl.formatMessage({id: 'todo.todo'})}
           onChange={this.handleTextChange}
           value={this.props.text}
@@ -77,7 +88,7 @@ class Add extends PureComponent {
         <button type="submit" className={cx('btn', 'btn-default')}>
           <FormattedMessage id={this.props.id ? 'todo.update' : 'todo.create'} />
         </button>
-      </form>
+      </Form>
     )
   }
 }

@@ -9,6 +9,7 @@ import * as bootstrap from 'common/styles/bootstrap'
 import classNames from 'classnames/bind'
 
 import initialData from 'common/initial-data'
+import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 import {register} from 'common/redux/user'
 
@@ -63,15 +64,17 @@ class RegisterForm extends Component {
           <title>{title}</title>
         </Helmet>
         <h2>{title}</h2>
-        <form onSubmit={this.handleFormSubmit}>
+        <Form onSubmit={this.handleFormSubmit}>
           <FormInput
             label={this.context.intl.formatMessage({id: 'auth.userName'})}
+            required
             id="userName"
             value={this.state.userName}
             onChange={this.handleFieldChange('userName')}
           />
           <FormInput
             label={this.context.intl.formatMessage({id: 'auth.password'})}
+            required
             id="password"
             type="password"
             value={this.state.password}
@@ -86,7 +89,7 @@ class RegisterForm extends Component {
               <FormattedMessage id="menu.login" />
             </Link>
           </p>
-        </form>
+        </Form>
       </div>
     )
   }
