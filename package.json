@@ -52,6 +52,7 @@
     "sinon-as-promised": "^4.0.2",
     "source-map-support": "^0.4.6",
     "stats-webpack-plugin": "^0.6.0",
+    "strip-sourcemap-loader": "0.0.1",
     "style-loader": "^0.13.1",
     "supertest": "^2.0.1",
     "webpack": "^2.2.1",
