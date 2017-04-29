@@ -23,28 +23,31 @@ export default ({keys = [], promises = []} = {}) => Component => {
     }
 
     static defaultProps = {
-      [name]: false
+      isDone: false
     }
 
     static propTypes = {
       done: PropTypes.func.isRequired,
-      [name]: PropTypes.bool.isRequired
+      isDone: PropTypes.bool
     }
 
     componentWillMount () {
-      if (this.props[name]) { return }
+      if (this.props.isDone) {
+        return
+      }
+
       const {store, intl} = this.context
       const {messages, locale} = intl
       const {dispatch} = store
       const needs = keys.filter(item => Object.keys(messages).indexOf(item) === -1)
       Promise.all(promises.map(promise => promise(dispatch)(this.props)))
         .then(() => dispatch(getKeys(locale, needs)))
-        .then(() => this.props.done({[name]: true}))
-        .catch(() => this.props.done({[name]: false}))
+        .then(() => this.props.done({isDone: true}))
+        .catch(() => this.props.done({isDone: false}))
     }
 
     render () {
-      if (!this.props[name]) { return null }
+      if (!this.props.isDone) { return null }
       return (
         <Component {...this.props} />
       )
