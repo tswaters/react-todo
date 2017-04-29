@@ -3,7 +3,7 @@ import React from 'react'
 import {Provider} from 'react-intl-redux'
 import {StaticRouter} from 'react-router'
 import {ConnectedRouter} from 'react-router-redux'
-import createMemoryHistory from 'history/createMemoryHistory'
+import {createMemoryHistory} from 'history'
 import {renderToString, extractModules} from 'react-router-server'
 import {Helmet} from 'react-helmet'
 
@@ -19,7 +19,7 @@ export default [
     const {user} = res.locals
     if (user) { delete user.roles }
 
-    const history = createMemoryHistory(req.url)
+    const history = createMemoryHistory({initialEntries: [req.path]})
     const store = configureStore(history, {user})
 
     // If erorrs encountered during a render they will show here
