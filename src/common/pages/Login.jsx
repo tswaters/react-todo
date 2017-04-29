@@ -1,5 +1,5 @@
 
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {FormattedMessage, intlShape} from 'react-intl'
@@ -26,7 +26,7 @@ const cx = classNames.bind(bootstrap)
   ]
 })
 @connect()
-class LoginForm extends Component {
+class LoginForm extends PureComponent {
 
   static contextTypes = {
     intl: intlShape.isRequired

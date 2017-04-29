@@ -1,5 +1,5 @@
 
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
@@ -26,7 +26,7 @@ const cx = classNames.bind(bootstrap)
   ]
 })
 @connect()
-class RegisterForm extends Component {
+class RegisterForm extends PureComponent {
 
   static contextTypes = {
     intl: intlShape.isRequired
