@@ -25,6 +25,7 @@ const App = () => (
       <Route exact path="/" render={renderer('/', () => System.import('common/pages/Home'))} />
       <Route exact path="/todo" render={renderer('/todo', () => System.import('common/todo/Todo'))} />
       <Route exact path="/auth/register" render={renderer('/auth/register', () => System.import('common/pages/Register'))} />
+      <Route exact path="/auth/profile" render={renderer('/auth/profile', () => System.import('common/Profile/Profile'))} />
       <Route exact path="/auth/login" render={renderer('/auth/login', () => System.import('common/pages/Login'))} />
       <Route exact path="/auth/logout" render={renderer('/auth/logout', () => System.import('common/pages/Logout'))} />
       <Route exact path="/error" render={renderer('/error', () => System.import('common/pages/Error'))} />

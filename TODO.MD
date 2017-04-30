@@ -9,7 +9,7 @@
 
 - [ ] add an administrator role that can view accounts (authorization required here)
 
-- [ ] add a profile page that users can visit to change userName / password
+- [x] add a profile page that users can visit to change userName / password
 
 - [ ] add interface for administrators to modify locale data - also, supported locales; ability for user to change locale
 

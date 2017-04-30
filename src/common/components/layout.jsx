@@ -20,7 +20,8 @@ import {getRequestStats} from 'common/redux/api'
 class Layout extends PureComponent {
 
   static defaultProps = {
-    requestError: null
+    requestError: null,
+    requestInfo: null
   }
 
   static propTypes = {
@@ -29,10 +30,17 @@ class Layout extends PureComponent {
       PropTypes.node
     ]).isRequired,
     requestInProgress: PropTypes.bool.isRequired,
-    requestError: PropTypes.object
+    requestError: PropTypes.object,
+    requestInfo: PropTypes.object
   }
 
   render () {
+    const infoFlash = this.props.requestInfo ? (
+      <div className={cx('alert', 'alert-success')}>
+        {this.props.requestInfo.message}
+      </div>
+    ) : null
+
     const errorFlash = this.props.requestError ? (
       <div className={cx('alert', 'alert-danger')}>
         {this.props.requestError.message}
@@ -45,6 +53,7 @@ class Layout extends PureComponent {
         <div className={bootstrap.container}>
           <Navbar />
           <Header />
+          {infoFlash}
           {errorFlash}
           {this.props.children}
           {this.props.requestInProgress ? '...' : ''}

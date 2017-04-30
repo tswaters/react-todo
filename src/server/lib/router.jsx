@@ -9,7 +9,7 @@ import {Helmet} from 'react-helmet'
 
 import authentication from './middleware/authentication'
 import App from 'common/App'
-import {errorRequest} from 'common/redux/api'
+import {errorRequest, infoRequest} from 'common/redux/api'
 
 import configureStore from 'common/store'
 
@@ -26,6 +26,9 @@ export default [
     // Make sure to display these message to the user.
     const error = req.flash('error').pop()
     if (error) { store.dispatch(errorRequest(error)) }
+
+    const info = req.flash('info').pop()
+    if (info) { store.dispatch(infoRequest(info)) }
 
     const context = {}
     const app = (

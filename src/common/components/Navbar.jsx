@@ -30,8 +30,7 @@ class Navbar extends PureComponent {
 
   static propTypes = {
     user: PropTypes.shape({
-      userName: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired
+      userName: PropTypes.string.isRequired
     })
   }
 
@@ -71,11 +70,9 @@ class Navbar extends PureComponent {
         </NavLink>
       )
       rightNavs.push(
-        <li key="welcome">
-          <span className={cx('navbar-text')}>
-            <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
-          </span>
-        </li>
+        <NavLink key="profile" activeClassName={cx('active')} to="/auth/profile">
+          <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
+        </NavLink>
       )
     } else {
       rightNavs.push(

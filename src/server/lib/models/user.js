@@ -11,6 +11,23 @@ export default class UserModel extends UserStore {
     this.tokens = new LoginTokenStore()
   }
 
+  changePassword (user, {oldPassword, newPassword}) {
+    if (oldPassword == null || typeof oldPassword !== 'string' || oldPassword.trim() === '') {
+      return Promise.reject(new BadRequest('old password must be provided'))
+    }
+
+    if (newPassword == null || typeof newPassword !== 'string' || newPassword.trim() === '') {
+      return Promise.reject(new BadRequest('new password must be provided'))
+    }
+
+    return hashifier.compare(oldPassword, user.hash, user.salt)
+      .then(authorized => {
+        if (!authorized) { throw new Unauthorized('incorrect password') }
+        return hashifier.hash(newPassword)
+      })
+      .then(({hash, salt}) => this.update(user.id, {hash, salt}))
+  }
+
   /**
    * Verifies a token is valid and returns the relevant userId
    * @param {string} [token=null] token to authorize against
@@ -28,8 +45,6 @@ export default class UserModel extends UserStore {
       .then(userId => this.fetch(userId))
       .then(user => {
         if (!user) { throw new Unauthorized('user not found') }
-        delete user.salt
-        delete user.hash
         return {...user, token}
       })
   }

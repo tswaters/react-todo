@@ -8,6 +8,7 @@ import api from './redux/api'
 import user from './redux/user'
 import intl from './redux/intl'
 import todo from './todo/redux'
+import profile from './profile/redux'
 
 export default (history, state) => {
 
@@ -27,6 +28,7 @@ export default (history, state) => {
       api,
       user,
       todo,
+      profile,
       intl,
       router: routerReducer
     }),
