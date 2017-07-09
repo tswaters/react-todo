@@ -5,7 +5,7 @@ import 'sinon-as-promised'
 
 import {UserStore, LoginTokenStore} from 'server/lib/stores'
 
-import injector from 'inject!server/lib/models/user'
+import injector from 'inject-loader!server/lib/models/user'
 
 describe('user model', () => {
   let UserModel = null
@@ -48,7 +48,7 @@ describe('user model', () => {
       userModel.authorize()
         .catch(err => {
           assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
+          assert.equal(err.message, 'token must be provided')
         })
     )
     it('rejects with unauthorized if token not found', () => {
@@ -56,7 +56,7 @@ describe('user model', () => {
       return userModel.authorize('1234')
         .catch(err => {
           assert.equal(err.status, 401)
-          assert.equal(err.message, 'invalid user')
+          assert.equal(err.message, 'login token not found')
         })
         .then(() => {
           assert.equal(loginStoreStub.fetch.firstCall.args[0], '1234')
@@ -68,7 +68,7 @@ describe('user model', () => {
       return userModel.authorize('1234')
         .catch(err => {
           assert.equal(err.status, 401)
-          assert.equal(err.message, 'invalid user')
+          assert.equal(err.message, 'user not found')
         })
         .then(() => {
           assert.equal(userStoreMethods.fetch.firstCall.args[0], '1234')
@@ -79,24 +79,17 @@ describe('user model', () => {
       userStoreMethods.fetch.resolves({userId: '1234', name: 'Tyler'})
       return userModel.authorize('1234')
         .then(user => {
-          assert.deepEqual(user, {userId: '1234', name: 'Tyler'})
+          assert.deepEqual(user, {userId: '1234', token: '1234', name: 'Tyler'})
         })
     })
   })
 
   describe('login', () => {
-    it('rejects if nothing has been provided', () =>
-      userModel.login()
-        .catch(err => {
-          assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
-        })
-    )
     it('rejects if username not provided', () =>
       userModel.login({})
         .catch(err => {
           assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
+          assert.equal(err.message, 'userName must be provided')
         })
     )
 
@@ -104,7 +97,7 @@ describe('user model', () => {
       userModel.login({userName: 'test'})
         .catch(err => {
           assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
+          assert.equal(err.message, 'password must be provided')
         })
     )
 
@@ -113,7 +106,7 @@ describe('user model', () => {
       return userModel.login({userName: 'test', password: 'test'})
         .catch(err => {
           assert.equal(err.status, 401)
-          assert.equal(err.message, 'invalid user')
+          assert.equal(err.message, 'user not found')
         })
     })
 
@@ -123,7 +116,7 @@ describe('user model', () => {
       return userModel.login({userName: 'userName', password: 'password'})
         .catch(err => {
           assert.equal(err.status, 401)
-          assert.equal(err.message, 'invalid user')
+          assert.equal(err.message, 'user not found')
         })
     })
 
@@ -132,8 +125,8 @@ describe('user model', () => {
       hashifierCompareStub.resolves(true)
       loginStoreStub.create.resolves({id: '1234'})
       return userModel.login({userName: 'userName', password: 'password'})
-        .then(id => {
-          assert.equal(id, '1234')
+        .then(user => {
+          assert.deepEqual(user, {id: '1234', hash: 'hash', salt: 'salt', token: '1234'})
           assert.equal(hashifierCompareStub.firstCall.args[0], 'password')
           assert.equal(hashifierCompareStub.firstCall.args[1], 'hash')
           assert.equal(hashifierCompareStub.firstCall.args[2], 'salt')
@@ -156,25 +149,18 @@ describe('user model', () => {
   })
 
   describe('register', () => {
-    it('rejects if nothing provided', () =>
-      userModel.register()
-        .catch(err => {
-          assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
-        })
-    )
     it('rejects if username not provided', () =>
       userModel.register({})
         .catch(err => {
           assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
+          assert.equal(err.message, 'userName must be provided')
         })
     )
     it('rejects if password not provided', () =>
       userModel.register({userName: 'test'})
         .catch(err => {
           assert.equal(err.status, 400)
-          assert.equal(err.message, 'invalid request')
+          assert.equal(err.message, 'password must be provided')
         })
     )
     it('hashes the password, creates a token and resolves to token id', () => {

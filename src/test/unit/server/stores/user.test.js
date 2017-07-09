@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import 'sinon-as-promised'
 
 import Store from 'server/lib/stores/store'
-import injector from 'inject!server/lib/stores/user'
+import injector from 'inject-loader!server/lib/stores/user'
 
 describe('user store', () => {
   let UserStore = null

@@ -4,15 +4,13 @@ import * as async from 'async'
 import {agent} from 'supertest'
 import app from 'server/app'
 
-const {
-  PORT = 3001
-} = process.env
+const {PORT = 3001} = process.env
 
 describe('todo-lifecycle integration test', () => {
   const user1 = {userName: 'test1', password: 'test'}
   const user2 = {userName: 'test2', password: 'test'}
-  const newTodo = {todo: 'Learn react!', done: false}
-  const updatedTodo = {todo: 'Learn react!', done: true}
+  const newTodo = {text: 'Learn react!'}
+  const updatedTodo = {text: 'Learn react!'}
 
   let client = null
   let server = null
@@ -48,7 +46,6 @@ describe('todo-lifecycle integration test', () => {
         id2 = res.body[1].id
         next()
       }),
-
       // Update todo
       next => client.put(`/api/todo/${id1}`).send(updatedTodo).expect(200).end(next),
 

@@ -6,7 +6,7 @@ import supertest from 'supertest'
 
 import appFactory from '../test-app'
 import {TodoStore} from 'server/lib/stores'
-import injector from 'inject?-express!server/lib/api/todo'
+import injector from 'inject-loader?-express!server/lib/api/todo'
 
 const {
   PORT = 3001
@@ -20,10 +20,8 @@ describe('todo controller', () => {
 
   before(done => {
     const {default: todoController} = injector({
-      'server/lib/middleware': {
-        authentication: () => (req, res, next) => next(),
-        authorization: () => (req, res, next) => next()
-      },
+      'server/lib/middleware/authorization': () => (req, res, next) => next(),
+      'server/lib/middleware/authentication': () => (req, res, next) => next(),
       'server/lib/models': {
         TodoModel: sinon.stub().returns(model)
       }
@@ -56,7 +54,7 @@ describe('todo controller', () => {
     it('should respond to errors', done => {
       model.list.rejects({status: 500, message: 'aw snap!'})
       client.get('/api/todo')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           assert.ok(model.list.calledOnce)
@@ -81,7 +79,7 @@ describe('todo controller', () => {
     it('should respond to errors', done => {
       model.create.rejects({status: 500, message: 'aw snap!'})
       client.post('/api/todo')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           assert.ok(model.create.calledOnce)
@@ -109,7 +107,7 @@ describe('todo controller', () => {
     it('should respond to errors', done => {
       model.fetch.rejects({status: 500, message: 'aw snap!'})
       client.get('/api/todo/1234')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           assert.ok(model.fetch.calledOnce)
@@ -137,7 +135,7 @@ describe('todo controller', () => {
     it('should respond to errors', done => {
       model.update.rejects({status: 500, message: 'aw snap!'})
       client.put('/api/todo/1234')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           assert.ok(model.update.calledOnce)
@@ -166,7 +164,7 @@ describe('todo controller', () => {
     it('should respond to errors', done => {
       model.remove.rejects({status: 500, message: 'aw snap!'})
       client.delete('/api/todo/1234')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           assert.ok(model.remove.calledOnce)

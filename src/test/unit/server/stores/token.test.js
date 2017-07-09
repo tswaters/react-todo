@@ -4,7 +4,7 @@ import * as sinon from 'sinon'
 import 'sinon-as-promised'
 
 import Store from 'server/lib/stores/store'
-import injector from 'inject?-path!server/lib/stores/token'
+import injector from 'inject-loader?-path!server/lib/stores/token'
 
 describe('token store', () => {
   let clock = null

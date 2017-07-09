@@ -2,7 +2,7 @@
 import express, {Router} from 'express'
 import session from 'express-session'
 import {json} from 'body-parser'
-import {errors} from 'server/lib/middleware'
+import errors from 'server/lib/middleware/errors'
 
 export default () => {
   const context = new Router()

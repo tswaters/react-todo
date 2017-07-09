@@ -6,7 +6,7 @@ import * as assert from 'assert'
 
 import appFactory from '../test-app'
 import UserModel from 'server/lib/models/user'
-import authInjector from 'inject?-express!server/lib/api/auth'
+import authInjector from 'inject-loader?-express!server/lib/api/auth'
 
 const {
   PORT = 3001
@@ -45,7 +45,7 @@ describe('auth controller', () => {
       model.register.rejects({status: 500, message: 'aw snap!'})
       client.post('/api/auth/register')
         .send({username: 'username', password: 'password'})
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           const {username, password} = model.register.firstCall.args[0]
@@ -58,7 +58,7 @@ describe('auth controller', () => {
       model.register.resolves('1234')
       client.post('/api/auth/register')
         .send({username: 'username', password: 'password'})
-        .expect(200, {})
+        .expect(200, {token: '1234'})
         .end(err => {
           if (err) { return done(err) }
           const {username, password} = model.register.firstCall.args[0]
@@ -74,7 +74,7 @@ describe('auth controller', () => {
       model.login.rejects({status: 500, message: 'aw snap!'})
       client.post('/api/auth/login')
         .send({username: 'username', password: 'password'})
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
           const {username, password} = model.login.firstCall.args[0]
@@ -87,7 +87,7 @@ describe('auth controller', () => {
       model.login.resolves({token: '1234'})
       client.post('/api/auth/login')
         .send({username: 'username', password: 'password'})
-        .expect(200, {})
+        .expect(200, {token: '1234'})
         .end(err => {
           if (err) { return done(err) }
           const {username, password} = model.login.firstCall.args[0]
@@ -102,7 +102,7 @@ describe('auth controller', () => {
     it('should return errors', done => {
       model.logout.rejects({status: 500, message: 'aw snap!'})
       client.post('/api/auth/logout')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(done)
     })
     it('should respond with json', done => {

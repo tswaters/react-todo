@@ -6,7 +6,7 @@ import {agent} from 'supertest'
 
 import appFactory from '../test-app'
 import {UserModel} from 'server/lib/models'
-import injector from 'inject?-express!server/lib/middleware/authentication'
+import injector from 'inject-loader?-express!server/lib/middleware/authentication'
 
 const {
   PORT = 3001
@@ -71,7 +71,7 @@ describe('authentication middleware', () => {
     client.get('/set-token').end(err => {
       if (err) { return done(err) }
       client.get('/dummy')
-        .expect(500, {message: 'aw snap!'})
+        .expect(500, {status: 500, message: 'aw snap!'})
         .end(done)
     })
   })
