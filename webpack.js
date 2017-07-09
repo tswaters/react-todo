@@ -12,14 +12,14 @@ const webpackNodeExternals = require('webpack-node-externals')
 
 const env = parseSync(`./.env/${process.env.NODE_ENV}.env`)
 
-const cssUse = server => ([
+const cssUse = (server, isProd) => ([
   {
     loader: server ? 'css-loader/locals' : 'css-loader',
     options: {
       modules: true,
       camelCase: true,
       importLoaders: 1,
-      localIdentName: '[path][name]__[local]--[hash:base64:5]'
+      localIdentName: isProd ? '[hash:base64:5]' : '[path][name]__[local]--[hash:base64:5]'
     }
   },
   {
@@ -31,7 +31,7 @@ const cssUse = server => ([
   }
 ])
 
-const config = server => {
+const config = (server, isProd = false) => {
 
   const name = server ? 'back-end' : 'front-end'
   const identifier = server ? 'server' : 'client'
@@ -39,7 +39,7 @@ const config = server => {
 
   // Configure externals
   const externals = []
-  const cssLoader = cssUse(server)
+  const cssLoader = cssUse(server, isProd)
 
   if (server) {
     externals.push(webpackNodeExternals())
@@ -63,7 +63,7 @@ const config = server => {
     test: /\.(css|less)$/,
     use: server ? cssLoader : ExtractTextPlugin.extract({
       fallback: 'style-loader',
-      use: cssUse(server)
+      use: cssLoader
     })
   }]
 
@@ -111,6 +111,31 @@ const config = server => {
       new StatsPlugin('../server/stats.json', {
         chunkModules: true,
         exclude: [/^\.\/~/]
+      })
+    )
+  }
+
+  if (!server && isProd) {
+    plugins.push(
+      new webpack.LoaderOptionsPlugin({
+        minimize: true
+      }),
+      new webpack.optimize.UglifyJsPlugin({
+        compress: {
+          warnings: false,
+          screw_ie8: true,
+          conditionals: true,
+          unused: true,
+          comparisons: true,
+          sequences: true,
+          dead_code: true,
+          evaluate: true,
+          if_return: true,
+          join_vars: true
+        },
+        output: {
+          comments: false
+        }
       })
     )
   }
