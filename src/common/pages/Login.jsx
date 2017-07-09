@@ -6,7 +6,22 @@ import {FormattedMessage, intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
 import cx from 'classnames'
-import {pageHeader, btn, btnDefault, helpBlock} from 'common/styles/bootstrap'
+import {faUser, faLock} from 'common/styles/font-awesome'
+import {
+  panel,
+  panelHeading,
+  panelTitle,
+  panelDefault,
+  panelBody,
+  row,
+  colXs12,
+  colSm6,
+  colSmOffset3,
+  pullRight,
+  btn,
+  btnDefault,
+  helpBlock
+} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
@@ -57,39 +72,45 @@ class LoginForm extends PureComponent {
   render () {
     const title = this.context.intl.formatMessage({id: 'login.title'})
     return (
-      <div>
+      <div className={row}>
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <div className={cx(pageHeader)}>
-          <h2>{title}</h2>
+        <div className={cx(colXs12, colSm6, colSmOffset3)}>
+          <div className={cx(panel, panelDefault)}>
+            <div className={cx(panelHeading)}>
+              <h2 className={cx(panelTitle)}>{title}</h2>
+            </div>
+            <Form className={cx(panelBody)} onSubmit={this.handleFormSubmit}>
+              <FormInput
+                icon={faUser}
+                placeholder={this.context.intl.formatMessage({id: 'auth.userName'})}
+                required
+                id="userName"
+                value={this.state.userName}
+                onChange={this.handleFieldChange('userName')}
+              />
+              <FormInput
+                icon={faLock}
+                placeholder={this.context.intl.formatMessage({id: 'auth.password'})}
+                required
+                id="password"
+                type="password"
+                value={this.state.password}
+                onChange={this.handleFieldChange('password')}
+              />
+              <button type="submit" className={cx(pullRight, btn, btnDefault)}>
+                <FormattedMessage id="menu.login" />
+              </button>
+              <p className={cx(helpBlock)}>
+                <FormattedMessage id="login.no-account" />
+                <Link to="/auth/register">
+                  <FormattedMessage id="menu.register" />
+                </Link>
+              </p>
+            </Form>
+          </div>
         </div>
-        <Form onSubmit={this.handleFormSubmit}>
-          <FormInput
-            placeholder={this.context.intl.formatMessage({id: 'auth.userName'})}
-            required
-            id="userName"
-            value={this.state.userName}
-            onChange={this.handleFieldChange('userName')}
-          />
-          <FormInput
-            placeholder={this.context.intl.formatMessage({id: 'auth.password'})}
-            required
-            id="password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleFieldChange('password')}
-          />
-          <button type="submit" className={cx(btn, btnDefault)}>
-            <FormattedMessage id="menu.login" />
-          </button>
-          <p className={cx(helpBlock)}>
-            <FormattedMessage id="login.no-account" />
-            <Link to="/auth/register">
-              <FormattedMessage id="menu.register" />
-            </Link>
-          </p>
-        </Form>
       </div>
     )
   }
