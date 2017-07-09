@@ -3,18 +3,24 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
+import {FormattedMessage} from 'react-intl'
 
-import Header from './header'
+import initialData from 'common/initial-data'
 import Footer from './footer'
 import Navbar from './navbar'
 import cx from 'classnames'
-import {container, alert, alertSuccess, alertDanger} from 'common/styles/bootstrap'
+import {container, srOnly, alert, alertSuccess, alertDanger} from 'common/styles/bootstrap'
 
 import {getRequestStats} from 'common/redux/api'
 
 /**
  * @returns {string} layout of the application
  */
+@initialData({
+  keys: [
+    'application-name'
+  ]
+})
 @connect(state => getRequestStats(state))
 class Layout extends PureComponent {
 
@@ -51,7 +57,9 @@ class Layout extends PureComponent {
         <Helmet titleTemplate="%s | Todo" defaultTitle="Todo" />
         <div className={cx(container)}>
           <Navbar />
-          <Header />
+          <h1 className={srOnly}>
+            <FormattedMessage id="application-name" />
+          </h1>
           {infoFlash}
           {errorFlash}
           {this.props.children}

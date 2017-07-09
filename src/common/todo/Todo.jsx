@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import {intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
+import cx from 'classnames'
+import {pageHeader} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import Add from 'common/todo/components/Add'
@@ -45,7 +47,9 @@ class TodoPage extends PureComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <h2>{title}</h2>
+        <div className={cx(pageHeader)}>
+          <h2>{title}</h2>
+        </div>
         <List />
         <Add />
       </div>

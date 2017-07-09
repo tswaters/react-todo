@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {FormattedMessage, intlShape} from 'react-intl'
 import {Helmet} from 'react-helmet'
 import cx from 'classnames'
-import {btn, btnDefault, helpBlock} from 'common/styles/bootstrap'
+import {pageHeader, btn, btnDefault, helpBlock} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
@@ -61,7 +61,9 @@ class RegisterForm extends PureComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <h2>{title}</h2>
+        <div className={cx(pageHeader)}>
+          <h2>{title}</h2>
+        </div>
         <Form onSubmit={this.handleFormSubmit}>
           <FormInput
             placeholder={this.context.intl.formatMessage({id: 'auth.userName'})}
