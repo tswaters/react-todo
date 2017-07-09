@@ -5,15 +5,13 @@ import {Link} from 'react-router-dom'
 import {FormattedMessage, intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
+import cx from 'classnames'
+import {btn, btnDefault, helpBlock} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 import {login} from 'common/redux/user'
-
-const cx = classNames.bind(bootstrap)
 
 @initialData({
   keys: [
@@ -80,10 +78,10 @@ class LoginForm extends PureComponent {
             value={this.state.password}
             onChange={this.handleFieldChange('password')}
           />
-          <button type="submit" className={cx('btn', 'btn-default')}>
+          <button type="submit" className={cx(btn, btnDefault)}>
             <FormattedMessage id="menu.login" />
           </button>
-          <p className={cx('help-block')}>
+          <p className={cx(helpBlock)}>
             <FormattedMessage id="login.no-account" />
             <Link to="/auth/register">
               <FormattedMessage id="menu.register" />

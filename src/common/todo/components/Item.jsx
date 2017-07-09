@@ -3,13 +3,11 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
+import cx from 'classnames'
+import {btn, btnDefault, btnDanger} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import {getItem, editTodo, removeTodo} from 'common/todo/redux'
-
-const cx = classNames.bind(bootstrap)
 
 @initialData({
   keys: [
@@ -55,10 +53,10 @@ class Item extends PureComponent {
     return (
       <li>
         {this.props.item.text}
-        <button className={cx('btn', 'btn-default')} onClick={this.handleEditTodo}>
+        <button className={cx(btn, btnDefault)} onClick={this.handleEditTodo}>
           <FormattedMessage id="todo.edit" />
         </button>
-        <button className={cx('btn', 'btn-danger')} onClick={this.handleRemoveTodo}>
+        <button className={cx(btn, btnDanger)} onClick={this.handleRemoveTodo}>
           <FormattedMessage id="todo.delete" />
         </button>
       </li>

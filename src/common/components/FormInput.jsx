@@ -1,10 +1,8 @@
 
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
-
-const cx = classNames.bind(bootstrap)
+import cx from 'classnames'
+import {formGroup, hasError, controlLabel, formControl, helpBlock} from 'common/styles/bootstrap'
 
 class FormInput extends PureComponent {
 
@@ -65,15 +63,15 @@ class FormInput extends PureComponent {
   render () {
     const {error} = this.state
     return (
-      <div className={cx('form-group', error ? 'has-error' : '')}>
+      <div className={cx(formGroup, error ? hasError : '')}>
         <label
-          className={cx('control-label')}
+          className={cx(controlLabel)}
           htmlFor={this.props.id}
         >
           {this.props.label}
         </label>
         <input
-          className={cx('form-control')}
+          className={cx(formControl)}
           id={this.props.id}
           required={this.props.required}
           type={this.props.type}
@@ -81,7 +79,7 @@ class FormInput extends PureComponent {
           onChange={this.handleChange}
           ref={this.setRef}
         />
-        {error && <span className={cx('help-block')}>
+        {error && <span className={cx(helpBlock)}>
           {error.message}
         </span>}
       </div>

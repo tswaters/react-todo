@@ -4,15 +4,25 @@ import PropTypes from 'prop-types'
 import {intlShape, FormattedMessage} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
+import cx from 'classnames'
+import {
+  row,
+  colXs12,
+  colXs6,
+  textRight,
+  panel,
+  panelHeading,
+  panelFooter,
+  panelDefault,
+  panelBody,
+  btn,
+  btnPrimary
+} from 'common/styles/bootstrap'
 
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 import {getProfile, fetchProfile, updateText, changeUser, changePassword} from 'common/profile/redux'
 import initialData from 'common/initial-data'
-
-const cx = classNames.bind(bootstrap)
 
 @initialData({
   keys: [
@@ -114,11 +124,11 @@ class ProfilePage extends PureComponent {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <Form className={cx('panel', 'panel-default')} onSubmit={this.handleChangeDetailsSubmit}>
-          <header className={cx('panel-heading')}>
+        <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangeDetailsSubmit}>
+          <header className={cx(panelHeading)}>
             <h3><FormattedMessage id="profile.change-details" /></h3>
           </header>
-          <section className={cx('panel-body')}>
+          <section className={cx(panelBody)}>
             <FormInput
               ref={this.setRef('userName')}
               id="user-name"
@@ -128,19 +138,19 @@ class ProfilePage extends PureComponent {
               onChange={this.updateText('userName')}
             />
           </section>
-          <footer className={cx('panel-footer', 'text-right')}>
-            <button type="submit" className={cx('btn', 'btn-primary')}>
+          <footer className={cx(panelFooter, textRight)}>
+            <button type="submit" className={cx(btn, btnPrimary)}>
               <FormattedMessage id="profile.change-details" />
             </button>
           </footer>
         </Form>
-        <Form className={cx('panel', 'panel-default')} onSubmit={this.handleChangePasswordSubmit}>
-          <header className={cx('panel-heading')}>
+        <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangePasswordSubmit}>
+          <header className={cx(panelHeading)}>
             <h3><FormattedMessage id="profile.change-password" /></h3>
           </header>
-          <section className={cx('panel-body')}>
-            <div className={cx('row')}>
-              <div className={cx('col-xs-12')}>
+          <section className={cx(panelBody)}>
+            <div className={cx(row)}>
+              <div className={cx(colXs12)}>
                 <FormInput
                   ref={this.setRef('oldPassword')}
                   id="old-password"
@@ -152,8 +162,8 @@ class ProfilePage extends PureComponent {
                 />
               </div>
             </div>
-            <div className={cx('row')}>
-              <div className={cx('col-xs-6')}>
+            <div className={cx(row)}>
+              <div className={cx(colXs6)}>
                 <FormInput
                   ref={this.setRef('newPassword')}
                   id="new-password"
@@ -164,7 +174,7 @@ class ProfilePage extends PureComponent {
                   onChange={this.updateText('newPassword')}
                 />
               </div>
-              <div className={cx('col-xs-6')}>
+              <div className={cx(colXs6)}>
                 <FormInput
                   ref={this.setRef('confirmPassword')}
                   id="confirm-password"
@@ -179,8 +189,8 @@ class ProfilePage extends PureComponent {
               </div>
             </div>
           </section>
-          <footer className={cx('panel-footer', 'text-right')}>
-            <button type="submit" className={cx('btn', 'btn-primary')}>
+          <footer className={cx(panelFooter, textRight)}>
+            <button type="submit" className={cx(btn, btnPrimary)}>
               <FormattedMessage id="profile.change-password" />
             </button>
           </footer>

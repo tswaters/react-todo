@@ -7,9 +7,8 @@ import {Helmet} from 'react-helmet'
 import Header from './header'
 import Footer from './footer'
 import Navbar from './navbar'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
-const cx = classNames.bind(bootstrap)
+import cx from 'classnames'
+import {container, alert, alertSuccess, alertDanger} from 'common/styles/bootstrap'
 
 import {getRequestStats} from 'common/redux/api'
 
@@ -36,13 +35,13 @@ class Layout extends PureComponent {
 
   render () {
     const infoFlash = this.props.requestInfo ? (
-      <div className={cx('alert', 'alert-success')}>
+      <div className={cx(alert, alertSuccess)}>
         {this.props.requestInfo.message}
       </div>
     ) : null
 
     const errorFlash = this.props.requestError ? (
-      <div className={cx('alert', 'alert-danger')}>
+      <div className={cx(alert, alertDanger)}>
         {this.props.requestError.message}
       </div>
      ) : null
@@ -50,7 +49,7 @@ class Layout extends PureComponent {
     return (
       <div>
         <Helmet titleTemplate="%s | Todo" defaultTitle="Todo" />
-        <div className={bootstrap.container}>
+        <div className={cx(container)}>
           <Navbar />
           <Header />
           {infoFlash}

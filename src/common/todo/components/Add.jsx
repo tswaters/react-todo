@@ -3,16 +3,14 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {FormattedMessage, intlShape} from 'react-intl'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
+import cx from 'classnames'
+import {btn, btnDefault} from 'common/styles/bootstrap'
 
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 
 import initialData from 'common/initial-data'
 import {createTodo, updateTodo, updateTodoText, getEditing} from 'common/todo/redux'
-
-const cx = classNames.bind(bootstrap)
 
 @initialData({
   keys: [
@@ -85,7 +83,7 @@ class Add extends PureComponent {
           onChange={this.handleTextChange}
           value={this.props.text}
         />
-        <button type="submit" className={cx('btn', 'btn-default')}>
+        <button type="submit" className={cx(btn, btnDefault)}>
           <FormattedMessage id={this.props.id ? 'todo.update' : 'todo.create'} />
         </button>
       </Form>

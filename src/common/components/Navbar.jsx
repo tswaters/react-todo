@@ -3,14 +3,29 @@ import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
-import classNames from 'classnames/bind'
-import * as bootstrap from 'common/styles/bootstrap'
+import cx from 'classnames'
+import {
+  container,
+  iconBar,
+  srOnly,
+  active,
+  collapsed,
+  collapse,
+  navbar,
+  navbarRight,
+  navbarNav,
+  navbarCollapse,
+  nav,
+  navbarToggle,
+  navbarDefault,
+  navbarFixedTop,
+  navbarHeader,
+  navbarBrand
+} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
 import {getUser} from 'common/redux/user'
 import NavLink from './NavLink'
-
-const cx = classNames.bind(bootstrap)
 
 /**
  * @returns {string} Navbar for the application
@@ -60,63 +75,63 @@ class Navbar extends PureComponent {
     const rightNavs = []
     if (this.props.user) {
       leftNavs.push(
-        <NavLink key="todo" activeClassName={cx('active')} to="/todo">
+        <NavLink key="todo" activeClassName={cx(active)} to="/todo">
           <FormattedMessage id="menu.todo" />
         </NavLink>
       )
       rightNavs.push(
-        <NavLink key="logout" activeClassName={cx('active')} to="/auth/logout">
+        <NavLink key="logout" activeClassName={cx(active)} to="/auth/logout">
           <FormattedMessage id="menu.logout" />
         </NavLink>
       )
       rightNavs.push(
-        <NavLink key="profile" activeClassName={cx('active')} to="/auth/profile">
+        <NavLink key="profile" activeClassName={cx(active)} to="/auth/profile">
           <FormattedMessage id="auth-welcome" values={{name: this.props.user.userName}} />
         </NavLink>
       )
     } else {
       rightNavs.push(
-        <NavLink key="register" activeClassName={cx('active')} to="/auth/register">
+        <NavLink key="register" activeClassName={cx(active)} to="/auth/register">
           <FormattedMessage id="menu.register" />
         </NavLink>
       )
       rightNavs.push(
-        <NavLink key="login" activeClassName={cx('active')} to="/auth/login">
+        <NavLink key="login" activeClassName={cx(active)} to="/auth/login">
           <FormattedMessage id="menu.login" />
         </NavLink>
       )
     }
     return (
-      <nav className={cx('navbar', 'navbar-default', 'navbar-fixed-top')}>
-        <div className={cx('container')}>
-          <div className={cx('navbar-header')}>
-            <a className={cx('navbar-brand')} onClick={this.handleToggleClick}>
+      <nav className={cx(navbar, navbarDefault, navbarFixedTop)}>
+        <div className={cx(container)}>
+          <div className={cx(navbarHeader)}>
+            <a className={cx(navbarBrand)} onClick={this.handleToggleClick}>
               <FormattedMessage id="menu.brand" />
             </a>
             <button
               type="button"
               onClick={this.handleToggleClick}
-              className={cx('navbar-toggle', 'collapsed')}
+              className={cx(navbarToggle, collapsed)}
               aria-expanded={this.state.collapsed ? 'true' : 'false'}
               aria-controls="navbar"
             >
-              <span className={cx('sr-only')}>
+              <span className={cx(srOnly)}>
                 <FormattedMessage id="toggle-navigation" />
               </span>
-              <span className={cx('icon-bar')} />
-              <span className={cx('icon-bar')} />
-              <span className={cx('icon-bar')} />
+              <span className={cx(iconBar)} />
+              <span className={cx(iconBar)} />
+              <span className={cx(iconBar)} />
             </button>
           </div>
           <div
             id="navbar"
-            className={cx('navbar-collapse', 'collapse', {in: this.state.collapsed})}
+            className={cx(navbarCollapse, collapse, {in: this.state.collapsed})}
             aria-expanded={this.state.collapsed ? 'true' : 'false'}
           >
-            <ul className={cx('navbar-nav', 'nav')}>
+            <ul className={cx(navbarNav, nav)}>
               {leftNavs.map(link => this.renderLink(link))}
             </ul>
-            <ul className={cx('nav', 'navbar-nav', 'navbar-right')}>
+            <ul className={cx(nav, navbarNav, navbarRight)}>
               {rightNavs.map(link => this.renderLink(link))}
             </ul>
           </div>
