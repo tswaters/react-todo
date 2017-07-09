@@ -64,14 +64,14 @@ class LoginForm extends PureComponent {
         <h2>{title}</h2>
         <Form onSubmit={this.handleFormSubmit}>
           <FormInput
-            label={this.context.intl.formatMessage({id: 'auth.userName'})}
+            placeholder={this.context.intl.formatMessage({id: 'auth.userName'})}
             required
             id="userName"
             value={this.state.userName}
             onChange={this.handleFieldChange('userName')}
           />
           <FormInput
-            label={this.context.intl.formatMessage({id: 'auth.password'})}
+            placeholder={this.context.intl.formatMessage({id: 'auth.password'})}
             required
             id="password"
             type="password"

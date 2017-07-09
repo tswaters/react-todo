@@ -2,21 +2,31 @@
 import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import cx from 'classnames'
-import {formGroup, hasError, controlLabel, formControl, helpBlock} from 'common/styles/bootstrap'
+import {
+  formGroup,
+  formControl,
+  controlLabel,
+  hasError,
+  helpBlock,
+  srOnly
+} from 'common/styles/bootstrap'
 
 class FormInput extends PureComponent {
 
   static defaultProps = {
     type: 'text',
     value: '',
+    label: '',
+    placeholder: '',
     required: false
   }
 
   static propTypes = {
     id: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
     type: PropTypes.string,
     value: PropTypes.string,
+    placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
     required: PropTypes.bool
   }
@@ -60,18 +70,29 @@ class FormInput extends PureComponent {
     this.props.onChange(event)
   }
 
+  getLabel () {
+    const classes = [controlLabel]
+    const label = this.props.label || this.props.placeholder
+
+    if (this.props.placeholder) {
+      classes.push(srOnly)
+    }
+
+    return (
+      <label className={cx(classes)} htmlFor={this.props.id}>
+        {label}
+      </label>
+    )
+  }
+
   render () {
     const {error} = this.state
     return (
       <div className={cx(formGroup, error ? hasError : '')}>
-        <label
-          className={cx(controlLabel)}
-          htmlFor={this.props.id}
-        >
-          {this.props.label}
-        </label>
+        {this.getLabel()}
         <input
           className={cx(formControl)}
+          placeholder={this.props.placeholder}
           id={this.props.id}
           required={this.props.required}
           type={this.props.type}
