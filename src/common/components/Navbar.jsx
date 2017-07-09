@@ -11,6 +11,7 @@ import {
   active,
   collapsed,
   collapse,
+  in as collapseIn,
   navbar,
   navbarRight,
   navbarNav,
@@ -125,7 +126,7 @@ class Navbar extends PureComponent {
           </div>
           <div
             id="navbar"
-            className={cx(navbarCollapse, collapse, {in: this.state.collapsed})}
+            className={cx(navbarCollapse, collapse, {[collapseIn]: this.state.collapsed})}
             aria-expanded={this.state.collapsed ? 'true' : 'false'}
           >
             <ul className={cx(navbarNav, nav)}>
