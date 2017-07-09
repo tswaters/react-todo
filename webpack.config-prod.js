@@ -2,9 +2,10 @@
 /* eslint camelcase: 0 */
 
 const webpack = require('webpack')
+const config = require('./webpack')
 
-const front = require('./webpack/front')
-const back = require('./webpack/back')
+const front = config(false)
+const back = config(true)
 
 front.plugins.push(
   new webpack.LoaderOptionsPlugin({

@@ -1,5 +1,7 @@
 
-const front = require('./webpack/front')
-const back = require('./webpack/back')
+const config = require('./webpack')
 
-module.exports = [front, back]
+module.exports = [
+  config(true),
+  config(false)
+]

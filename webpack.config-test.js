@@ -1,5 +1,15 @@
 
+const config = require('./webpack')
 
-const test = require('./webpack/test')
+const testConfig = config(true)
 
-module.exports = test
+testConfig.output = {
+  devtoolModuleFilenameTemplate: '[absolute-resource-path]',
+  devtoolFallbackModuleFilenameTemplate: '[absolute-resource-path]?[hash]'
+}
+
+testConfig.devtool = 'cheap-module-source-map'
+
+delete testConfig.entry
+
+module.exports = testConfig
