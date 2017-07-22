@@ -9,6 +9,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const StatsPlugin = require('stats-webpack-plugin')
 const {parseSync} = require('env-file-parser')
 const webpackNodeExternals = require('webpack-node-externals')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const env = parseSync(`./.env/${process.env.NODE_ENV}.env`)
 
@@ -120,7 +121,7 @@ const config = (server, isProd = false) => {
       new webpack.LoaderOptionsPlugin({
         minimize: true
       }),
-      new webpack.optimize.UglifyJsPlugin({
+      new UglifyJSPlugin({
         compress: {
           warnings: false,
           screw_ie8: true,
