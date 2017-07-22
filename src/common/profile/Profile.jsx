@@ -5,18 +5,20 @@ import {intlShape, FormattedMessage} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
 import cx from 'classnames'
+import {faUser} from 'common/styles/font-awesome'
 import {
   row,
   colXs12,
-  colXs6,
-  textRight,
+  colSm6,
+  colSmOffset3,
   panel,
+  panelTitle,
   panelHeading,
-  panelFooter,
   panelDefault,
   panelBody,
   btn,
-  btnPrimary
+  btnPrimary,
+  pullRight
 } from 'common/styles/bootstrap'
 
 import Form from 'common/components/Form'
@@ -120,81 +122,78 @@ class ProfilePage extends PureComponent {
     const title = this.context.intl.formatMessage({id: 'profile.title'})
     const password = this.context.intl.formatMessage({id: 'profile.new-password'})
     return (
-      <div>
-        <Helmet>
-          <title>{title}</title>
-        </Helmet>
-        <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangeDetailsSubmit}>
-          <header className={cx(panelHeading)}>
-            <h3><FormattedMessage id="profile.change-details" /></h3>
-          </header>
-          <section className={cx(panelBody)}>
-            <FormInput
-              ref={this.setRef('userName')}
-              id="user-name"
-              required
-              label={this.context.intl.formatMessage({id: 'auth.userName'})}
-              value={this.props.userName}
-              onChange={this.updateText('userName')}
-            />
-          </section>
-          <footer className={cx(panelFooter, textRight)}>
-            <button type="submit" className={cx(btn, btnPrimary)}>
-              <FormattedMessage id="profile.change-details" />
-            </button>
-          </footer>
-        </Form>
-        <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangePasswordSubmit}>
-          <header className={cx(panelHeading)}>
-            <h3><FormattedMessage id="profile.change-password" /></h3>
-          </header>
-          <section className={cx(panelBody)}>
-            <div className={cx(row)}>
-              <div className={cx(colXs12)}>
-                <FormInput
-                  ref={this.setRef('oldPassword')}
-                  id="old-password"
-                  type="password"
-                  required
-                  label={this.context.intl.formatMessage({id: 'profile.old-password'})}
-                  value={this.props.oldPassword}
-                  onChange={this.updateText('oldPassword')}
-                />
-              </div>
+      <div className={cx(row)}>
+        <div className={cx(colXs12, colSm6, colSmOffset3)}>
+          <Helmet>
+            <title>{title}</title>
+          </Helmet>
+          <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangeDetailsSubmit}>
+            <div className={cx(panelHeading)}>
+              <h2 className={cx(panelTitle)}>
+                <FormattedMessage id="profile.change-details" />
+              </h2>
             </div>
-            <div className={cx(row)}>
-              <div className={cx(colXs6)}>
-                <FormInput
-                  ref={this.setRef('newPassword')}
-                  id="new-password"
-                  type="password"
-                  required
-                  label={password}
-                  value={this.props.newPassword}
-                  onChange={this.updateText('newPassword')}
-                />
-              </div>
-              <div className={cx(colXs6)}>
-                <FormInput
-                  ref={this.setRef('confirmPassword')}
-                  id="confirm-password"
-                  type="password"
-                  required
-                  sameAs="new-password"
-                  sameAsError={this.context.intl.formatMessage({id: 'form.errors.same-as'}, {sameAs: password})}
-                  label={this.context.intl.formatMessage({id: 'profile.confirm-password'})}
-                  value={this.props.confirmPassword}
-                  onChange={this.updateText('confirmPassword')}
-                />
-              </div>
+            <section className={cx(panelBody)}>
+              <FormInput
+                ref={this.setRef('userName')}
+                icon={faUser}
+                id="user-name"
+                required
+                label={this.context.intl.formatMessage({id: 'auth.userName'})}
+                value={this.props.userName}
+                onChange={this.updateText('userName')}
+              />
+              <button type="submit" className={cx(btn, btnPrimary, pullRight)}>
+                <FormattedMessage id="profile.change-details" />
+              </button>
+            </section>
+          </Form>
+          <Form className={cx(panel, panelDefault)} onSubmit={this.handleChangePasswordSubmit}>
+            <div className={cx(panelHeading)}>
+              <h2 className={cx(panelTitle)}>
+                <FormattedMessage id="profile.change-password" />
+              </h2>
             </div>
-          </section>
-          <footer className={cx(panelFooter, textRight)}>
-            <button type="submit" className={cx(btn, btnPrimary)}>
-              <FormattedMessage id="profile.change-password" />
-            </button>
-          </footer>
-        </Form>
+            <section className={cx(panelBody)}>
+
+              <FormInput
+                ref={this.setRef('oldPassword')}
+                id="old-password"
+                type="password"
+                required
+                placeholder={this.context.intl.formatMessage({id: 'profile.old-password'})}
+                value={this.props.oldPassword}
+                onChange={this.updateText('oldPassword')}
+              />
+
+              <FormInput
+                ref={this.setRef('newPassword')}
+                id="new-password"
+                type="password"
+                required
+                placeholder={password}
+                value={this.props.newPassword}
+                onChange={this.updateText('newPassword')}
+              />
+
+              <FormInput
+                ref={this.setRef('confirmPassword')}
+                id="confirm-password"
+                type="password"
+                required
+                sameAs="new-password"
+                sameAsError={this.context.intl.formatMessage({id: 'form.errors.same-as'}, {sameAs: password})}
+                placeholder={this.context.intl.formatMessage({id: 'profile.confirm-password'})}
+                value={this.props.confirmPassword}
+                onChange={this.updateText('confirmPassword')}
+              />
+
+              <button type="submit" className={cx(btn, btnPrimary, pullRight)}>
+                <FormattedMessage id="profile.change-password" />
+              </button>
+            </section>
+          </Form>
+        </div>
       </div>
     )
   }
