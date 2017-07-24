@@ -5,7 +5,11 @@
 
 - [x] figure out how to populate `<title>` tag maybe other meta tags based on location
 
-- [ ] better UI for todo list. allow inline editing of elements, checkbox + x button to cancel.
+- [x] better UI for todo list. allow inline editing of elements, checkbox + x button to cancel.
+
+- [ ] confirmation for remove
+
+- [ ] multiple todo lists per user
 
 - [ ] add an administrator role that can view accounts (authorization required here)
 

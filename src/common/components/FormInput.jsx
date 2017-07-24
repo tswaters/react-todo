@@ -6,6 +6,7 @@ import {fa} from 'common/styles/font-awesome'
 import {
   inputGroup,
   inputGroupAddon,
+  inputGroupBtn,
   formGroup,
   formControl,
   controlLabel,
@@ -22,7 +23,13 @@ class FormInput extends PureComponent {
     label: '',
     placeholder: '',
     required: false,
-    icon: null
+    icon: null,
+    className: cx(formGroup),
+    inputClassName: cx(formControl),
+    onBlur: () => {},
+    buttons: [],
+    validate: 'submit',
+    sameAs: null
   }
 
   static propTypes = {
@@ -32,8 +39,14 @@ class FormInput extends PureComponent {
     value: PropTypes.string,
     placeholder: PropTypes.string,
     onChange: PropTypes.func.isRequired,
+    onBlur: PropTypes.func,
     required: PropTypes.bool,
-    icon: PropTypes.string
+    icon: PropTypes.string,
+    className: PropTypes.string,
+    inputClassName: PropTypes.string,
+    buttons: PropTypes.arrayOf(PropTypes.node),
+    validate: PropTypes.oneOf(['blur', 'change', 'submit']).isRequired,
+    sameAs: PropTypes.string
   }
 
   static contextTypes = {
@@ -43,10 +56,9 @@ class FormInput extends PureComponent {
   constructor (props, context) {
     super(props, context)
     this.handleChange = this.handleChange.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
     this.setRef = this.setRef.bind(this)
   }
-
-  input = null
 
   state = {
     error: null,
@@ -59,7 +71,11 @@ class FormInput extends PureComponent {
 
   componentDidUpdate (prevProps) {
     if (this.props.value !== prevProps.value && this.context.validator && this.state.validating) {
-      this.context.validator.validate()
+      if (this.props.sameAs) {
+        this.context.validator.validate()
+      } else {
+        this.context.validator.validateField(this)
+      }
     }
   }
 
@@ -67,40 +83,62 @@ class FormInput extends PureComponent {
     if (this.context.validator) { this.context.validator.unregister(this) }
   }
 
+  input = null
+
   setRef (ref) {
     this.input = ref
   }
 
   handleChange (event) {
     this.props.onChange(event)
+    if (this.props.validate === 'change' && this.context.validator) {
+      this.context.validator.validateField(this)
+    }
+  }
+
+  handleBlur (event) {
+    this.props.onBlur(event)
+    if (this.props.validate === 'blur' && this.context.validator) {
+      this.context.validator.validateField(this)
+    }
   }
 
   getInput () {
     const input = (
       <input
-        className={cx(formControl)}
+        className={cx(this.props.inputClassName)}
         placeholder={this.props.placeholder}
         id={this.props.id}
         required={this.props.required}
         type={this.props.type}
         value={this.props.value}
         onChange={this.handleChange}
+        onBlur={this.handleBlur}
         ref={this.setRef}
       />
     )
 
-    if (this.props.icon) {
-      return (
-        <div className={inputGroup}>
+    if (!(this.props.icon || this.props.buttons.length > 0)) {
+      return input
+    }
+
+    return (
+      <div className={inputGroup}>
+        {this.props.icon && (
           <label htmlFor={this.props.id} className={inputGroupAddon}>
             <span className={cx(fa, this.props.icon)} />
           </label>
-          {input}
-        </div>
-      )
-    }
-
-    return input
+        )}
+        {input}
+        {this.props.buttons.length > 0 && (
+          React.Children.map(this.props.buttons, button => (
+            <span className={cx(inputGroupBtn)}>
+              {button}
+            </span>
+          ))
+        )}
+      </div>
+    )
   }
 
   getLabel () {
@@ -125,7 +163,7 @@ class FormInput extends PureComponent {
   render () {
     const {error} = this.state
     return (
-      <div className={cx(formGroup, error ? hasError : '')}>
+      <div className={cx(this.props.className, error ? hasError : '')}>
         {this.getLabel()}
         {this.getInput()}
         {error && <span className={cx(helpBlock)}>

@@ -7,11 +7,12 @@ import Validator from 'common/util/validator'
 class Form extends PureComponent {
 
   static defaultProps = {
-    className: ''
+    className: '',
+    onSubmit: () => {}
   }
 
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     className: PropTypes.string
   }
 

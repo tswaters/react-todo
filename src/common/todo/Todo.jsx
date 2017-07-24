@@ -8,9 +8,9 @@ import cx from 'classnames'
 import {pageHeader} from 'common/styles/bootstrap'
 
 import initialData from 'common/initial-data'
-import Add from 'common/todo/components/Add'
+import Form from 'common/components/Form'
 import List from 'common/todo/components/List'
-import {updateTodoList} from 'common/todo/redux'
+import {fetchTodos} from 'common/todo/redux'
 
 @initialData({
   keys: [
@@ -18,7 +18,7 @@ import {updateTodoList} from 'common/todo/redux'
   ],
   promises: [
     dispatch => ({staticContext, history, location}) =>
-      dispatch(updateTodoList())
+      dispatch(fetchTodos())
         .catch(err => {
           staticContext.status = err.status
           staticContext.error = err
@@ -50,8 +50,9 @@ class TodoPage extends PureComponent {
         <div className={cx(pageHeader)}>
           <h2>{title}</h2>
         </div>
-        <List />
-        <Add />
+        <Form>
+          <List />
+        </Form>
       </div>
     )
   }
