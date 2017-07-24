@@ -1,6 +1,4 @@
 {
   "verbose": false,
-  "watch": ["index.js", "src/**/*.*"],
-  "ignore": ["dist/**/*"],
-  "delay": "2500"
+  "watch": ["dist/**/*.*"]
 }
