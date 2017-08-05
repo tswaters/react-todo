@@ -6,9 +6,9 @@ import fileStore from 'session-file-store'
 import {json} from 'body-parser'
 import flash from 'connect-flash'
 
-import errors from './lib/middleware/errors'
-import api from './lib/api'
-import router from './lib/router.jsx'
+import errors from './middleware/errors'
+import api from './api'
+import router from './router.jsx'
 
 process.on('unhandledRejection', r => console.log('unhandledRejection', r))
 

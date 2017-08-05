@@ -3,8 +3,8 @@ import * as assert from 'assert'
 import * as sinon from 'sinon'
 import 'sinon-as-promised'
 
-import Store from 'server/lib/stores/store'
-import injector from 'inject-loader?-path!server/lib/stores/token'
+import Store from 'server/stores/store'
+import injector from 'inject-loader?-path!server/stores/token'
 
 describe('token store', () => {
   let clock = null

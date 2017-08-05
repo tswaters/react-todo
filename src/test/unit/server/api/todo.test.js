@@ -5,8 +5,8 @@ import 'sinon-as-promised'
 import supertest from 'supertest'
 
 import appFactory from '../test-app'
-import {TodoStore} from 'server/lib/stores'
-import injector from 'inject-loader?-express!server/lib/api/todo'
+import {TodoStore} from 'server/stores'
+import injector from 'inject-loader?-express!server/api/todo'
 
 const {
   PORT = 3001
@@ -20,9 +20,9 @@ describe('todo controller', () => {
 
   before(done => {
     const {default: todoController} = injector({
-      'server/lib/middleware/authorization': () => (req, res, next) => next(),
-      'server/lib/middleware/authentication': () => (req, res, next) => next(),
-      'server/lib/models': {
+      'server/middleware/authorization': () => (req, res, next) => next(),
+      'server/middleware/authentication': () => (req, res, next) => next(),
+      'server/models': {
         TodoModel: sinon.stub().returns(model)
       }
     })

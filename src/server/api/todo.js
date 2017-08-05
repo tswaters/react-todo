@@ -1,9 +1,9 @@
 
 import {Router} from 'express'
 
-import authorization from 'server/lib/middleware/authorization'
-import authentication from 'server/lib/middleware/authentication'
-import {TodoModel} from 'server/lib/models'
+import authorization from 'server/middleware/authorization'
+import authentication from 'server/middleware/authentication'
+import {TodoModel} from 'server/models'
 
 const router = new Router()
 

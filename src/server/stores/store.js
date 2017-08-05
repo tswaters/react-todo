@@ -3,7 +3,7 @@ import * as path from 'path'
 import fs from 'fs-extra'
 import uuid from 'uuid'
 
-import {NotFound} from 'server/lib/errors'
+import {NotFound} from 'server/errors'
 
 /**
  * @class TodoModel

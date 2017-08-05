@@ -1,7 +1,7 @@
 
 import {Router} from 'express'
-import {UserModel} from 'server/lib/models'
-import authentication from 'server/lib/middleware/authentication'
+import {UserModel} from 'server/models'
+import authentication from 'server/middleware/authentication'
 
 const router = new Router()
 

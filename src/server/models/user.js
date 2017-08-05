@@ -1,6 +1,6 @@
 
-import {BadRequest, Unauthorized} from 'server/lib/errors'
-import {UserStore, LoginTokenStore} from 'server/lib/stores'
+import {BadRequest, Unauthorized} from 'server/errors'
+import {UserStore, LoginTokenStore} from 'server/stores'
 
 import * as hashifier from 'hashifier'
 

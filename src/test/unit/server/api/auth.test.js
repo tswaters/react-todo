@@ -5,8 +5,8 @@ import 'sinon-as-promised'
 import * as assert from 'assert'
 
 import appFactory from '../test-app'
-import UserModel from 'server/lib/models/user'
-import authInjector from 'inject-loader?-express!server/lib/api/auth'
+import UserModel from 'server/models/user'
+import authInjector from 'inject-loader?-express!server/api/auth'
 
 const {
   PORT = 3001
@@ -20,7 +20,7 @@ describe('auth controller', () => {
 
   before(done => {
     const {default: authController} = authInjector({
-      'server/lib/models': {
+      'server/models': {
         UserModel: sinon.stub().returns(model)
       }
     })

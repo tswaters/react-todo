@@ -3,9 +3,9 @@ import * as assert from 'assert'
 import * as sinon from 'sinon'
 import 'sinon-as-promised'
 
-import {UserStore, LoginTokenStore} from 'server/lib/stores'
+import {UserStore, LoginTokenStore} from 'server/stores'
 
-import injector from 'inject-loader!server/lib/models/user'
+import injector from 'inject-loader!server/models/user'
 
 describe('user model', () => {
   let UserModel = null
@@ -20,7 +20,7 @@ describe('user model', () => {
 
   before(() => {
     UserModel = injector({
-      'server/lib/stores': {
+      'server/stores': {
         UserStore: userStoreStub,
         LoginTokenStore: sinon.stub().returns(loginStoreStub)
       },

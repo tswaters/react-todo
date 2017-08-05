@@ -1,5 +1,5 @@
 
-import {Forbidden} from 'server/lib/errors'
+import {Forbidden} from 'server/errors'
 
 export default roles => {
   if (!Array.isArray(roles)) {

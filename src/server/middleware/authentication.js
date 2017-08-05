@@ -1,6 +1,6 @@
 
-import {UserModel} from 'server/lib/models'
-import {Unauthorized} from 'server/lib/errors'
+import {UserModel} from 'server/models'
+import {Unauthorized} from 'server/errors'
 
 const userModel = new UserModel()
 

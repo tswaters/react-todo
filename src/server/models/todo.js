@@ -1,6 +1,6 @@
 
-import {BadRequest} from 'server/lib/errors'
-import {TodoStore} from 'server/lib/stores'
+import {BadRequest} from 'server/errors'
+import {TodoStore} from 'server/stores'
 
 class TodoModel extends TodoStore {
 

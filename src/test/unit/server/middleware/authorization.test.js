@@ -5,7 +5,7 @@ import 'sinon-as-promised'
 import {agent} from 'supertest'
 
 import appFactory from '../test-app'
-import authMiddleware from 'server/lib/middleware/authorization'
+import authMiddleware from 'server/middleware/authorization'
 
 const {
   PORT = 3001

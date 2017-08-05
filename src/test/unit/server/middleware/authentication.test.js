@@ -5,8 +5,8 @@ import 'sinon-as-promised'
 import {agent} from 'supertest'
 
 import appFactory from '../test-app'
-import {UserModel} from 'server/lib/models'
-import injector from 'inject-loader?-express!server/lib/middleware/authentication'
+import {UserModel} from 'server/models'
+import injector from 'inject-loader?-express!server/middleware/authentication'
 
 const {
   PORT = 3001
@@ -20,7 +20,7 @@ describe('authentication middleware', () => {
 
   before(done => {
     const {default: authMiddleware} = injector({
-      'server/lib/models': {
+      'server/models': {
         UserModel: sinon.stub().returns(model)
       }
     })

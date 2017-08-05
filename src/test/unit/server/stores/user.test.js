@@ -3,8 +3,8 @@ import * as assert from 'assert'
 import * as sinon from 'sinon'
 import 'sinon-as-promised'
 
-import Store from 'server/lib/stores/store'
-import injector from 'inject-loader!server/lib/stores/user'
+import Store from 'server/stores/store'
+import injector from 'inject-loader!server/stores/user'
 
 describe('user store', () => {
   let UserStore = null
