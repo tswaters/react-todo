@@ -110,7 +110,11 @@ export default class UserModel extends UserStore {
 
     const roles = ['public']
 
-    return hashifier.hash(password)
+    return this.find(userName)
+      .then(user => {
+        if (user) { throw new BadRequest('userName already in use!') }
+      })
+      .then(() => hashifier.hash(password))
       .then(({hash, salt}) => this.create({userName, salt, hash, roles}))
       .then(user => this.tokens.create({userId: user.id}))
       .then(token => token.id)
