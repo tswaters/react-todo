@@ -1,7 +1,6 @@
 
 import * as assert from 'assert'
 import * as sinon from 'sinon'
-import 'sinon-as-promised'
 
 import Store from 'server/stores/store'
 import injector from 'inject-loader!server/stores/user'

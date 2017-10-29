@@ -1,7 +1,6 @@
 
 
 import * as sinon from 'sinon'
-import 'sinon-as-promised'
 import {agent} from 'supertest'
 
 import appFactory from '../test-app'

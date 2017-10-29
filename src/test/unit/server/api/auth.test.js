@@ -1,7 +1,6 @@
 
 import supertest from 'supertest'
 import * as sinon from 'sinon'
-import 'sinon-as-promised'
 import * as assert from 'assert'
 
 import appFactory from '../test-app'
