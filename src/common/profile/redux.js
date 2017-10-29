@@ -30,30 +30,35 @@ export const getProfile = createSelector([
   shouldClear
 }))
 
-export const fetchProfile = () => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/profile', 'GET')
-    .then(data => dispatch({type: UPDATE_PROFILE, data}))
+export const fetchProfile = () => async (dispatch, getState) => {
+  const data = await ajax(dispatch, getState)('/api/auth/profile', 'GET')
+  if (data) {
+    dispatch({type: UPDATE_PROFILE, data})
+  }
+}
 
 export const updateProfile = data => ({type: UPDATE_PROFILE, data})
 
 export const updateText = (fieldName, value) => ({type: UPDATE_TEXT, fieldName, value})
 
-export const changeUser = userName => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/profile', 'POST', {userName})
-    .then(data => {
-      dispatch({type: CLEAR_PROFILE_FORM})
-      dispatch(infoRequest(getMessage('profile.profile-change-successful')(getState())))
-      dispatch(updateUser(data))
-      dispatch(updateProfile(data))
-    })
-    .catch(() => { /* Hmmm */ })
+export const changeUser = userName => async (dispatch, getState) => {
+  const data = await ajax(dispatch, getState)('/api/auth/profile', 'POST', {userName})
+  if (data) {
+    dispatch({type: CLEAR_PROFILE_FORM})
+    dispatch(infoRequest(getMessage('profile.profile-change-successful')(getState())))
+    dispatch(updateUser(data))
+    dispatch(updateProfile(data))
+  }
+}
 
-export const changePassword = (oldPassword, newPassword) => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/password', 'POST', {oldPassword, newPassword})
-    .then(() => dispatch(infoRequest(getMessage('profile.password-change-successful')(getState()))))
-    .catch(() => { /* Hmmmm */ })
-    .then(() => dispatch({type: CLEAR_PROFILE_FORM}))
-
+export const changePassword = (oldPassword, newPassword) => async (dispatch, getState) => {
+  const payload = {oldPassword, newPassword}
+  const result = await ajax(dispatch, getState)('/api/auth/password', 'POST', payload)
+  if (result) {
+    dispatch(infoRequest(getMessage('profile.password-change-successful')(getState())))
+  }
+  dispatch({type: CLEAR_PROFILE_FORM})
+}
 
 const initialState = {
   userName: '',

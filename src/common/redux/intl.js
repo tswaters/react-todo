@@ -17,10 +17,12 @@ export const getMessage = id => createSelector([
   message
 }))
 
-export const getKeys = (locale, messages) => (dispatch, getState) => {
-  if (messages.length === 0) { return Promise.resolve() }
-  return ajax(dispatch, getState)('/api/locale', 'POST', {messages, locale})
-    .then(data => dispatch(addMessage(locale, data.messages)))
+export const getKeys = (locale, messages) => async (dispatch, getState) => {
+  if (messages.length === 0) { return }
+  const data = await ajax(dispatch, getState)('/api/locale', 'POST', {messages, locale})
+  if (data) {
+    dispatch(addMessage(locale, data.messages))
+  }
 }
 
 const initialState = {locale: 'en', messages: {}}

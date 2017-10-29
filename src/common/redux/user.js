@@ -15,22 +15,31 @@ export const updateUser = user => ({type: UPDATE_USER, user})
 
 export const clearUser = () => ({type: CLEAR_USER})
 
-export const logout = () => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/logout', 'POST')
-    .then(() => dispatch(clearUser()))
-    .then(() => dispatch(push('/')))
+export const logout = () => async (dispatch, getState) => {
+  const result = await ajax(dispatch, getState)('/api/auth/logout', 'POST')
+  if (result) {
+    dispatch(clearUser())
+    dispatch(push('/'))
+  }
+}
 
-export const login = credentials => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/login', 'POST', credentials)
-    .then(user => dispatch(updateUser(user)))
-    .then(() => dispatch(fetchTodos()))
-    .then(() => dispatch(push('/todo')))
+export const login = credentials => async (dispatch, getState) => {
+  const user = await ajax(dispatch, getState)('/api/auth/login', 'POST', credentials)
+  if (user) {
+    dispatch(updateUser(user))
+    dispatch(fetchTodos())
+    dispatch(push('/todo'))
+  }
+}
 
-export const register = credentials => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/auth/register', 'POST', credentials)
-    .then(user => dispatch(updateUser(user)))
-    .then(() => dispatch(fetchTodos()))
-    .then(() => dispatch(push('/todo')))
+export const register = credentials => async (dispatch, getState) => {
+  const user = await ajax(dispatch, getState)('/api/auth/register', 'POST', credentials)
+  if (user) {
+    dispatch(updateUser(user))
+    dispatch(fetchTodos())
+    dispatch(push('/todo'))
+  }
+}
 
 export default (state = null, action) => {
   switch (action.type) {

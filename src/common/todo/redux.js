@@ -26,25 +26,36 @@ const RESET_DIRTY = 'RESET_DIRTY'
 
 export const updateTodoText = (id, text) => ({type: UPDATE_TODO_TEXT, id, text})
 
-export const fetchTodos = () => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/todo', 'GET')
-    .then(data => dispatch({type: UPDATE_TODO_LIST, list: data}))
+export const fetchTodos = () => async (dispatch, getState) => {
+  const data = await ajax(dispatch, getState)('/api/todo', 'GET')
+  if (data) {
+    dispatch({type: UPDATE_TODO_LIST, list: data})
+  }
+}
 
-export const createTodo = text => (dispatch, getState) =>
-  ajax(dispatch, getState)('/api/todo', 'POST', {text})
-    .then(todo => dispatch({type: CREATE_TODO, todo}))
+export const createTodo = text => async (dispatch, getState) => {
+  const todo = await ajax(dispatch, getState)('/api/todo', 'POST', {text})
+  if (todo) {
+    dispatch({type: CREATE_TODO, todo})
+  }
+}
 
-export const saveTodo = ({id, text}) => (dispatch, getState) => {
+export const saveTodo = ({id, text}) => async (dispatch, getState) => {
   const todo = getTodo(getState(), id)
   if (!todo.dirty) { return Promise.resolve(null) }
 
-  return ajax(dispatch, getState)(`/api/todo/${id}`, 'PUT', {text})
-    .then(() => dispatch({type: RESET_DIRTY, id}))
+  const result = await ajax(dispatch, getState)(`/api/todo/${id}`, 'PUT', {text})
+  if (result) {
+    dispatch({type: RESET_DIRTY, id})
+  }
 }
 
-export const removeTodo = id => (dispatch, getState) =>
-  ajax(dispatch, getState)(`/api/todo/${id}`, 'DELETE')
-    .then(() => dispatch({type: REMOVE_TODO, id}))
+export const removeTodo = id => async (dispatch, getState) => {
+  const result = await ajax(dispatch, getState)(`/api/todo/${id}`, 'DELETE')
+  if (result) {
+    dispatch({type: REMOVE_TODO, id})
+  }
+}
 
 const initialState = {
   list: [],
