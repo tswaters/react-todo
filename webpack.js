@@ -95,11 +95,20 @@ const config = (server, isProd = false) => {
   }
 
   // Configure plugins
+
+  // Need to make sure not to emit certain env variables to client.
+  // Only include the whitelisted variables in the array on client.
+  // Server gets everything.
+
+  const includeOnClient = ['BASE_URL', 'NODE_ENV']
   const plugins = [
-    new webpack.DefinePlugin(Object.keys(env).reduce((memo, item) => {
-      memo[`process.env.${item}`] = JSON.stringify(env[item])
-      return memo
-    }, {}))
+    new webpack.DefinePlugin({
+      'process.env': Object.keys(env).reduce((memo, item) => {
+        if (!server && includeOnClient.indexOf(item) === -1) { return memo }
+        memo[`${item}`] = JSON.stringify(env[item])
+        return memo
+      }, {})
+    })
   ]
 
   if (!server) {
