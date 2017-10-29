@@ -50,7 +50,25 @@ const config = (server, isProd = false) => {
   const loaders = [{
     test: /\.jsx?$/,
     exclude: /node_modules/,
-    loader: 'babel-loader'
+    use: {
+      loader: 'babel-loader',
+      options: {
+        presets: [
+          ['env', {
+            targets: server
+              ? {node: 'current'}
+              : {browsers: ['last 2 versions', 'IE 11']}
+          }],
+          'react'
+        ],
+        plugins: [
+          'transform-runtime',
+          'transform-decorators-legacy',
+          'transform-class-properties',
+          'transform-object-rest-spread'
+        ]
+      }
+    }
   }, {
     test: /\.json$/,
     loader: 'json-loader'

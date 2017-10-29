@@ -1,15 +1,4 @@
 {
-  "presets": [
-    "react",
-    ["es2015", {"modules": false}]
-  ],
-  "plugins": [
-    "transform-runtime",
-    "transform-decorators-legacy",
-    "transform-class-properties",
-    "transform-object-rest-spread"
-  ],
-
   "env": {
     "test": {
       "plugins": [
@@ -19,7 +8,10 @@
         "transform-class-properties",
         "transform-object-rest-spread"
       ],
-      "presets": ["react", "es2015"]
+      "presets": [
+        ["env", {"targets": {"node": "current"}}],
+        "react"
+      ]
     }
   }
 }
