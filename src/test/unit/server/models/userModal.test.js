@@ -66,9 +66,11 @@ describe('user model', () => {
 
   describe('.changePassword', () => {
     let payload = null
+    let userId = null
 
     beforeEach(() => {
-      payload = {userId: '1234', oldPassword: 'pass', newPassword: 'pass'}
+      userId = '1234'
+      payload = {oldPassword: 'pass', newPassword: 'pass'}
     })
 
     it('should return bad request for no old password', async () => {
@@ -76,7 +78,7 @@ describe('user model', () => {
 
       let result = null
       try {
-        result = await UserModel.changePassword(payload)
+        result = await UserModel.changePassword(userId, payload)
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
@@ -90,7 +92,7 @@ describe('user model', () => {
 
       let result = null
       try {
-        result = await UserModel.changePassword(payload)
+        result = await UserModel.changePassword(userId, payload)
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
@@ -104,7 +106,7 @@ describe('user model', () => {
 
       let result = null
       try {
-        result = await UserModel.changePassword(payload)
+        result = await UserModel.changePassword(userId, payload)
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
@@ -116,7 +118,7 @@ describe('user model', () => {
       item.changePassword.rejects(new Error('nope'))
       let result = null
       try {
-        result = await UserModel.changePassword(payload)
+        result = await UserModel.changePassword(userId, payload)
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
@@ -126,7 +128,7 @@ describe('user model', () => {
 
     it('should update the hash/salt, save & return json', async () => {
       item.changePassword.resolves()
-      const result = await UserModel.changePassword(payload)
+      const result = await UserModel.changePassword(userId, payload)
       assert(result)
     })
   })

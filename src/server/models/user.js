@@ -101,7 +101,7 @@ export default class User extends Sequelize.Model {
     return {...user.toJSON(), token}
   }
 
-  static async changePassword ({userId, oldPassword, newPassword}) {
+  static async changePassword ({id}, {oldPassword, newPassword}) {
     if (oldPassword == null || typeof oldPassword !== 'string' || oldPassword.trim() === '') {
       throw new BadRequest('old password must be provided')
     }
@@ -109,7 +109,7 @@ export default class User extends Sequelize.Model {
       throw new BadRequest('new password must be provided')
     }
 
-    const user = await User.findById(userId, {attributes: ['hash', 'salt']})
+    const user = await User.findById(id, {attributes: ['id', 'hash', 'salt']})
     if (!user) { throw new NotFound() }
 
     await user.changePassword(oldPassword, newPassword)
