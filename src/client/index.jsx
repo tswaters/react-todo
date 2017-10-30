@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import React from 'react'
-import {render} from 'react-dom'
+import {hydrate} from 'react-dom'
 
 import {Provider} from 'react-intl-redux'
 import createHistory from 'history/createBrowserHistory'
@@ -26,5 +26,5 @@ const app = (
 )
 
 preload(window.MODULES).then(() => {
-  render(app, document.getElementById('root'))
+  hydrate(app, document.getElementById('root'))
 })
