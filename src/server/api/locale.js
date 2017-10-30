@@ -1,8 +1,11 @@
 
 import {Router} from 'express'
+import authentication from 'server/middleware/authentication'
 import * as localeData from 'i18n/en'
 
 const router = new Router()
+
+router.use(authentication(false))
 
 router.post('/', (req, res) => {
   const {messages} = req.body

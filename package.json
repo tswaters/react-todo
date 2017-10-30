@@ -68,6 +68,7 @@
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "chalk": "^2.3.0",
     "classnames": "^2.2.5",
     "connect-flash": "^0.1.1",
     "connect-redis": "^3.3.2",
@@ -80,6 +81,7 @@
     "history": "^4.6.1",
     "ioredis": "^3.2.1",
     "isomorphic-fetch": "^2.2.1",
+    "pino": "^4.8.1",
     "prop-types": "^15.5.8",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

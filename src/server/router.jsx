@@ -16,6 +16,9 @@ import configureStore from 'common/store'
 export default [
   authentication(false),
   (req, res) => {
+
+    req.app.locals.logger.info(`rendering ${req.path}`)
+
     const {user} = res.locals
     if (user) { delete user.roles }
 
@@ -45,6 +48,7 @@ export default [
       .then(({html, modules, state: serverState}) => {
         if (context.error) {
           req.flash('error', context.error)
+          req.app.logger.error(context.error)
         }
         if (context.status) {
           res.status(context.status)

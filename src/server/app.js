@@ -6,7 +6,9 @@ import redisStore from 'connect-redis'
 import {json} from 'body-parser'
 import flash from 'connect-flash'
 
+import log from 'server/logger'
 import errors from './middleware/errors'
+import logger from './middleware/logger'
 import api from './api'
 import router from './router.jsx'
 
@@ -14,9 +16,9 @@ import 'server/models'
 
 const {REDIS_HOST, REDIS_PORT, REDIS_SESSION_DB} = process.env
 
-process.on('unhandledRejection', r => console.log('unhandledRejection', r))
+process.on('unhandledRejection', r => log.error('unhandledRejection', r))
 
-process.on('uncaughtException', r => console.log('unhandledException', r))
+process.on('uncaughtException', r => log.error('unhandledException', r))
 
 const SessionStore = redisStore(session)
 
@@ -36,9 +38,10 @@ app.use(session({
   }),
   secret: 'magically',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: true
 }))
 app.use(flash())
+app.use(logger())
 app.use('/api', api)
 app.use(router)
 app.use(errors)

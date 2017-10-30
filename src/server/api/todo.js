@@ -13,14 +13,14 @@ router.use(authentication())
 router.use(authorization('public'))
 
 router.get('/', (req, res, next) => {
-  TodoModel.list({
-    userId: res.locals.user.id
-  })
+  req.app.locals.logger.info('requsted /todo')
+  TodoModel.list({userId: res.locals.user.id})
     .then(results => res.json(results))
     .catch(next)
 })
 
 router.post('/', (req, res, next) => {
+  req.app.locals.logger.info('creating /todo', req.body)
   TodoModel.create({
     id: uuid.v4(),
     text: req.body.text,
@@ -31,6 +31,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.get('/:id', (req, res, next) => {
+  req.app.locals.logger.info('fetching /todo', req.params)
   TodoModel.fetch({
     userId: res.locals.user.id,
     id: req.params.id
@@ -40,6 +41,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.put('/:id', (req, res, next) => {
+  req.app.locals.logger.info('putting /todo', req.params, req.body)
   TodoModel.update({
     userId: res.locals.user.id,
     id: req.params.id,
@@ -50,6 +52,7 @@ router.put('/:id', (req, res, next) => {
 })
 
 router.delete('/:id', (req, res, next) => {
+  req.app.locals.logger.info('deleting /todo', req.params)
   TodoModel.remove({
     userId: res.locals.user.id,
     id: req.params.id

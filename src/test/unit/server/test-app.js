@@ -3,6 +3,7 @@ import express, {Router} from 'express'
 import session from 'express-session'
 import {json} from 'body-parser'
 import errors from 'server/middleware/errors'
+import logger from 'server/middleware/logger'
 
 export default () => {
   const context = new Router()
@@ -13,6 +14,8 @@ export default () => {
     resave: false,
     saveUninitialized: false
   }))
+
+  app.use(logger({level: 'silent'}))
   app.use(context)
   app.get('/tests/clear-session', (req, res) => {
     req.session.destroy()

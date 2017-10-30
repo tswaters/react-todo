@@ -1,4 +1,5 @@
 
+import logger from 'server/logger'
 import Sequelize, {DataTypes} from 'sequelize'
 import config from 'db/config'
 
@@ -8,6 +9,11 @@ import RoleModel from './role'
 
 const {NODE_ENV: env = 'development'} = process.env
 const envConfig = config[env]
+
+const log = logger.child({type: 'sql'})
+
+envConfig.benchmark = true
+envConfig.logging = (msg, bench) => log.debug(msg, `time=${bench}ms`)
 
 const sequelizeConfig = envConfig.use_env_variable
   ? [process.env[envConfig.use_env_variable]]
