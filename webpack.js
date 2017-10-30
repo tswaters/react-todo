@@ -17,6 +17,7 @@ const cssUse = (server, isProd) => ([
   {
     loader: server ? 'css-loader/locals' : 'css-loader',
     options: {
+      sourceMap: true,
       modules: true,
       camelCase: true,
       importLoaders: 1,
@@ -26,6 +27,7 @@ const cssUse = (server, isProd) => ([
   {
     loader: 'less-loader',
     options: {
+      sourceMap: true,
       relativeUrls: true,
       noIeCompat: true
     }
@@ -86,14 +88,6 @@ const config = (server, isProd = false) => {
     })
   }]
 
-  if (!server) {
-    loaders.push({
-      test: /\.js$/,
-      include: /node_modules/,
-      loader: 'strip-sourcemap-loader'
-    })
-  }
-
   // Configure plugins
 
   // Need to make sure not to emit certain env variables to client.
@@ -116,7 +110,7 @@ const config = (server, isProd = false) => {
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: ({resource}) => (/node_modules/).test(resource),
-        filename: 'vendor.bundle.js'
+        filename: 'vendor.bundle.[chunkhash].js'
       }),
       // uncomment this when react-router-server is sorted
       // new webpack.optimize.CommonsChunkPlugin({
@@ -133,7 +127,7 @@ const config = (server, isProd = false) => {
         }
       }),
       new ExtractTextPlugin({
-        filename: 'styles.css',
+        filename: 'styles.[chunkhash].css',
         allChunks: true
       }),
       new StatsPlugin('../server/stats.json', {
@@ -149,6 +143,7 @@ const config = (server, isProd = false) => {
         minimize: true
       }),
       new UglifyJSPlugin({
+        sourceMap: true,
         compress: {
           warnings: false,
           screw_ie8: true,
@@ -168,8 +163,18 @@ const config = (server, isProd = false) => {
     )
   }
 
+  let devtool = null
+  if (server) {
+    devtool = 'inline-cheap-module-source-map'
+  } else if (isProd && !server) {
+    devtool = 'hidden-source-map'
+  } else {
+    devtool = 'eval-source-map'
+  }
+
   return {
     name,
+    devtool,
     entry: {
       [identifier]: `./src/${identifier}/index`
     },
@@ -179,8 +184,8 @@ const config = (server, isProd = false) => {
     },
     output: {
       path: path.resolve(`./dist/${identifier}`),
-      filename: `${identifier}.js`,
-      chunkFilename: `${identifier}.[name].[chunkhash].js`,
+      filename: `${identifier}${server ? '' : '[chunkhash]'}.js`,
+      chunkFilename: `${identifier}.[name]${server ? '' : '[chunkhash]'}.js`,
       publicPath: '/'
     },
     externals,

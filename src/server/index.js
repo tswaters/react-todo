@@ -1,6 +1,7 @@
 
 /* eslint no-console: [0] */
 
+import 'source-map-support/register'
 import 'isomorphic-fetch'
 import app from './app'
 import {readJson} from 'fs-extra'

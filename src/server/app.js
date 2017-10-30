@@ -24,7 +24,9 @@ const app = express()
 
 app.set('views', join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.use(express.static(join(__dirname, '../client')))
+app.use(express.static(join(__dirname, '../client'), {
+  maxAge: Infinity
+}))
 app.use(json())
 app.use(session({
   store: new SessionStore({
