@@ -7,7 +7,13 @@
 
 - [x] better UI for todo list. allow inline editing of elements, checkbox + x button to cancel.
 
+- [ ] add email to register/profile; password reset via email for register with existing username
+
+- [ ] draggable todo items
+
 - [ ] confirmation for remove
+
+- [ ] mark completed
 
 - [ ] multiple todo lists per user
 
@@ -19,7 +25,7 @@
 
 Maybe later:
 
-- [ ] get rid of everything under `./server/lib/stores` and `./server/lib/models`.  use an orm for this stuff... maybe investigate data store / docker-compose... or just make sure orm can use json files
+- [x] get rid of everything under `./server/lib/stores` and `./server/lib/models`.  use an orm for this stuff... maybe investigate data store / docker-compose... or just make sure orm can use json files
 
 - [ ] write front-end tests.  need to figure out what this looks like, using jest or perhaps mocha with jsdom.  should it include integration tests / selenium in-browser testing?
 

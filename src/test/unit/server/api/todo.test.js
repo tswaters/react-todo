@@ -4,7 +4,6 @@ import * as sinon from 'sinon'
 import supertest from 'supertest'
 
 import appFactory from '../test-app'
-import {TodoStore} from 'server/stores'
 import injector from 'inject-loader?-express!server/api/todo'
 
 const {
@@ -15,15 +14,17 @@ describe('todo controller', () => {
   let client = null
   let server = null
 
-  const model = sinon.createStubInstance(TodoStore)
+  const list = sinon.stub()
+  const create = sinon.stub()
+  const fetch = sinon.stub()
+  const update = sinon.stub()
+  const remove = sinon.stub()
 
   before(done => {
     const {default: todoController} = injector({
       'server/middleware/authorization': () => (req, res, next) => next(),
       'server/middleware/authentication': () => (req, res, next) => next(),
-      'server/models': {
-        TodoModel: sinon.stub().returns(model)
-      }
+      'server/models/todo': {list, create, fetch, update, remove}
     })
 
     const {app, context} = appFactory()
@@ -38,11 +39,11 @@ describe('todo controller', () => {
   })
 
   afterEach(() => {
-    model.list.reset()
-    model.create.reset()
-    model.fetch.reset()
-    model.update.reset()
-    model.remove.reset()
+    list.reset()
+    create.reset()
+    fetch.reset()
+    update.reset()
+    remove.reset()
   })
 
   after(done => {
@@ -51,24 +52,24 @@ describe('todo controller', () => {
 
   describe('#list', () => {
     it('should respond to errors', done => {
-      model.list.rejects({status: 500, message: 'aw snap!'})
+      list.rejects({status: 500, message: 'aw snap!'})
       client.get('/api/todo')
         .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.list.calledOnce)
-          assert.equal(model.list.firstCall.args.length, 0)
+          assert.ok(list.calledOnce)
+          assert.deepEqual(list.firstCall.args[0], {userId: '1234'})
           done()
         })
     })
     it('should return results', done => {
-      model.list.resolves([])
+      list.resolves([])
       client.get('/api/todo')
         .expect(200, [])
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.list.calledOnce)
-          assert.equal(model.list.firstCall.args.length, 0)
+          assert.ok(list.calledOnce)
+          assert.deepEqual(list.firstCall.args[0], {userId: '1234'})
           done()
         })
     })
@@ -76,27 +77,28 @@ describe('todo controller', () => {
 
   describe('#create', () => {
     it('should respond to errors', done => {
-      model.create.rejects({status: 500, message: 'aw snap!'})
+      create.rejects({status: 500, message: 'aw snap!'})
       client.post('/api/todo')
         .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.create.calledOnce)
-          assert.equal(model.create.firstCall.args.length, 1)
+          assert.ok(create.calledOnce)
+          assert.equal(create.firstCall.args.length, 1)
           done()
         })
     })
     it('should return results', done => {
-      const payload = {todo: 'test'}
-      model.create.resolves({})
+      const payload = {text: 'test'}
+      create.resolves({})
       client.post('/api/todo')
         .send(payload)
         .expect(200, {})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.create.calledOnce)
-          assert.equal(model.create.firstCall.args.length, 1)
-          assert.deepEqual(model.create.firstCall.args[0], payload)
+          assert.ok(create.calledOnce)
+          assert.equal(create.firstCall.args.length, 1)
+          assert.deepEqual(create.firstCall.args[0].text, payload.text)
+          assert.deepEqual(create.firstCall.args[0].userId, '1234')
           done()
         })
     })
@@ -104,56 +106,60 @@ describe('todo controller', () => {
 
   describe('#fetch', () => {
     it('should respond to errors', done => {
-      model.fetch.rejects({status: 500, message: 'aw snap!'})
+      fetch.rejects({status: 500, message: 'aw snap!'})
       client.get('/api/todo/1234')
         .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.fetch.calledOnce)
-          assert.equal(model.fetch.firstCall.args.length, 1)
+          assert.ok(fetch.calledOnce)
+          assert.deepEqual(fetch.firstCall.args[0], {userId: '1234', id: '1234'})
           done()
         })
     })
     it('should return results', done => {
       const payload = {id: '1234'}
-      model.fetch.resolves(payload)
+      fetch.resolves(payload)
       client.get('/api/todo/1234')
         .send(payload)
         .expect(200, payload)
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.fetch.calledOnce)
-          assert.equal(model.fetch.firstCall.args.length, 1)
-          assert.deepEqual(model.fetch.firstCall.args[0], '1234')
+          assert.ok(fetch.calledOnce)
+          assert.equal(fetch.firstCall.args.length, 1)
+          assert.deepEqual(fetch.firstCall.args[0], {userId: '1234', id: '1234'})
           done()
         })
     })
   })
 
   describe('#update', () => {
+    let payload = null
+    beforeEach(() => payload = {text: 'test'})
+
     it('should respond to errors', done => {
-      model.update.rejects({status: 500, message: 'aw snap!'})
+      update.rejects({status: 500, message: 'aw snap!'})
       client.put('/api/todo/1234')
+        .send(payload)
         .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.update.calledOnce)
-          assert.equal(model.update.firstCall.args.length, 2)
+          assert.ok(update.calledOnce)
+          assert.equal(update.firstCall.args.length, 1)
+          assert.deepEqual(update.firstCall.args[0], {...payload, userId: '1234', id: '1234'})
           done()
         })
     })
+
     it('should return results', done => {
-      const payload = {todo: 'test'}
-      model.update.resolves(payload)
+      update.resolves(payload)
       client.put('/api/todo/1234')
         .send(payload)
         .expect(200, payload)
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.update.calledOnce)
-          assert.equal(model.update.firstCall.args.length, 2)
-          assert.equal(model.update.firstCall.args[0], '1234')
-          assert.deepEqual(model.update.firstCall.args[1], payload)
+          assert.ok(update.calledOnce)
+          assert.equal(update.firstCall.args.length, 1)
+          assert.deepEqual(update.firstCall.args[0], {...payload, userId: '1234', id: '1234'})
           done()
         })
     })
@@ -161,25 +167,25 @@ describe('todo controller', () => {
 
   describe('#remove', () => {
     it('should respond to errors', done => {
-      model.remove.rejects({status: 500, message: 'aw snap!'})
+      remove.rejects({status: 500, message: 'aw snap!'})
       client.delete('/api/todo/1234')
         .expect(500, {status: 500, message: 'aw snap!'})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.remove.calledOnce)
-          assert.equal(model.remove.firstCall.args.length, 1)
+          assert.ok(remove.calledOnce)
+          assert.equal(remove.firstCall.args.length, 1)
           done()
         })
     })
     it('should return results', done => {
-      model.remove.resolves({})
+      remove.resolves({})
       client.delete('/api/todo/1234')
         .expect(200, {})
         .end(err => {
           if (err) { return done(err) }
-          assert.ok(model.remove.calledOnce)
-          assert.equal(model.remove.firstCall.args.length, 1)
-          assert.equal(model.remove.firstCall.args[0], '1234')
+          assert.ok(remove.calledOnce)
+          assert.equal(remove.firstCall.args.length, 1)
+          assert.deepEqual(remove.firstCall.args[0], {userId: '1234', id: '1234'})
           done()
         })
     })

@@ -1,31 +1,37 @@
 
-import * as assert from 'assert'
-import * as sinon from 'sinon'
-
-import {UserStore, LoginTokenStore} from 'server/stores'
+import assert from 'assert'
+import sinon from 'sinon'
 
 import injector from 'inject-loader!server/models/user'
+import testModel from './test-model'
+
+const uuidStub = sinon.stub()
+const hashifierCompareStub = sinon.stub()
+const hashifierHashStub = sinon.stub()
+const fetchTokenStub = sinon.stub()
+const destroyTokenStub = sinon.stub()
+const upsertTokenStub = sinon.stub()
 
 describe('user model', () => {
   let UserModel = null
-  let userModel = null
+  let item = null
+  let findByIdStub = null
+  let findOneStub = null
+  let createUserStub = null
 
-  const hashifierCompareStub = sinon.stub()
-  const hashifierHashStub = sinon.stub()
-  const loginStoreStub = sinon.createStubInstance(LoginTokenStore)
-  const userStoreMethods = sinon.createStubInstance(UserStore)
-  const userStoreStub = sinon.stub()
-  Object.setPrototypeOf(userStoreStub.prototype, userStoreMethods)
-
-  before(() => {
+  beforeEach(() => {
     UserModel = injector({
-      'server/stores': {
-        UserStore: userStoreStub,
-        LoginTokenStore: sinon.stub().returns(loginStoreStub)
-      },
       hashifier: {
         compare: hashifierCompareStub,
         hash: hashifierHashStub
+      },
+      './token': {
+        fetch: fetchTokenStub,
+        destroy: destroyTokenStub,
+        upsert: upsertTokenStub
+      },
+      uuid: {
+        v4: uuidStub
       }
     }).default
 

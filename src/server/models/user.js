@@ -1,122 +1,144 @@
 
-import {BadRequest, Unauthorized} from 'server/errors'
-import {UserStore, LoginTokenStore} from 'server/stores'
-
+import uuid from 'uuid'
+import * as LoginToken from './token'
 import * as hashifier from 'hashifier'
 
-export default class UserModel extends UserStore {
+import Unauthorized from 'server/errors/unauthorized'
+import BadRequest from 'server/errors/badRequest'
+import NotFound from 'server/errors/notFound'
 
-  constructor () {
-    super()
-    this.tokens = new LoginTokenStore()
+import Sequelize from 'sequelize'
+import Todo from './todo'
+import Role from './role'
+
+export default class User extends Sequelize.Model {
+
+  static init (sequelize, DataTypes) {
+    super.init({
+      userName: {
+        allowNull: false,
+        type: DataTypes.STRING
+      },
+      hash: {
+        allowNull: false,
+        type: DataTypes.STRING
+      },
+      salt: {
+        allowNull: false,
+        type: DataTypes.STRING
+      }
+    }, {
+      tableName: 'users',
+      sequelize,
+      timestamps: false
+    })
   }
 
-  changePassword (user, {oldPassword, newPassword}) {
+  static associate () {
+    super.hasMany(Todo, {
+      foreignKey: 'userId',
+      as: 'user'
+    })
+    super.belongsToMany(Role, {
+      through: 'userRoles',
+      foreignKey: 'userId',
+      otherKey: 'roleId',
+      timestamps: false
+    })
+  }
+
+  compare (password) {
+    return hashifier.compare(password, this.hash, this.salt)
+  }
+
+  async changePassword (oldPassword, newPassword) {
+    if (!await this.compare(oldPassword)) {
+      throw new Unauthorized('incorrect password')
+    }
+
+    const {hash, salt} = await hashifier.hash(newPassword)
+    this.hash = hash
+    this.salt = salt
+
+    await this.save()
+  }
+
+  static async logout (token = null) {
+    await LoginToken.destroy(token)
+  }
+
+  static async authorize (token = null) {
+    const loginToken = await LoginToken.fetch(token)
+    if (!loginToken) { throw new Unauthorized('login token not found') }
+
+    const user = await User.findById(loginToken.userId, {
+      attributes: ['id', 'userName'],
+      include: [{
+        model: Role,
+        attributes: ['id'],
+        through: {
+          attributes: []
+        }
+      }]
+    })
+
+    if (!user) { throw new Unauthorized('user not found') }
+    return {...user.toJSON(), token}
+  }
+
+  static async login ({userName = null, password = null} = {}) {
+    if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
+      throw new BadRequest('userName must be provided')
+    }
+    if (password == null || typeof password !== 'string' || password.trim() === '') {
+      throw new BadRequest('password must be provided')
+    }
+
+    const user = await User.findOne({where: {userName}})
+    if (!user || !user.compare(password)) { throw new Unauthorized('user not found') }
+
+    const {id: token} = await LoginToken.upsert(null, user.id)
+    return {...user.toJSON(), token}
+  }
+
+  static async changePassword ({userId, oldPassword, newPassword}) {
     if (oldPassword == null || typeof oldPassword !== 'string' || oldPassword.trim() === '') {
-      return Promise.reject(new BadRequest('old password must be provided'))
+      throw new BadRequest('old password must be provided')
     }
-
     if (newPassword == null || typeof newPassword !== 'string' || newPassword.trim() === '') {
-      return Promise.reject(new BadRequest('new password must be provided'))
+      throw new BadRequest('new password must be provided')
     }
 
-    return hashifier.compare(oldPassword, user.hash, user.salt)
-      .then(authorized => {
-        if (!authorized) { throw new Unauthorized('incorrect password') }
-        return hashifier.hash(newPassword)
-      })
-      .then(({hash, salt}) => this.update(user.id, {hash, salt}))
+    const user = await User.findById(userId, {attributes: ['hash', 'salt']})
+    if (!user) { throw new NotFound() }
+
+    await user.changePassword(oldPassword, newPassword)
+    return user.toJSON()
   }
 
-  /**
-   * Verifies a token is valid and returns the relevant userId
-   * @param {string} [token=null] token to authorize against
-   * @returns {Promise<User>} resolves to use or throws unauthorized
-   */
-  authorize (token = null) {
-    if (token == null || typeof token !== 'string' || token.trim() === '') {
-      return Promise.reject(new BadRequest('token must be provided'))
-    }
-    return this.tokens.fetch(token)
-      .then(loginToken => {
-        if (!loginToken) { throw new Unauthorized('login token not found') }
-        return loginToken.userId
-      })
-      .then(userId => this.fetch(userId))
-      .then(user => {
-        if (!user) { throw new Unauthorized('user not found') }
-        return {...user, token}
-      })
-  }
-
-  /**
-   * Logs a user in, saves a login token for the user.
-   * @param {string} userName username
-   * @param {string} password plaintext password
-   * @returns {Promise<User>} resovles to a user or throws unauthorized
-   */
-  login ({userName = null, password = null} = {}) {
+  static async register ({userName = null, password = null} = {}) {
     if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
-      return Promise.reject(new BadRequest('userName must be provided'))
+      throw new BadRequest('userName must be provided')
     }
     if (password == null || typeof password !== 'string' || password.trim() === '') {
-      return Promise.reject(new BadRequest('password must be provided'))
+      throw new BadRequest('password must be provided')
     }
 
-    let user = null
-    let userId = null
+    const existingUser = await User.findOne({where: {userName}})
+    if (existingUser) { throw new BadRequest('userName already in use!') }
 
-    return this.find(userName)
-      .then(_user => {
-        if (!_user) { throw new Unauthorized('user not found') }
-        user = _user
-        userId = user.id
-        return user
-      })
-      .then(() => hashifier.compare(password, user.hash, user.salt))
-      .then(authorized => { if (!authorized) { throw new Unauthorized('user not found') } })
-      .then(() => this.tokens.create({userId}))
-      .then(token => ({...user, token: token.id}))
-  }
+    const {hash, salt} = await hashifier.hash(password)
 
-  /**
-   * Logs a user out. Remove their login token.
-   * @param {string} token id of the token.
-   * @returns {Promoise<void>} resolves to undefined.
-   */
-  logout (token = null) {
-    if (token == null) {
-      return Promise.resolve()
-    }
+    const user = await User.create({
+      id: uuid.v4(),
+      userName,
+      hash,
+      salt
+    })
 
-    return this.tokens.remove(token)
-  }
+    await user.addRole('public')
 
-  /**
-   * Creates a new user in the system, and a login token.
-   * @param {*} payload as provided by req.body
-   * @param {string} username name of the user to create
-   * @param {string} password plaintext password to be hashed
-   * @returns {Promise<string>} resolves to id of login token
-   */
-  register ({userName = null, password = null} = {}) {
-    if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
-      return Promise.reject(new BadRequest('userName must be provided'))
-    }
-
-    if (password == null || typeof password !== 'string' || password.trim() === '') {
-      return Promise.reject(new BadRequest('password must be provided'))
-    }
-
-    const roles = ['public']
-
-    return this.find(userName)
-      .then(user => {
-        if (user) { throw new BadRequest('userName already in use!') }
-      })
-      .then(() => hashifier.hash(password))
-      .then(({hash, salt}) => this.create({userName, salt, hash, roles}))
-      .then(user => this.tokens.create({userId: user.id}))
-      .then(token => token.id)
+    const {id: token} = await LoginToken.upsert(null, user.id)
+    return token
   }
 }

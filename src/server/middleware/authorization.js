@@ -13,7 +13,7 @@ export default roles => {
       throw new Forbidden()
     }
 
-    if (!user.roles.some(item => roles.indexOf(item) > -1)) {
+    if (!user.roles.some(item => roles.indexOf(item.id) > -1)) {
       throw new Forbidden()
     }
 

@@ -62,7 +62,7 @@ describe('authentication middleware', () => {
 
   it('missing role equotes to 403', done => {
     roleStub.returns(authMiddleware('role'))
-    userStub.returns({id: '1234', roles: ['nope']})
+    userStub.returns({id: '1234', roles: [{id: 'nope'}]})
     client
       .get('/dummy')
       .expect(403)
@@ -71,7 +71,7 @@ describe('authentication middleware', () => {
 
   it('returns next properly - string role', done => {
     roleStub.returns(authMiddleware('role'))
-    userStub.returns({id: '1234', roles: ['role']})
+    userStub.returns({id: '1234', roles: [{id: 'role'}]})
     client
       .get('/dummy')
       .expect(200, {ok: true})
@@ -80,7 +80,7 @@ describe('authentication middleware', () => {
 
   it('returns next properly - array roles', done => {
     roleStub.returns(authMiddleware(['role']))
-    userStub.returns({id: '1234', roles: ['role']})
+    userStub.returns({id: '1234', roles: [{id: 'role'}]})
     client
       .get('/dummy')
       .expect(200, {ok: true})

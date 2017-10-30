@@ -4,18 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "coverage": "npm run clean:coverage && nyc npm test",
     "clean:dist": "rimraf dist",
     "clean:tmp": "rimraf .tmp",
     "clean:coverage": "rimraf coverage && rimraf .nyc_output",
-    "test": "npm run clean:tmp && cross-env NODE_ENV=test mocha-webpack --exit",
+    "clean:db": "rimraf data/*.sqlite",
+    "precoverage": "npm run clean:coverage",
+    "coverage": "nyc npm test",
+    "db": "sequelize db:migrate && sequelize db:seed:all",
+    "pretest": "npm run clean:tmp && rimraf data/database-test.sqlite && cross-env NODE_ENV=test npm run db",
+    "test": "cross-env NODE_ENV=test mocha-webpack --exit",
     "lint": "eslint . --ext=js,jsx",
     "build": "npm run clean:dist && cross-env NODE_ENV=production webpack --progress --config webpack.config-prod.js",
     "build-watch": "npm run clean:dist && cross-env NODE_ENV=development webpack -w --progress",
+    "prestart": "cross-env NODE_ENV=production npm run db",
     "start": "npm run build && npm run start:prod",
+    "prestart-watch": "cross-env NODE_ENV=development npm run db",
     "start-watch": "concurrently -r --kill-others \"npm run build-watch\" \"npm run start:dev\"",
     "start:prod": "cross-env NODE_ENV=production node dist/server/server.js",
-    "start:dev": "wait-on dist/server/server.js  dist/server/stats.json && cross-env NODE_ENV=development nodemon --inspect=5858 dist/server/server.js"
+    "start:dev": "wait-on dist/server/server.js  dist/server/stats.json && cross-env NODE_ENV=development nodemon --inspect dist/server/server.js"
   },
   "author": "Tyler Waters",
   "license": "MIT",
@@ -92,6 +98,9 @@
     "redux-logger": "^2.8.2",
     "redux-thunk": "^2.1.0",
     "reselect": "^2.5.4",
+    "sequelize": "^4.19.0",
+    "sequelize-cli": "^3.0.0",
+    "sqlite3": "^3.1.13",
     "uuid": "^3.0.1"
   },
   "nyc": {

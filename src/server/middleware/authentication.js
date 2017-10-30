@@ -1,8 +1,6 @@
 
-import {UserModel} from 'server/models'
 import {Unauthorized} from 'server/errors'
-
-const userModel = new UserModel()
+import UserModel from 'server/models/user'
 
 export default (required = true) => (req, res, next) => {
   const token = req.session.token || req.headers['x-token']
@@ -13,7 +11,7 @@ export default (required = true) => (req, res, next) => {
     return next()
   }
 
-  userModel.authorize(token)
+  UserModel.authorize(token)
     .then(user => {
       res.locals.user = user
       next()

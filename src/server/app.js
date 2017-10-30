@@ -10,6 +10,8 @@ import errors from './middleware/errors'
 import api from './api'
 import router from './router.jsx'
 
+import 'server/models'
+
 const {REDIS_HOST, REDIS_PORT, REDIS_SESSION_DB} = process.env
 
 process.on('unhandledRejection', r => console.log('unhandledRejection', r))

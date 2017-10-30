@@ -4,7 +4,6 @@ import * as sinon from 'sinon'
 import {agent} from 'supertest'
 
 import appFactory from '../test-app'
-import {UserModel} from 'server/models'
 import injector from 'inject-loader?-express!server/middleware/authentication'
 
 const {
@@ -14,20 +13,21 @@ const {
 describe('authentication middleware', () => {
   let client = null
   let server = null
+  let authMiddleware = null
+  let context = null
 
-  const model = sinon.createStubInstance(UserModel)
+  const authorize = sinon.stub()
 
-  before(done => {
-    const {default: authMiddleware} = injector({
-      'server/models': {
-        UserModel: sinon.stub().returns(model)
-      }
+  beforeEach(done => {
+    const {default: _authMiddleware} = injector({
+      'server/models/user': {authorize}
     })
 
-    const {app, context} = appFactory()
-    const route = (req, res) => res.send(res.locals.user)
-    context.get('/dummy', [authMiddleware(), route])
-    context.get('/set-token', (req, res) => {
+    const {app, context: _context} = appFactory()
+    context = _context
+    authMiddleware = _authMiddleware
+
+    _context.get('/set-token', (req, res) => {
       req.session.token = '1234'
       res.send('ok')
     })
@@ -36,43 +36,44 @@ describe('authentication middleware', () => {
     server = app.listen(PORT, done)
   })
 
-  beforeEach(done => {
-    client.get('/tests/clear-session').end(done)
-  })
-
-  afterEach(() => {
-    model.authorize.reset()
-  })
-
-  after(done => {
+  afterEach(done => {
+    authorize.reset()
     server.close(done)
   })
 
+  describe('auth required', () => {
+    beforeEach(() => {
+      context.get('/dummy', [authMiddleware(), (req, res) => res.send(res.locals.user)])
+    })
 
-  it('throws unauthorized when no token present', done => {
-    client.get('/dummy')
-      .expect(401)
-      .end(done)
-  })
+    it('throws unauthorized when no token present', () => {
+      return client.get('/dummy').expect(401)
+    })
 
-  it('sets res.locals.user to the related user', done => {
-    model.authorize.resolves({id: '1234'})
-    client.get('/set-token').end(err => {
-      if (err) { return done(err) }
-      client.get('/dummy')
-        .expect(200, {id: '1234'})
-        .end(done)
+    it('sets res.locals.user to the related user', () => {
+      authorize.resolves({id: '1234'})
+      return Promise.resolve()
+        .then(() => client.get('/set-token'))
+        .then(() => client.get('/dummy').expect(200, {id: '1234'}))
+    })
+
+    it('returns errors to next', () => {
+      authorize.rejects({status: 500, message: 'aw snap!'})
+      return Promise.resolve()
+        .then(() => client.get('/set-token'))
+        .then(() => client.get('/dummy').expect(500, {status: 500, message: 'aw snap!'}))
     })
   })
 
-  it('returns errors to next', done => {
-    model.authorize.rejects({status: 500, message: 'aw snap!'})
-    client.get('/set-token').end(err => {
-      if (err) { return done(err) }
-      client.get('/dummy')
-        .expect(500, {status: 500, message: 'aw snap!'})
-        .end(done)
+  describe('auth not required', () => {
+    beforeEach(() => {
+      context.get('/dummy', [authMiddleware(false), (req, res) => res.send({})])
+    })
+
+    it('should be ok if token not found', () => {
+      return client.get('/dummy').expect(200, {})
     })
   })
+
 })
 
