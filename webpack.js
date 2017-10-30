@@ -194,7 +194,8 @@ const config = (server, isProd = false) => {
         client: path.resolve('./src/client'),
         common: path.resolve('./src/common'),
         server: path.resolve('./src/server'),
-        i18n: path.resolve('./src/i18n')
+        i18n: path.resolve('./src/i18n'),
+        db: path.resolve('./src/db')
       },
       extensions: [
         '.webpack.js',

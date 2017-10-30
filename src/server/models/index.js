@@ -1,6 +1,6 @@
 
 import Sequelize, {DataTypes} from 'sequelize'
-import config from 'server/config/config'
+import config from 'db/config'
 
 import UserModel from './user'
 import TodoModel from './todo'
@@ -24,12 +24,3 @@ TodoModel.associate(sequelize)
 RoleModel.associate(sequelize)
 
 export default new Sequelize(...sequelizeConfig)
-
-// const db = {sequelize}
-// const things = {role, user, todo}
-
-// Object.keys(things)
-//   .map(name => db[name] = things[name](sequelize, DataTypes))
-//   .forEach(thing => thing.associate && thing.associate(db))
-
-// export default db
