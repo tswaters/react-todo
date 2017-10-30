@@ -12,10 +12,10 @@ export default (dispatch, getState) => async (url, method, body) => {
   const response = await fetch(`${baseUrl}${url}`, {
     method,
     credentials: 'same-origin',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-token': user ? user.token : null
-    },
+    headers: Object.assign(
+      {'Content-Type': 'application/json'},
+      user ? {'x-token': user.token} : null
+    ),
     body: body ? JSON.stringify(body) : null
   })
 
