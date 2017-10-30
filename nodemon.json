@@ -1,4 +1,4 @@
 {
   "verbose": false,
-  "watch": ["dist/**/*.*"]
+  "watch": ["dist/server/**/*.*"]
 }
