@@ -2,9 +2,8 @@
 import * as assert from 'assert'
 import * as sinon from 'sinon'
 import supertest from 'supertest'
-
+import proxyquire from 'proxyquire'
 import appFactory from '../test-app'
-import injector from 'inject-loader?-express!server/api/todo'
 
 const {
   PORT = 3001
@@ -21,11 +20,11 @@ describe('todo controller', () => {
   const remove = sinon.stub()
 
   before(done => {
-    const {default: todoController} = injector({
-      'server/middleware/authorization': () => (req, res, next) => next(),
-      'server/middleware/authentication': () => (req, res, next) => next(),
-      'server/models/todo': {list, create, fetch, update, remove}
-    })
+    const todoController = proxyquire('server/api/todo', {
+      'server/middleware/authorization': {default: () => (req, res, next) => next()},
+      'server/middleware/authentication': {default: () => (req, res, next) => next()},
+      'server/models/todo': {default: {list, create, fetch, update, remove}}
+    }).default
 
     const {app, context} = appFactory()
     context.use((req, res, next) => {

@@ -1,0 +1,4 @@
+--no-timeouts
+--compilers js:babel-core/register
+--require src/test/init.js
+ src/test/**/*.test.js

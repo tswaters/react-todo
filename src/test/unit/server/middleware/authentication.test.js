@@ -2,9 +2,9 @@
 
 import * as sinon from 'sinon'
 import {agent} from 'supertest'
+import proxyquire from 'proxyquire'
 
 import appFactory from '../test-app'
-import injector from 'inject-loader?-express!server/middleware/authentication'
 
 const {
   PORT = 3001
@@ -19,13 +19,12 @@ describe('authentication middleware', () => {
   const authorize = sinon.stub()
 
   beforeEach(done => {
-    const {default: _authMiddleware} = injector({
-      'server/models/user': {authorize}
-    })
+    authMiddleware = proxyquire('server/middleware/authentication', {
+      'server/models/user': {default: {authorize}}
+    }).default
 
     const {app, context: _context} = appFactory()
     context = _context
-    authMiddleware = _authMiddleware
 
     _context.get('/set-token', (req, res) => {
       req.session.token = '1234'

@@ -2,9 +2,9 @@
 import supertest from 'supertest'
 import * as sinon from 'sinon'
 import * as assert from 'assert'
+import proxyquire from 'proxyquire'
 
 import appFactory from '../test-app'
-import authInjector from 'inject-loader?-express!server/api/auth'
 
 const {
   PORT = 3001
@@ -19,9 +19,9 @@ describe('auth controller', () => {
   const logout = sinon.stub()
 
   before(done => {
-    const {default: authController} = authInjector(
-      {'server/models/user': {register, login, logout}}
-    )
+    const authController = proxyquire('server/api/auth', {
+      'server/models/user': {default: {register, login, logout}}
+    }).default
     const {app, context} = appFactory()
     context.use('/api/auth', authController)
     client = supertest(app)

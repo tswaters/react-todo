@@ -1,8 +1,8 @@
 
 import assert from 'assert'
 import sinon from 'sinon'
+import proxyquire from 'proxyquire'
 
-import injector from 'inject-loader!server/models/user'
 import testModel from './test-model'
 
 const uuidStub = sinon.stub()
@@ -20,7 +20,7 @@ describe('user model', () => {
   let createUserStub = null
 
   beforeEach(() => {
-    UserModel = injector({
+    UserModel = proxyquire('server/models/user', {
       hashifier: {
         compare: hashifierCompareStub,
         hash: hashifierHashStub
