@@ -50,7 +50,7 @@ class Layout extends PureComponent {
       <div className={cx(alert, alertDanger)}>
         {this.props.requestError.message}
       </div>
-     ) : null
+    ) : null
 
     return (
       <div>

@@ -1,6 +1,5 @@
 
 import React, {PureComponent} from 'react'
-import PropTypes from 'prop-types'
 import {intlShape} from 'react-intl'
 import {connect} from 'react-redux'
 import {Helmet} from 'react-helmet'
@@ -33,11 +32,6 @@ class TodoPage extends PureComponent {
 
   static contextTypes = {
     intl: intlShape.isRequired
-  }
-
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    done: PropTypes.func.isRequired
   }
 
   render () {

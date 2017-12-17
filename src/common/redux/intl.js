@@ -9,13 +9,7 @@ const ADD_LOCALE_MESSAGE = 'ADD_LOCALE_MESSAGE'
 
 export const addMessage = (locale, messages) => ({type: ADD_LOCALE_MESSAGE, locale, messages})
 
-export const getMessage = id => createSelector([
-  state => state.intl.messages[id]
-], (
-  message
-) => ({
-  message
-}))
+export const getMessage = id => createSelector([state => state.intl.messages[id]], message => ({message}))
 
 export const getKeys = (locale, messages) => async (dispatch, getState) => {
   if (messages.length === 0) { return }

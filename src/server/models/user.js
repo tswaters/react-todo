@@ -83,9 +83,11 @@ export default class User extends Sequelize.Model {
   }
 
   static async login ({userName = null, password = null} = {}) {
+
     if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
       throw new BadRequest('userName must be provided')
     }
+
     if (password == null || typeof password !== 'string' || password.trim() === '') {
       throw new BadRequest('password must be provided')
     }
@@ -98,9 +100,11 @@ export default class User extends Sequelize.Model {
   }
 
   static async changePassword ({id}, {oldPassword, newPassword}) {
+
     if (oldPassword == null || typeof oldPassword !== 'string' || oldPassword.trim() === '') {
       throw new BadRequest('old password must be provided')
     }
+
     if (newPassword == null || typeof newPassword !== 'string' || newPassword.trim() === '') {
       throw new BadRequest('new password must be provided')
     }
@@ -113,9 +117,11 @@ export default class User extends Sequelize.Model {
   }
 
   static async register ({userName = null, password = null} = {}) {
+
     if (userName == null || typeof userName !== 'string' || userName.trim() === '') {
       throw new BadRequest('userName must be provided')
     }
+
     if (password == null || typeof password !== 'string' || password.trim() === '') {
       throw new BadRequest('password must be provided')
     }

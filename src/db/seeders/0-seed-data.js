@@ -5,7 +5,7 @@ const uuid = require('uuid')
 const hashifier = require('hashifier')
 
 module.exports = {
-  up (queryInterface, Sequelize) {
+  up (queryInterface) {
     const adminId = uuid.v4()
     const tylerId = uuid.v4()
     return Promise.resolve()
@@ -33,7 +33,7 @@ module.exports = {
       )
   },
 
-  down (queryInterface, Sequelize) {
+  down (queryInterface) {
     return queryInterface.bulkDelete('Roles', null, {})
   }
 }

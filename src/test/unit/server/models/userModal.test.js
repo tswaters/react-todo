@@ -88,7 +88,6 @@ describe('user model', () => {
 
     it('should return bad request for no new password', async () => {
       delete payload.newPassword
-
       let result = null
       try {
         result = await UserModel.changePassword(userId, payload)

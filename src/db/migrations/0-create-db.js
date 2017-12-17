@@ -80,7 +80,7 @@ module.exports = {
         })
       )
   },
-  down (queryInterface, Sequelize) {
+  down (queryInterface) {
     return Promise.resolve()
       .then(() => queryInterface.dropTable('users'))
       .then(() => queryInterface.dropTable('todos'))

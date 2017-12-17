@@ -17,7 +17,7 @@ const store = configureStore(history, window.LOCALS)
 
 const app = (
   <Provider store={store}>
-    <ServerStateProvider state={SERVER_STATE}>
+    <ServerStateProvider state={window.SERVER_STATE}>
       <ConnectedRouter history={history}>
         <App />
       </ConnectedRouter>

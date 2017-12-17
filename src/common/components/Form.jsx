@@ -13,7 +13,11 @@ class Form extends PureComponent {
 
   static propTypes = {
     onSubmit: PropTypes.func,
-    className: PropTypes.string
+    className: PropTypes.string,
+    children: PropTypes.oneOfType([
+      PropTypes.arrayOf(PropTypes.node),
+      PropTypes.node
+    ]).isRequired
   }
 
   static childContextTypes = {

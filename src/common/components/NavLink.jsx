@@ -35,12 +35,13 @@ class NavLink extends PureComponent {
     } = this.props
 
     return (
-      <Route path={to} exact={exact} strict={strict} children={({match}) => (
-        <li className={match ? activeClassName : null} {...rest}>
-          <Link to={to}>{this.props.children}</Link>
-        </li>
-      )}
-      />
+      <Route path={to} exact={exact} strict={strict}>
+        {({match}) => (
+          <li className={match ? activeClassName : null} {...rest}>
+            <Link to={to}>{this.props.children}</Link>
+          </li>
+        )}
+      </Route>
     )
   }
 }
