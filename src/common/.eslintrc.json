@@ -1,14 +1,9 @@
 {
   "env": {
-    "node": false,
-    "browser": true
+    "node": false
   },
   "globals": {
     "process": true
   },
-  "rules": {
-    "react/forbid-component-props": [0],
-    "react/jsx-max-props-per-line": [2, {"maximum": 3}],
-    "react/no-set-state": [0]
-  }
+  "extends": ["tswaters/react"]
 }
