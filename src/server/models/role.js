@@ -1,6 +1,6 @@
 
 import Sequelize from 'sequelize'
-import UserModel from './user'
+import UserModel from 'server/models/user'
 
 class RoleModel extends Sequelize.Model {
 

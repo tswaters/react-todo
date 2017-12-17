@@ -1,7 +1,7 @@
 
 import React from 'react'
 import {Route} from 'react-router'
-import renderer from './renderer'
+import renderer from 'common/util/renderer'
 
 export default function AsyncRoute (path, loader) {
   const routeProps = {

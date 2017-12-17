@@ -3,8 +3,7 @@ import supertest from 'supertest'
 import * as sinon from 'sinon'
 import * as assert from 'assert'
 import proxyquire from 'proxyquire'
-
-import appFactory from '../test-app'
+import appFactory from 'test/unit/server/test-app'
 
 const {
   PORT = 3001

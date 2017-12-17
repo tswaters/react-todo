@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect'
-import ajax from '../ajax'
+import ajax from 'common/ajax'
 
 // The reducer for `react-intl-redux` is kind of bad.
 // It doesn't allow for speculatively adding various locale keys.

@@ -7,7 +7,7 @@ import {createMemoryHistory} from 'history'
 import {renderToString, extractModules} from 'react-router-server'
 import {Helmet} from 'react-helmet'
 
-import authentication from './middleware/authentication'
+import authentication from 'server/middleware/authentication'
 import App from 'common/App'
 import {errorRequest, infoRequest} from 'common/redux/api'
 

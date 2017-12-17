@@ -1,8 +1,8 @@
 
 import {Router} from 'express'
-import todo from './todo'
-import auth from './auth'
-import locale from './locale'
+import todo from 'server/api/todo'
+import auth from 'server/api/auth'
+import locale from 'server/api/locale'
 
 const router = new Router()
 

@@ -26,7 +26,7 @@ import {
 
 import initialData from 'common/initial-data'
 import {getUser} from 'common/redux/user'
-import NavLink from './NavLink'
+import NavLink from 'common/components/NavLink'
 
 /**
  * @returns {string} Navbar for the application

@@ -6,8 +6,8 @@ import {Helmet} from 'react-helmet'
 import {FormattedMessage} from 'react-intl'
 
 import initialData from 'common/initial-data'
-import Footer from './footer'
-import Navbar from './navbar'
+import Footer from 'common/components/footer'
+import Navbar from 'common/components/navbar'
 import cx from 'classnames'
 import {container, srOnly, alert, alertSuccess, alertDanger} from 'common/styles/bootstrap'
 

@@ -2,9 +2,8 @@
 
 import * as sinon from 'sinon'
 import {agent} from 'supertest'
-
-import appFactory from '../test-app'
 import authMiddleware from 'server/middleware/authorization'
+import appFactory from 'test/unit/server/test-app'
 
 const {
   PORT = 3001

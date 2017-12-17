@@ -3,9 +3,9 @@ import logger from 'server/logger'
 import Sequelize, {DataTypes} from 'sequelize'
 import config from 'db/config'
 
-import UserModel from './user'
-import TodoModel from './todo'
-import RoleModel from './role'
+import UserModel from 'server/models/user'
+import TodoModel from 'server/models/todo'
+import RoleModel from 'server/models/role'
 
 const {NODE_ENV: env = 'development'} = process.env
 const envConfig = config[env]

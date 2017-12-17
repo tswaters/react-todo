@@ -2,8 +2,7 @@
 import assert from 'assert'
 import sinon from 'sinon'
 import proxyquire from 'proxyquire'
-
-import testModel from './test-model'
+import testModel from 'test/unit/server/models/test-model'
 
 const uuidStub = sinon.stub()
 const hashifierCompareStub = sinon.stub()
@@ -25,7 +24,7 @@ describe('user model', () => {
         compare: hashifierCompareStub,
         hash: hashifierHashStub
       },
-      './token': {
+      'server/models/token': {
         fetch: fetchTokenStub,
         destroy: destroyTokenStub,
         upsert: upsertTokenStub

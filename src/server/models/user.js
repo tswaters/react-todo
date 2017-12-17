@@ -1,15 +1,11 @@
 
 import uuid from 'uuid'
-import * as LoginToken from './token'
-import * as hashifier from 'hashifier'
-
-import Unauthorized from 'server/errors/unauthorized'
-import BadRequest from 'server/errors/badRequest'
-import NotFound from 'server/errors/notFound'
-
 import Sequelize from 'sequelize'
-import Todo from './todo'
-import Role from './role'
+import * as LoginToken from 'server/models/token'
+import * as hashifier from 'hashifier'
+import {Unauthorized, BadRequest, NotFound} from 'server/errors'
+import Todo from 'server/models/todo'
+import Role from 'server/models/role'
 
 export default class User extends Sequelize.Model {
 

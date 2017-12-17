@@ -1,8 +1,8 @@
 
 import React from 'react'
 import {Switch} from 'react-router'
-import Layout from './components/layout'
-import asyncRoute from './util/asyncRoute'
+import Layout from 'common/components/layout'
+import asyncRoute from 'common/util/asyncRoute'
 
 const App = () => (
   <Layout>

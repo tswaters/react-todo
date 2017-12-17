@@ -1,8 +1,8 @@
+
 import assert from 'assert'
 import sinon from 'sinon'
-
 import TodoModel from 'server/models/todo'
-import testModel from './test-model'
+import testModel from 'test/unit/server/models/test-model'
 
 describe('todo model', () => {
   let findAllStub = null

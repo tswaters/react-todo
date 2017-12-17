@@ -1,6 +1,6 @@
 
 import uuid from 'uuid'
-import redis from './redis'
+import redis from 'server/models/redis'
 
 import BadRequest from 'server/errors/badRequest'
 import NotFound from 'server/errors/notFound'

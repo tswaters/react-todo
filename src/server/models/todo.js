@@ -2,7 +2,7 @@
 import BadRequest from 'server/errors/badRequest'
 import NotFound from 'server/errors/notFound'
 
-import UserModel from './user'
+import UserModel from 'server/models/user'
 import Sequelize from 'sequelize'
 
 class TodoModel extends Sequelize.Model {

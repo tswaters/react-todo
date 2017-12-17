@@ -4,11 +4,11 @@ import {routerReducer, routerMiddleware} from 'react-router-redux'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import api from './redux/api'
-import user from './redux/user'
-import intl from './redux/intl'
-import todo from './todo/redux'
-import profile from './profile/redux'
+import api from 'common/redux/api'
+import user from 'common/redux/user'
+import intl from 'common/redux/intl'
+import todo from 'common/todo/redux'
+import profile from 'common/profile/redux'
 
 export default (history, state) => {
 

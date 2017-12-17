@@ -7,10 +7,10 @@ import {json} from 'body-parser'
 import flash from 'connect-flash'
 
 import log from 'server/logger'
-import errors from './middleware/errors'
-import logger from './middleware/logger'
-import api from './api'
-import router from './router.jsx'
+import errors from 'server/middleware/errors'
+import logger from 'server/middleware/logger'
+import api from 'server/api'
+import router from 'server/router/index'
 
 import 'server/models'
 
