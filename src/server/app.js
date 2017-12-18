@@ -16,9 +16,9 @@ import 'server/models'
 
 const {REDIS_HOST, REDIS_PORT, REDIS_SESSION_DB} = process.env
 
-process.on('unhandledRejection', r => log.error('unhandledRejection', r))
+process.on('unhandledRejection', /*istanbul ignore next*/ r => log.error('unhandledRejection', r))
 
-process.on('uncaughtException', r => log.error('unhandledException', r))
+process.on('uncaughtException', /*istanbul ignore next*/ r => log.error('unhandledException', r))
 
 const SessionStore = redisStore(session)
 

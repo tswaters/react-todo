@@ -105,8 +105,12 @@
       "src/**/*.js"
     ],
     "exclude": [
-      "**/test/**",
-      "**/webpack/**"
+      "src/test/**",
+      "src/db/**",
+      "src/server/middleware/{logger,errors}.js",
+      "src/server/models/index.js",
+      "src/server/logger.js",
+      "src/server/errors/**"
     ],
     "reporter": [
       "lcov",
