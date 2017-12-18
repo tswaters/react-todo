@@ -1,16 +1,20 @@
 {
+  "plugins": [
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread"
+  ],
+  "presets": [
+    ["env", {"targets": {"node": "current"}}],
+    "react"
+  ],
+  "sourceMaps": true,
+  "retainLines": true,
   "env": {
-    "test": {
+    "instrument": {
       "plugins": [
-        "istanbul",
-        "transform-runtime",
-        "transform-decorators-legacy",
-        "transform-class-properties",
-        "transform-object-rest-spread"
-      ],
-      "presets": [
-        ["env", {"targets": {"node": "current"}}],
-        "react"
+        "istanbul"
       ]
     }
   }

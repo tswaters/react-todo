@@ -8,7 +8,7 @@
     "clean:coverage": "rimraf coverage && rimraf .nyc_output",
     "clean:db": "rimraf data/*.sqlite",
     "precoverage": "npm run clean:coverage",
-    "coverage": "nyc npm test",
+    "coverage": "cross-env BABEL_ENV=instrument nyc npm test",
     "db": "sequelize db:migrate && sequelize db:seed:all",
     "pretest": "rimraf data/database-test.sqlite && cross-env NODE_ENV=test npm run db",
     "test": "cross-env NODE_ENV=test NODE_PATH=./src mocha --opts mocha.opts",

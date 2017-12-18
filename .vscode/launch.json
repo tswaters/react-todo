@@ -7,15 +7,17 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceRoot}\\index.js",
-      "cwd": "${workspaceRoot}"
-    },
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach to Process",
-      "port": 5858
+      "name": "Mocha Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "NODE_ENV": "test",
+        "NODE_PATH" : "./src"
+      },
+      "args": [
+        "--opts",
+        "mocha.opts"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
     }
   ]
 }
