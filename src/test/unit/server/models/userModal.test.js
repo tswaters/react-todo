@@ -113,19 +113,20 @@ describe('user model', () => {
     })
 
     it('should throw if incorrect password', async () => {
-      item.changePassword.rejects(new Error('nope'))
+      hashifierCompareStub.resolves(false)
       let result = null
       try {
         result = await UserModel.changePassword(userId, payload)
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
-        assert.equal(err.message, 'nope')
+        assert.equal(err.message, 'incorrect password')
       }
     })
 
     it('should update the hash/salt, save & return json', async () => {
-      item.changePassword.resolves()
+      hashifierCompareStub.resolves(true)
+      hashifierHashStub.resolves({hash: 'hash', pass: 'pass'})
       const result = await UserModel.changePassword(userId, payload)
       assert(result)
     })
@@ -142,13 +143,13 @@ describe('user model', () => {
       fetchTokenStub.resolves(null)
       let result = null
       try {
-        result = await UserModel.authorize(payload)
+        result = await UserModel.authorize()
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
         assert.equal(err.status, 401)
         assert.equal(err.message, 'login token not found')
-        assert.equal(fetchTokenStub.firstCall.args[0], '12345')
+        assert.equal(fetchTokenStub.firstCall.args[0], null)
       }
     })
 
@@ -191,10 +192,9 @@ describe('user model', () => {
     })
 
     it('rejects if username not provided', async () => {
-      delete payload.userName
       let result = null
       try {
-        result = await UserModel.login(payload)
+        result = await UserModel.login()
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)
@@ -230,7 +230,7 @@ describe('user model', () => {
     })
 
     it('rejects if passwords dont match', async () => {
-      item.compare.returns(false)
+      hashifierCompareStub.returns(false)
       let result = null
       try {
         result = await UserModel.login(payload)
@@ -243,7 +243,7 @@ describe('user model', () => {
     })
 
     it('creates a token and resovles id', async () => {
-      item.compare.returns(true)
+      hashifierCompareStub.returns(true)
       upsertTokenStub.resolves({id: '12345'})
       const user = await UserModel.login(payload)
       assert.deepEqual(user, {
@@ -254,7 +254,7 @@ describe('user model', () => {
         token: '12345'
       })
       assert.deepEqual(findOneStub.firstCall.args[0], {where: {userName: 'userName'}})
-      assert.equal(item.compare.firstCall.args[0], 'password')
+      assert.equal(hashifierCompareStub.firstCall.args[0], 'password')
       assert.deepEqual(upsertTokenStub.firstCall.args[1], '12345')
     })
   })
@@ -262,8 +262,8 @@ describe('user model', () => {
   describe('logout', () => {
     it('removes the token', async () => {
       destroyTokenStub.resolves(null)
-      await UserModel.logout('1234')
-      assert.equal(destroyTokenStub.firstCall.args[0], '1234')
+      await UserModel.logout()
+      assert.equal(destroyTokenStub.firstCall.args[0], null)
     })
   })
 
@@ -278,10 +278,9 @@ describe('user model', () => {
     })
 
     it('rejects if username not provided', async () => {
-      delete payload.userName
       let result = null
       try {
-        result = await UserModel.register(payload)
+        result = await UserModel.register()
         assert.ok(false)
       } catch (err) {
         assert.equal(result, null)

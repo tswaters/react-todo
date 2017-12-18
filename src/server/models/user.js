@@ -43,22 +43,6 @@ export default class User extends Sequelize.Model {
     })
   }
 
-  compare (password) {
-    return hashifier.compare(password, this.hash, this.salt)
-  }
-
-  async changePassword (oldPassword, newPassword) {
-    if (!await this.compare(oldPassword)) {
-      throw new Unauthorized('incorrect password')
-    }
-
-    const {hash, salt} = await hashifier.hash(newPassword)
-    this.hash = hash
-    this.salt = salt
-
-    await this.save()
-  }
-
   static async logout (token = null) {
     await LoginToken.destroy(token)
   }
@@ -93,7 +77,7 @@ export default class User extends Sequelize.Model {
     }
 
     const user = await User.findOne({where: {userName}})
-    if (!user || !user.compare(password)) { throw new Unauthorized('user not found') }
+    if (!user || !hashifier.compare(password, user.hash, user.salt)) { throw new Unauthorized('user not found') }
 
     const {id: token} = await LoginToken.upsert(null, user.id)
     return {...user.toJSON(), token}
@@ -112,7 +96,15 @@ export default class User extends Sequelize.Model {
     const user = await User.findById(id, {attributes: ['id', 'hash', 'salt']})
     if (!user) { throw new NotFound() }
 
-    await user.changePassword(oldPassword, newPassword)
+    if (!await hashifier.compare(oldPassword, user.hash, user.salt)) {
+      throw new Unauthorized('incorrect password')
+    }
+
+    const {hash, salt} = await hashifier.hash(newPassword)
+    user.hash = hash
+    user.salt = salt
+    await user.save()
+
     return user.toJSON()
   }
 
