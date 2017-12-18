@@ -5,64 +5,71 @@ import UserModel from 'server/models/user'
 
 const router = new Router()
 
-router.post('/password', authentication(true), (req, res, next) => {
+router.post('/password', authentication(true), async (req, res, next) => {
   req.app.locals.logger.info('/password requested', req.body)
-  UserModel.changePassword(res.locals.user, req.body)
-    .then(({userName}) => res.json({userName}))
-    .catch(err => next(err))
+  try {
+    const result = await UserModel.changePassword(res.locals.user, req.body)
+    res.json({userName: result.userName})
+  } catch (err) {
+    next(err)
+  }
 })
 
-router.post('/profile', authentication(true), (req, res, next) => {
+router.post('/profile', authentication(true), async (req, res, next) => {
   req.app.locals.logger.info('/update with', req.body)
-  const {id} = res.locals.user
-  const {userName} = req.body
-  UserModel.update({userName}, {where: {id}})
-    .then(() => res.json({id, userName}))
-    .catch(err => next(err))
+  try {
+    const {id} = res.locals.user
+    const {userName} = req.body
+    await UserModel.update({userName}, {where: {id}})
+    res.json({id, userName})
+  } catch (err) {
+    next(err)
+  }
 })
 
 router.get('/profile', authentication(true), (req, res) => {
   req.app.locals.logger.info('/profile requested')
-  res.json({
-    userName: res.locals.user.userName
-  })
+  res.json({userName: res.locals.user.userName})
 })
 
-router.post('/register', authentication(false), (req, res, next) => {
+router.post('/register', authentication(false), async (req, res, next) => {
   req.app.locals.logger.info('/register requested', req.body)
-  UserModel.register(req.body)
-    .then(tokenId => {
-      req.session.token = tokenId
-      res.json({
-        token: tokenId,
-        userName: req.body.userName
-      })
+  try {
+    const token = await UserModel.register(req.body)
+    req.session.token = token
+    res.json({
+      token,
+      userName: req.body.userName
     })
-    .catch(next)
+  } catch (err) {
+    next(err)
+  }
 })
 
-router.post('/login', authentication(false), (req, res, next) => {
+router.post('/login', authentication(false), async (req, res, next) => {
   req.app.locals.logger.info('/login requested', req.body)
-  UserModel.login(req.body)
-    .then(user => {
-      req.session.token = user.token
-      res.json({
-        token: user.token,
-        userName: user.userName
-      })
+  try {
+    const user = await UserModel.login(req.body)
+    req.session.token = user.token
+    res.json({
+      token: user.token,
+      userName: user.userName
     })
-    .catch(next)
+  } catch (err) {
+    next(err)
+  }
 })
 
-router.post('/logout', authentication(false), (req, res, next) => {
+router.post('/logout', authentication(false), async (req, res, next) => {
   req.app.locals.logger.info('/logout requested', req.session.token)
-  UserModel.logout(req.session.token)
-    .then(() => {
-      req.session.destroy()
-      res.clearCookie('connect.sid')
-      res.json({})
-    })
-    .catch(next)
+  try {
+    await UserModel.logout(req.session.token)
+    req.session.destroy()
+    res.clearCookie('connect.sid')
+    res.json({})
+  } catch (err) {
+    next(err)
+  }
 })
 
 export default router

@@ -37,76 +37,90 @@ describe('auth controller', () => {
     server.close(done)
   })
 
+  describe('password', () => {
+
+  })
+
   describe('register', () => {
-    it('should return errors', done => {
+
+    it('should return errors', async () => {
+
       register.rejects({status: 500, message: 'aw snap!'})
-      client.post('/api/auth/register')
+
+      await client.post('/api/auth/register')
         .send({username: 'username', password: 'password'})
         .expect(500, {status: 500, message: 'aw snap!'})
-        .end(err => {
-          if (err) { return done(err) }
-          const [{username, password}] = register.firstCall.args
-          assert.equal(username, 'username')
-          assert.equal(password, 'password')
-          done()
-        })
+
+      const [{username, password}] = register.firstCall.args
+      assert.equal(username, 'username')
+      assert.equal(password, 'password')
+
     })
-    it('should respond with json', done => {
+
+    it('should respond with json', async () => {
+
       register.resolves('1234')
-      client.post('/api/auth/register')
+
+      await client.post('/api/auth/register')
         .send({username: 'username', password: 'password'})
         .expect(200, {token: '1234'})
-        .end(err => {
-          if (err) { return done(err) }
-          const [{username, password}] = register.firstCall.args
-          assert.equal(username, 'username')
-          assert.equal(password, 'password')
-          done()
-        })
+
+      const [{username, password}] = register.firstCall.args
+      assert.equal(username, 'username')
+      assert.equal(password, 'password')
+
     })
   })
 
   describe('login', () => {
-    it('should return errors', done => {
+
+    it('should return errors', async () => {
+
       login.rejects({status: 500, message: 'aw snap!'})
-      client.post('/api/auth/login')
+
+      await client.post('/api/auth/login')
         .send({username: 'username', password: 'password'})
         .expect(500, {status: 500, message: 'aw snap!'})
-        .end(err => {
-          if (err) { return done(err) }
-          const [{username, password}] = login.firstCall.args
-          assert.equal(username, 'username')
-          assert.equal(password, 'password')
-          done()
-        })
+
+      const [{username, password}] = login.firstCall.args
+      assert.equal(username, 'username')
+      assert.equal(password, 'password')
+
     })
-    it('should respond with json', done => {
+
+    it('should respond with json', async () => {
+
       login.resolves({token: '1234'})
-      client.post('/api/auth/login')
+
+      await client.post('/api/auth/login')
         .send({username: 'username', password: 'password'})
         .expect(200, {token: '1234'})
-        .end(err => {
-          if (err) { return done(err) }
-          const [{username, password}] = login.firstCall.args
-          assert.equal(username, 'username')
-          assert.equal(password, 'password')
-          done()
-        })
+
+      const [{username, password}] = login.firstCall.args
+      assert.equal(username, 'username')
+      assert.equal(password, 'password')
+
     })
   })
 
   describe('logout', () => {
-    it('should return errors', done => {
+
+    it('should return errors', async () => {
+
       logout.rejects({status: 500, message: 'aw snap!'})
-      client.post('/api/auth/logout')
+
+      await client.post('/api/auth/logout')
         .expect(500, {status: 500, message: 'aw snap!'})
-        .end(done)
+
     })
-    it('should respond with json', done => {
+
+    it('should respond with json', async () => {
+
       logout.resolves({id: '1234'})
-      client.post('/api/auth/logout')
+
+      await client.post('/api/auth/logout')
         .expect(200, {})
-        .end(done)
+
     })
   })
 })

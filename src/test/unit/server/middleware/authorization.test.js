@@ -41,49 +41,34 @@ describe('authentication middleware', () => {
     server.close(done)
   })
 
-  it('undefined roles equates to 403', done => {
+  it('undefined roles equates to 403', async () => {
     roleStub.returns(authMiddleware('role'))
     userStub.returns({id: '1234'})
-    client
-      .get('/dummy')
-      .expect(403)
-      .end(done)
+    await client.get('/dummy').expect(403)
   })
 
-  it('no roles equates to 403', done => {
+  it('no roles equates to 403', async () => {
     roleStub.returns(authMiddleware('role'))
     userStub.returns({id: '1234', roles: []})
-    client
-      .get('/dummy')
-      .expect(403)
-      .end(done)
+    await client.get('/dummy').expect(403)
   })
 
-  it('missing role equotes to 403', done => {
+  it('missing role equotes to 403', async () => {
     roleStub.returns(authMiddleware('role'))
     userStub.returns({id: '1234', roles: [{id: 'nope'}]})
-    client
-      .get('/dummy')
-      .expect(403)
-      .end(done)
+    await client.get('/dummy').expect(403)
   })
 
-  it('returns next properly - string role', done => {
+  it('returns next properly - string role', async () => {
     roleStub.returns(authMiddleware('role'))
     userStub.returns({id: '1234', roles: [{id: 'role'}]})
-    client
-      .get('/dummy')
-      .expect(200, {ok: true})
-      .end(done)
+    await client.get('/dummy').expect(200, {ok: true})
   })
 
-  it('returns next properly - array roles', done => {
+  it('returns next properly - array roles', async () => {
     roleStub.returns(authMiddleware(['role']))
     userStub.returns({id: '1234', roles: [{id: 'role'}]})
-    client
-      .get('/dummy')
-      .expect(200, {ok: true})
-      .end(done)
+    await client.get('/dummy').expect(200, {ok: true})
   })
 })
 

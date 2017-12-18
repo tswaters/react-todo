@@ -47,18 +47,16 @@ describe('authentication middleware', () => {
       return client.get('/dummy').expect(401)
     })
 
-    it('sets res.locals.user to the related user', () => {
+    it('sets res.locals.user to the related user', async () => {
       authorize.resolves({id: '1234'})
-      return Promise.resolve()
-        .then(() => client.get('/set-token'))
-        .then(() => client.get('/dummy').expect(200, {id: '1234'}))
+      await client.get('/set-token')
+      await client.get('/dummy').expect(200, {id: '1234'})
     })
 
-    it('returns errors to next', () => {
+    it('returns errors to next', async () => {
       authorize.rejects({status: 500, message: 'aw snap!'})
-      return Promise.resolve()
-        .then(() => client.get('/set-token'))
-        .then(() => client.get('/dummy').expect(500, {status: 500, message: 'aw snap!'}))
+      await client.get('/set-token')
+      await client.get('/dummy').expect(500, {status: 500, message: 'aw snap!'})
     })
   })
 
@@ -67,8 +65,8 @@ describe('authentication middleware', () => {
       context.get('/dummy', [authMiddleware(false), (req, res) => res.send({})])
     })
 
-    it('should be ok if token not found', () => {
-      return client.get('/dummy').expect(200, {})
+    it('should be ok if token not found', async () => {
+      await client.get('/dummy').expect(200, {})
     })
   })
 
