@@ -32,7 +32,7 @@ import {
   createTodo,
   saveTodo,
   removeTodo
-} from 'common/todo/redux'
+} from 'common/redux/todo'
 
 @initialData({
   keys: [

@@ -23,7 +23,7 @@ import {
 
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
-import {getProfile, fetchProfile, updateText, changeUser, changePassword} from 'common/profile/redux'
+import {getProfile, fetchProfile, updateText, changeUser, changePassword} from 'common/redux/profile'
 import initialData from 'common/initial-data'
 
 @initialData({

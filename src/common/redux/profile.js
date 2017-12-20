@@ -41,20 +41,22 @@ export const updateProfile = data => ({type: UPDATE_PROFILE, data})
 export const updateText = (fieldName, value) => ({type: UPDATE_TEXT, fieldName, value})
 
 export const changeUser = userName => async (dispatch, getState) => {
+  const message = getMessage('profile.profile-change-successful')(getState())
   const data = await dispatch(performRequest('/api/auth/profile', 'POST', {userName}))
   if (data) {
     dispatch({type: CLEAR_PROFILE_FORM})
-    dispatch(infoRequest(getMessage('profile.profile-change-successful')(getState())))
+    dispatch(infoRequest(message))
     dispatch(updateUser(data))
     dispatch(updateProfile(data))
   }
 }
 
 export const changePassword = (oldPassword, newPassword) => async (dispatch, getState) => {
+  const message = getMessage('profile.password-change-successful')(getState())
   const payload = {oldPassword, newPassword}
   const result = await dispatch(performRequest('/api/auth/password', 'POST', payload))
   if (result) {
-    dispatch(infoRequest(getMessage('profile.password-change-successful')(getState())))
+    dispatch(infoRequest(message))
   }
   dispatch({type: CLEAR_PROFILE_FORM})
 }

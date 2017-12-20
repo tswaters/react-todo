@@ -2,7 +2,7 @@
 import {createSelector} from 'reselect'
 import {push} from 'react-router-redux'
 import {performRequest} from 'common/redux/api'
-import {fetchTodos} from 'common/todo/redux'
+import {fetchTodos} from 'common/redux/todo'
 
 export const UPDATE_USER = 'UPDATE_USER'
 export const CLEAR_USER = 'CLEAR_USER'
@@ -27,7 +27,7 @@ export const login = credentials => async dispatch => {
   const user = await dispatch(performRequest('/api/auth/login', 'POST', credentials))
   if (user) {
     dispatch(updateUser(user))
-    dispatch(fetchTodos())
+    await dispatch(fetchTodos())
     dispatch(push('/todo'))
   }
 }
@@ -36,7 +36,7 @@ export const register = credentials => async dispatch => {
   const user = await dispatch(performRequest('/api/auth/register', 'POST', credentials))
   if (user) {
     dispatch(updateUser(user))
-    dispatch(fetchTodos())
+    await dispatch(fetchTodos())
     dispatch(push('/todo'))
   }
 }

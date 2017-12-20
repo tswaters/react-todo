@@ -18,11 +18,11 @@ export const getTodo = createSelector([
   (state, id) => state.todo.list.find(item => item.id === id)
 ], item => item)
 
-const UPDATE_TODO_TEXT = 'UPDATE_TODO_TEXT'
-const REMOVE_TODO = 'REMOVE_TODO'
-const CREATE_TODO = 'CREATE_TODO'
-const UPDATE_TODO_LIST = 'UPDATE_TODO_LIST'
-const RESET_DIRTY = 'RESET_DIRTY'
+export const UPDATE_TODO_TEXT = 'UPDATE_TODO_TEXT'
+export const REMOVE_TODO = 'REMOVE_TODO'
+export const CREATE_TODO = 'CREATE_TODO'
+export const UPDATE_TODO_LIST = 'UPDATE_TODO_LIST'
+export const RESET_DIRTY = 'RESET_DIRTY'
 
 export const updateTodoText = (id, text) => ({type: UPDATE_TODO_TEXT, id, text})
 
@@ -42,7 +42,7 @@ export const createTodo = text => async dispatch => {
 
 export const saveTodo = ({id, text}) => async (dispatch, getState) => {
   const todo = getTodo(getState(), id)
-  if (!todo.dirty) { return Promise.resolve(null) }
+  if (!todo.dirty) { return null }
 
   const result = await dispatch(performRequest(`/api/todo/${id}`, 'PUT', {text}))
   if (result) {
@@ -69,10 +69,13 @@ export default (state = initialState, action) => {
       return {...initialState}
 
     case UPDATE_TODO_LIST:
-      return {...state, list: action.list}
+      return {...state, list: action.list.map(todo => ({...todo, dirty: false}))}
 
     case CREATE_TODO:
-      return {item: '', list: state.list.concat(action.todo)}
+      return {item: '', list: [
+        ...state.list,
+        {...action.todo, dirty: false}
+      ]}
 
     case REMOVE_TODO:
       return {...state, list: state.list.filter(todo => todo.id !== action.id)}

@@ -5,7 +5,7 @@ import {performRequest} from 'common/redux/api'
 // It doesn't allow for speculatively adding various locale keys.
 // It's all "one update replaces everything"
 
-const ADD_LOCALE_MESSAGE = 'ADD_LOCALE_MESSAGE'
+export const ADD_LOCALE_MESSAGE = 'ADD_LOCALE_MESSAGE'
 
 export const addMessage = (locale, messages) => ({type: ADD_LOCALE_MESSAGE, locale, messages})
 

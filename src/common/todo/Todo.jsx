@@ -9,7 +9,7 @@ import {pageHeader} from 'common/styles/bootstrap'
 import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
 import List from 'common/todo/components/List'
-import {fetchTodos} from 'common/todo/redux'
+import {fetchTodos} from 'common/redux/todo'
 
 @initialData({
   keys: [

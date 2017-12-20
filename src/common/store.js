@@ -7,8 +7,8 @@ import createLogger from 'redux-logger'
 import api from 'common/redux/api'
 import user from 'common/redux/user'
 import intl from 'common/redux/intl'
-import todo from 'common/todo/redux'
-import profile from 'common/profile/redux'
+import todo from 'common/redux/todo'
+import profile from 'common/redux/profile'
 
 export default (history, state) => {
 

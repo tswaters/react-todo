@@ -5,10 +5,10 @@ import {getUser} from 'common/redux/user'
 
 const baseUrl = process.env.BASE_URL
 
-const REQUEST_IN_PROGRESS = 'REQUEST_IN_PROGRESS'
-const REQUEST_COMPLETED = 'REQUEST_COMPLETED'
-const REQUEST_FAILED = 'REQUEST_FAILED'
-const REQUEST_INFO = 'REQUEST_INFO'
+export const REQUEST_IN_PROGRESS = 'REQUEST_IN_PROGRESS'
+export const REQUEST_COMPLETED = 'REQUEST_COMPLETED'
+export const REQUEST_FAILED = 'REQUEST_FAILED'
+export const REQUEST_INFO = 'REQUEST_INFO'
 
 export const getRequestStats = createSelector([
   state => state.api
