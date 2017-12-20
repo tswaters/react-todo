@@ -1,6 +1,9 @@
 
 import {createSelector} from 'reselect'
 import {LOCATION_CHANGE} from 'react-router-redux'
+import {getUser} from 'common/redux/user'
+
+const baseUrl = process.env.BASE_URL
 
 const REQUEST_IN_PROGRESS = 'REQUEST_IN_PROGRESS'
 const REQUEST_COMPLETED = 'REQUEST_COMPLETED'
@@ -22,6 +25,32 @@ export const finishRequest = () => ({type: REQUEST_COMPLETED})
 export const errorRequest = error => ({type: REQUEST_FAILED, error})
 
 export const infoRequest = info => ({type: REQUEST_INFO, info})
+
+export const performRequest = (url, method, body) => async (dispatch, getState) => {
+  const {user} = getUser(getState())
+
+  dispatch(initiateRequest())
+
+  const response = await fetch(`${baseUrl}${url}`, {
+    method,
+    credentials: 'same-origin',
+    headers: Object.assign(
+      {'Content-Type': 'application/json'},
+      user ? {'x-token': user.token} : null
+    ),
+    body: body ? JSON.stringify(body) : null
+  })
+
+  const result = await response.json()
+
+  if (response.ok) {
+    dispatch(finishRequest())
+    return result
+  }
+
+  dispatch(errorRequest(result))
+  return false
+}
 
 const defaultState = {
   inProgress: false,

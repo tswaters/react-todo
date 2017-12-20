@@ -1,6 +1,6 @@
 
 import {createSelector} from 'reselect'
-import ajax from 'common/ajax'
+import {performRequest} from 'common/redux/api'
 import {CLEAR_USER} from 'common/redux/user'
 
 export const getList = createSelector([
@@ -26,15 +26,15 @@ const RESET_DIRTY = 'RESET_DIRTY'
 
 export const updateTodoText = (id, text) => ({type: UPDATE_TODO_TEXT, id, text})
 
-export const fetchTodos = () => async (dispatch, getState) => {
-  const data = await ajax(dispatch, getState)('/api/todo', 'GET')
+export const fetchTodos = () => async dispatch => {
+  const data = await dispatch(performRequest('/api/todo', 'GET'))
   if (data) {
     dispatch({type: UPDATE_TODO_LIST, list: data})
   }
 }
 
-export const createTodo = text => async (dispatch, getState) => {
-  const todo = await ajax(dispatch, getState)('/api/todo', 'POST', {text})
+export const createTodo = text => async dispatch => {
+  const todo = await dispatch(performRequest('/api/todo', 'POST', {text}))
   if (todo) {
     dispatch({type: CREATE_TODO, todo})
   }
@@ -44,14 +44,14 @@ export const saveTodo = ({id, text}) => async (dispatch, getState) => {
   const todo = getTodo(getState(), id)
   if (!todo.dirty) { return Promise.resolve(null) }
 
-  const result = await ajax(dispatch, getState)(`/api/todo/${id}`, 'PUT', {text})
+  const result = await dispatch(performRequest(`/api/todo/${id}`, 'PUT', {text}))
   if (result) {
     dispatch({type: RESET_DIRTY, id})
   }
 }
 
-export const removeTodo = id => async (dispatch, getState) => {
-  const result = await ajax(dispatch, getState)(`/api/todo/${id}`, 'DELETE')
+export const removeTodo = id => async dispatch => {
+  const result = await dispatch(performRequest(`/api/todo/${id}`, 'DELETE'))
   if (result) {
     dispatch({type: REMOVE_TODO, id})
   }

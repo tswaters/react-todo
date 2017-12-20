@@ -1,8 +1,7 @@
 
 import {createSelector} from 'reselect'
-import ajax from 'common/ajax'
 import {LOCATION_CHANGE} from 'react-router-redux'
-import {infoRequest} from 'common/redux/api'
+import {performRequest, infoRequest} from 'common/redux/api'
 import {getMessage} from 'common/redux/intl'
 import {updateUser} from 'common/redux/user'
 
@@ -30,8 +29,8 @@ export const getProfile = createSelector([
   shouldClear
 }))
 
-export const fetchProfile = () => async (dispatch, getState) => {
-  const data = await ajax(dispatch, getState)('/api/auth/profile', 'GET')
+export const fetchProfile = () => async dispatch => {
+  const data = await dispatch(performRequest('/api/auth/profile', 'GET'))
   if (data) {
     dispatch({type: UPDATE_PROFILE, data})
   }
@@ -42,7 +41,7 @@ export const updateProfile = data => ({type: UPDATE_PROFILE, data})
 export const updateText = (fieldName, value) => ({type: UPDATE_TEXT, fieldName, value})
 
 export const changeUser = userName => async (dispatch, getState) => {
-  const data = await ajax(dispatch, getState)('/api/auth/profile', 'POST', {userName})
+  const data = await dispatch(performRequest('/api/auth/profile', 'POST', {userName}))
   if (data) {
     dispatch({type: CLEAR_PROFILE_FORM})
     dispatch(infoRequest(getMessage('profile.profile-change-successful')(getState())))
@@ -53,7 +52,7 @@ export const changeUser = userName => async (dispatch, getState) => {
 
 export const changePassword = (oldPassword, newPassword) => async (dispatch, getState) => {
   const payload = {oldPassword, newPassword}
-  const result = await ajax(dispatch, getState)('/api/auth/password', 'POST', payload)
+  const result = await dispatch(performRequest('/api/auth/password', 'POST', payload))
   if (result) {
     dispatch(infoRequest(getMessage('profile.password-change-successful')(getState())))
   }

@@ -1,7 +1,7 @@
 
 import {createSelector} from 'reselect'
 import {push} from 'react-router-redux'
-import ajax from 'common/ajax'
+import {performRequest} from 'common/redux/api'
 import {fetchTodos} from 'common/todo/redux'
 
 export const UPDATE_USER = 'UPDATE_USER'
@@ -15,16 +15,16 @@ export const updateUser = user => ({type: UPDATE_USER, user})
 
 export const clearUser = () => ({type: CLEAR_USER})
 
-export const logout = () => async (dispatch, getState) => {
-  const result = await ajax(dispatch, getState)('/api/auth/logout', 'POST')
+export const logout = () => async dispatch => {
+  const result = await dispatch(performRequest('/api/auth/logout', 'POST'))
   if (result) {
     dispatch(clearUser())
     dispatch(push('/'))
   }
 }
 
-export const login = credentials => async (dispatch, getState) => {
-  const user = await ajax(dispatch, getState)('/api/auth/login', 'POST', credentials)
+export const login = credentials => async dispatch => {
+  const user = await dispatch(performRequest('/api/auth/login', 'POST', credentials))
   if (user) {
     dispatch(updateUser(user))
     dispatch(fetchTodos())
@@ -32,8 +32,8 @@ export const login = credentials => async (dispatch, getState) => {
   }
 }
 
-export const register = credentials => async (dispatch, getState) => {
-  const user = await ajax(dispatch, getState)('/api/auth/register', 'POST', credentials)
+export const register = credentials => async dispatch => {
+  const user = await dispatch(performRequest('/api/auth/register', 'POST', credentials))
   if (user) {
     dispatch(updateUser(user))
     dispatch(fetchTodos())
