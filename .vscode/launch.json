@@ -7,7 +7,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Mocha Tests",
+      "name": "Unit Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "env": {
         "NODE_ENV": "test",
@@ -15,7 +15,24 @@
       },
       "args": [
         "--opts",
-        "mocha.opts"
+        "mocha.opts",
+        "src/test/unit/**/*.test.js"
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Integration Tests",
+      "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+      "env": {
+        "NODE_ENV": "test",
+        "NODE_PATH" : "./src"
+      },
+      "args": [
+        "--opts",
+        "mocha.opts",
+        "src/test/integration/**/*.test.js"
       ],
       "internalConsoleOptions": "openOnSessionStart"
     }

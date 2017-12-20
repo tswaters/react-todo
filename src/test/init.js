@@ -7,3 +7,5 @@ for (const [key, value] of Object.entries(env)) {
 }
 
 require.extensions['.less'] = () => {}
+
+require('server/models')
