@@ -47,7 +47,7 @@ class TodoModel extends Sequelize.Model {
       throw new BadRequest('text must be provided')
     }
 
-    const model = await TodoModel.scope({method: ['byUser', userId]}).findById(id)
+    const model = await TodoModel.scope({method: ['byUser', userId]}).findByPk(id)
     if (!model) { throw new NotFound() }
 
     model.text = text
@@ -56,7 +56,7 @@ class TodoModel extends Sequelize.Model {
   }
 
   static async remove ({id, userId}) {
-    const model = await TodoModel.scope({method: ['byUser', userId]}).findById(id)
+    const model = await TodoModel.scope({method: ['byUser', userId]}).findByPk(id)
     if (!model) { throw new NotFound() }
 
     await model.destroy()
@@ -64,7 +64,7 @@ class TodoModel extends Sequelize.Model {
   }
 
   static async fetch ({id, userId}) {
-    const todo = await TodoModel.scope({method: ['byUser', userId]}).findById(id)
+    const todo = await TodoModel.scope({method: ['byUser', userId]}).findByPk(id)
 
     if (!todo) { throw new NotFound() }
     return todo.toJSON()

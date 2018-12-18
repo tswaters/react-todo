@@ -10,11 +10,6 @@ export default ({keys = [], promises = []} = {}) => Component => {
 
   const name = `${Component.displayName || Component.name}`
 
-  @withRouter
-  @fetchState(
-    state => state,
-    actions => ({done: actions.done})
-  )
   class Loaded extends PureComponent {
 
     static contextTypes = {
@@ -31,7 +26,7 @@ export default ({keys = [], promises = []} = {}) => Component => {
       isDone: PropTypes.bool
     }
 
-    componentWillMount () {
+    UNSAEF_componentWillMount () {
       if (this.props.isDone) {
         return
       }
@@ -57,5 +52,5 @@ export default ({keys = [], promises = []} = {}) => Component => {
   Loaded.displayName = `Loaded(${name})`
   Loaded.WrappedComponent = Component
 
-  return Loaded
+  return withRouter(fetchState(state => state, actions => ({done: actions.done}))(Loaded))
 }

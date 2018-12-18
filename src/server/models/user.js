@@ -51,7 +51,7 @@ export default class User extends Sequelize.Model {
     const loginToken = await LoginToken.fetch(token)
     if (!loginToken) { throw new Unauthorized('login token not found') }
 
-    const user = await User.findById(loginToken.userId, {
+    const user = await User.findByPk(loginToken.userId, {
       attributes: ['id', 'userName'],
       include: [{
         model: Role,
@@ -93,7 +93,7 @@ export default class User extends Sequelize.Model {
       throw new BadRequest('new password must be provided')
     }
 
-    const user = await User.findById(id, {attributes: ['id', 'hash', 'salt']})
+    const user = await User.findByPk(id, {attributes: ['id', 'hash', 'salt']})
     if (!user) { throw new NotFound() }
 
     if (!await hashifier.compare(oldPassword, user.hash, user.salt)) {

@@ -6,13 +6,13 @@ import testModel from 'test/unit/server/models/test-model'
 
 describe('todo model', () => {
   let findAllStub = null
-  let findByIdStub = null
+  let findByPkStub = null
   let list = null
   let item = null
 
   beforeEach(() => {
     findAllStub = sinon.stub(TodoModel, 'findAll')
-    findByIdStub = sinon.stub(TodoModel, 'findById')
+    findByPkStub = sinon.stub(TodoModel, 'findByPk')
 
     const attrs = ['id', 'text']
 
@@ -24,12 +24,12 @@ describe('todo model', () => {
     item = testModel(TodoModel, attrs)({id: '1234', text: 'test 1'})
 
     findAllStub.resolves(list)
-    findByIdStub.resolves(item)
+    findByPkStub.resolves(item)
   })
 
   afterEach(() => {
     findAllStub.restore()
-    findByIdStub.restore()
+    findByPkStub.restore()
   })
 
   describe('.list', () => {
@@ -68,7 +68,7 @@ describe('todo model', () => {
     })
 
     it('should throw not found if todo not found', async () => {
-      findByIdStub.resolves(null)
+      findByPkStub.resolves(null)
 
       let result = null
       try {
@@ -97,7 +97,7 @@ describe('todo model', () => {
     })
 
     it('should throw if todo not found', async () => {
-      findByIdStub.resolves(null)
+      findByPkStub.resolves(null)
       let result = null
       try {
         result = await TodoModel.remove(payload)
@@ -123,7 +123,7 @@ describe('todo model', () => {
     })
 
     it('should throw if todo not found', async () => {
-      findByIdStub.resolves(null)
+      findByPkStub.resolves(null)
       let result = null
       try {
         result = await TodoModel.fetch(payload)

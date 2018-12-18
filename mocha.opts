@@ -1,3 +1,4 @@
 --no-timeouts
---compilers js:babel-core/register
+--compilers js:@babel/register
 --require src/test/init.js
+--exit

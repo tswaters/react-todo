@@ -14,7 +14,7 @@ const upsertTokenStub = sinon.stub()
 describe('user model', () => {
   let UserModel = null
   let item = null
-  let findByIdStub = null
+  let findByPkStub = null
   let findOneStub = null
   let createUserStub = null
 
@@ -34,7 +34,7 @@ describe('user model', () => {
       }
     }).default
 
-    findByIdStub = sinon.stub(UserModel, 'findById')
+    findByPkStub = sinon.stub(UserModel, 'findByPk')
     findOneStub = sinon.stub(UserModel, 'findOne')
     createUserStub = sinon.stub(UserModel, 'create')
 
@@ -49,14 +49,14 @@ describe('user model', () => {
 
     item.addRole = sinon.stub().resolves()
 
-    findByIdStub.resolves(item)
+    findByPkStub.resolves(item)
     findOneStub.resolves(item)
     createUserStub.resolves(item)
     uuidStub.returns('4') // chosen by fair die roll
   })
 
   afterEach(() => {
-    findByIdStub.reset()
+    findByPkStub.reset()
     findOneStub.reset()
     hashifierCompareStub.reset()
     hashifierHashStub.reset()
@@ -100,7 +100,7 @@ describe('user model', () => {
     })
 
     it('should throw not found if user not found', async () => {
-      findByIdStub.resolves(null)
+      findByPkStub.resolves(null)
 
       let result = null
       try {
@@ -155,7 +155,7 @@ describe('user model', () => {
 
     it('rejects if the related user is not found', async () => {
       fetchTokenStub.resolves({userId: '12345'})
-      findByIdStub.resolves(null)
+      findByPkStub.resolves(null)
       let result = null
       try {
         result = await UserModel.authorize(payload)
@@ -164,7 +164,7 @@ describe('user model', () => {
         assert.equal(result, null)
         assert.equal(err.status, 401)
         assert.equal(err.message, 'user not found')
-        assert.equal(findByIdStub.firstCall.args[0], '12345')
+        assert.equal(findByPkStub.firstCall.args[0], '12345')
       }
     })
 
