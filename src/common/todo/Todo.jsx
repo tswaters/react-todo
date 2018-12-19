@@ -6,27 +6,9 @@ import {Helmet} from 'react-helmet'
 import cx from 'classnames'
 import {pageHeader} from 'common/styles/bootstrap'
 
-import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
 import List from 'common/todo/components/List'
-import {fetchTodos} from 'common/redux/todo'
 
-@initialData({
-  keys: [
-    'todo.title'
-  ],
-  promises: [
-    dispatch => ({staticContext, history, location}) =>
-      dispatch(fetchTodos())
-        .catch(err => {
-          staticContext.status = err.status
-          staticContext.error = err
-          staticContext.url = `/auth/login?from=${location.pathname}`
-          history.replace(staticContext.url)
-          throw err
-        })
-  ]
-})
 @connect()
 class TodoPage extends PureComponent {
 

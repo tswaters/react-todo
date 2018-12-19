@@ -5,17 +5,12 @@ import {logout} from 'common/redux/user'
 
 class LogoutPage extends PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  }
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired
   }
 
-  componentWillMount () {
+  UNSAFE_componentWillMount () {
     this.props.dispatch(logout())
-    this.context.router.history.replace('/')
   }
 
   render () {

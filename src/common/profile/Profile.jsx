@@ -23,36 +23,8 @@ import {
 
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
-import {getProfile, fetchProfile, updateText, changeUser, changePassword} from 'common/redux/profile'
-import initialData from 'common/initial-data'
+import {getProfile, updateText, changeUser, changePassword} from 'common/redux/profile'
 
-@initialData({
-  keys: [
-    'auth.userName',
-    'form.errors.same-as',
-    'profile.title',
-    'profile.change-password',
-    'profile.old-password',
-    'profile.new-password',
-    'profile.confirm-password',
-    'profile.change-details',
-    'profile.password-change-successful',
-    'profile.profile-change-successful'
-  ],
-  promises: [
-    dispatch => ({staticContext, history, location}) =>
-      dispatch(fetchProfile())
-        .catch(err => {
-          if (err.status === 401) {
-            staticContext.status = err.status
-            staticContext.error = err
-            staticContext.url = `/auth/login?from=${location.pathname}`
-            history.replace(staticContext.url)
-          }
-          throw err
-        })
-  ]
-})
 @connect(
   state => getProfile(state),
   dispatch => ({
@@ -88,7 +60,7 @@ class ProfilePage extends PureComponent {
     this.handleChangePasswordSubmit = this.handleChangePasswordSubmit.bind(this)
   }
 
-  componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.shouldClear !== nextProps.shouldClear && nextProps.shouldClear === true) {
       this.userName.setState({error: null, validating: false})
       this.oldPassword.setState({error: null, validating: false})

@@ -1,6 +1,6 @@
 
 import {createSelector} from 'reselect'
-import {LOCATION_CHANGE} from 'react-router-redux'
+import {LOCATION_CHANGE} from 'connected-react-router'
 import {getUser} from 'common/redux/user'
 
 const baseUrl = process.env.BASE_URL
@@ -46,10 +46,10 @@ export const performRequest = (url, method, body) => async (dispatch, getState) 
   if (response.ok) {
     dispatch(finishRequest())
     return result
+  } else {
+    dispatch(errorRequest(result))
+    throw result
   }
-
-  dispatch(errorRequest(result))
-  return false
 }
 
 const defaultState = {

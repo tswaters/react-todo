@@ -11,6 +11,9 @@ import errors from 'server/middleware/errors'
 import logger from 'server/middleware/logger'
 import api from 'server/api'
 import router from 'server/router/index'
+import routes from 'common/routes'
+
+import en from 'i18n/en'
 
 import 'server/models'
 
@@ -45,5 +48,8 @@ app.use(logger())
 app.use('/api', api)
 app.use(router)
 app.use(errors)
+
+app.locals.messages = {en}
+app.locals.routes = routes
 
 export default app

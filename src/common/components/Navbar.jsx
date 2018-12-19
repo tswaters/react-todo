@@ -24,23 +24,9 @@ import {
   navbarBrand
 } from 'common/styles/bootstrap'
 
-import initialData from 'common/initial-data'
 import {getUser} from 'common/redux/user'
 import NavLink from 'common/components/NavLink'
 
-/**
- * @returns {string} Navbar for the application
- */
-
-@initialData({keys: [
-  'menu.todo',
-  'menu.logout',
-  'auth-welcome',
-  'menu.register',
-  'menu.login',
-  'menu.brand',
-  'toggle-navigation'
-]})
 @connect(state => getUser(state))
 class Navbar extends PureComponent {
 

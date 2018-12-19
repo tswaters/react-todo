@@ -1,7 +1,6 @@
 
 import assert from 'assert'
-import reducer, {getMessage, addMessage, getKeys, ADD_LOCALE_MESSAGE} from 'common/redux/intl'
-import {REQUEST_IN_PROGRESS, REQUEST_COMPLETED, REQUEST_FAILED} from 'common/redux/api'
+import reducer, {getMessage, addMessages, ADD_LOCALE_MESSAGE} from 'common/redux/intl'
 
 import fetchMock from 'fetch-mock'
 import configureMockStore from 'redux-mock-store'
@@ -59,7 +58,7 @@ describe('intl store', () => {
     describe('add messaage', () => {
 
       it('should create an action to add a message', () => {
-        store.dispatch(addMessage('en', {test: 'test'}))
+        store.dispatch(addMessages('en', {test: 'test'}))
         assert.deepEqual(store.getActions(), [{
           type: ADD_LOCALE_MESSAGE,
           locale: 'en',
@@ -69,45 +68,5 @@ describe('intl store', () => {
 
     })
 
-    describe('get keys', () => {
-
-      it('should do nothing if messages not sent', async () => {
-        await store.dispatch(getKeys('en', []))
-        assert.deepEqual(store.getActions(), [])
-      })
-
-      it('should handle errors', async () => {
-
-        fetchMock.postOnce(`${process.env.BASE_URL}/api/locale`, {
-          status: 500,
-          body: {message: 'aw snap!'}
-        })
-
-        await store.dispatch(getKeys('en', ['test']))
-
-        assert.deepEqual(store.getActions(), [
-          {type: REQUEST_IN_PROGRESS},
-          {type: REQUEST_FAILED, error: {message: 'aw snap!'}},
-        ])
-
-      })
-
-      it('should fetch the keys properly', async () => {
-
-        fetchMock.postOnce(`${process.env.BASE_URL}/api/locale`, {
-          body: {locale: 'en', messages: {test: 'test'}},
-          headers: {'content-type': 'application/json'}
-        })
-
-        await store.dispatch(getKeys('en', ['test']))
-
-        assert.deepEqual(store.getActions(), [
-          {type: REQUEST_IN_PROGRESS},
-          {type: REQUEST_COMPLETED},
-          {type: ADD_LOCALE_MESSAGE, locale: 'en', messages: {test: 'test'}}
-        ])
-
-      })
-    })
   })
 })

@@ -1,8 +1,9 @@
 
 import {createSelector} from 'reselect'
-import {push} from 'react-router-redux'
+import {push} from 'connected-react-router'
 import {performRequest} from 'common/redux/api'
 import {fetchTodos} from 'common/redux/todo'
+import qs from 'querystring'
 
 export const UPDATE_USER = 'UPDATE_USER'
 export const CLEAR_USER = 'CLEAR_USER'
@@ -23,12 +24,15 @@ export const logout = () => async dispatch => {
   }
 }
 
-export const login = credentials => async dispatch => {
+export const login = credentials => async (dispatch, getState) => {
+  const {router} = getState()
+  const parsed = qs.parse(router.location.search.substr(1))
+  const redirectPath = parsed.from ? parsed.from : '/todo'
   const user = await dispatch(performRequest('/api/auth/login', 'POST', credentials))
   if (user) {
     dispatch(updateUser(user))
     await dispatch(fetchTodos())
-    dispatch(push('/todo'))
+    dispatch(push(redirectPath))
   }
 }
 

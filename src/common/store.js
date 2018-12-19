@@ -1,6 +1,6 @@
 
 import {createStore, combineReducers, applyMiddleware} from 'redux'
-import {routerReducer, routerMiddleware} from 'react-router-redux'
+import {routerMiddleware, connectRouter} from 'connected-react-router'
 import thunkMiddleware from 'redux-thunk'
 import createLogger from 'redux-logger'
 
@@ -30,7 +30,7 @@ export default (history, state) => {
       todo,
       profile,
       intl,
-      router: routerReducer
+      router: connectRouter(history)
     }),
     state,
     applyMiddleware(...middleware)

@@ -1,6 +1,6 @@
 
 import {createSelector} from 'reselect'
-import {LOCATION_CHANGE} from 'react-router-redux'
+import {LOCATION_CHANGE} from 'connected-react-router'
 import {performRequest, infoRequest} from 'common/redux/api'
 import {getMessage} from 'common/redux/intl'
 import {updateUser} from 'common/redux/user'

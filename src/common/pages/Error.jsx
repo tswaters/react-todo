@@ -4,10 +4,8 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {FormattedMessage} from 'react-intl'
 
-import initialData from 'common/initial-data'
 import {getRequestStats} from 'common/redux/api'
 
-@initialData({keys: ['500']})
 @connect(state => getRequestStats(state))
 class ErrorPage extends PureComponent {
 

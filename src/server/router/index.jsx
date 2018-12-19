@@ -1,75 +1,96 @@
 
 import React from 'react'
-import {Provider} from 'react-intl-redux'
-import {StaticRouter} from 'react-router'
-import {ConnectedRouter} from 'react-router-redux'
+import {renderToString} from 'react-dom/server'
+import {renderRoutes} from 'react-router-config'
+import {Provider} from 'react-redux'
+import {IntlProvider} from 'react-intl-redux'
+import {ConnectedRouter} from 'connected-react-router'
+import {Router} from 'react-router'
 import {createMemoryHistory} from 'history'
-import {renderToString, extractModules} from 'react-router-server'
 import {Helmet} from 'react-helmet'
 
 import authentication from 'server/middleware/authentication'
-import App from 'common/App'
 import {errorRequest, infoRequest} from 'common/redux/api'
-
+import {addMessages} from 'common/redux/intl'
 import configureStore from 'common/store'
+import {loadRoutes, loadActions, getRoute} from 'common/routes/helpers'
+import localization from 'server/middleware/localization'
 
 export default [
+  localization,
   authentication(false),
-  (req, res) => {
+  async (req, res) => {
+    try {
 
-    req.app.locals.logger.info(`rendering ${req.path}`)
+      req.app.locals.logger.info(`rendering ${req.path}`)
 
-    const {user} = res.locals
-    if (user) { delete user.roles }
+      const {user} = res.locals
+      const {routes, messages} = req.app.locals
 
-    const history = createMemoryHistory({initialEntries: [req.path]})
-    const store = configureStore(history, {user})
+      if (user) { delete user.roles }
 
-    // If erorrs encountered during a render they will show here
-    // Make sure to display these message to the user.
-    const error = req.flash('error').pop()
-    if (error) { store.dispatch(errorRequest(error)) }
+      const history = createMemoryHistory({initialEntries: [req.path]})
+      const store = configureStore(history, {user})
 
-    const info = req.flash('info').pop()
-    if (info) { store.dispatch(infoRequest(info)) }
+      store.dispatch(addMessages(req.locale, messages[req.locale]))
+      await loadRoutes(routes, req.path)
 
-    const context = {}
-    const app = (
-      <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <StaticRouter location={req.url} context={context}>
-            <App />
-          </StaticRouter>
-        </ConnectedRouter>
-      </Provider>
-    )
-
-    renderToString(app)
-      .then(({html, modules, state: serverState}) => {
-        if (context.error) {
-          req.flash('error', context.error)
-          req.app.logger.error(context.error)
+      const route = getRoute(routes, req.path)
+      try {
+        await Promise.all(loadActions(routes, req.path).map(action => store.dispatch(action(route))))
+      } catch (err) {
+        if (err.status === 401) {
+          return res.redirect(`/auth/login?from=${encodeURIComponent(req.path)}`)
         }
-        if (context.status) {
-          res.status(context.status)
-        }
-        if (context.url) {
-          // If we have flash, ensure sesion is saved prior to redirect
-          return req.session.save(() => res.redirect(context.url))
-        }
+        throw err
+      }
 
-        const helmet = Helmet.renderStatic()
-        res.render('index', {
-          body: html,
-          state: store.getState(),
-          serverState,
-          modules: extractModules(modules, res.app.locals.stats),
-          helmet
-        })
+      const error = req.flash('error').pop()
+      if (error) { store.dispatch(errorRequest(error)) }
+
+      const info = req.flash('info').pop()
+      if (info) { store.dispatch(infoRequest(info)) }
+
+      const context = {}
+
+      const app = (
+        <Provider store={store}>
+          <IntlProvider locale={req.locale}>
+            <ConnectedRouter history={history}>
+              <Router history={history} context={context}>
+                {renderRoutes(routes, {loaded: true})}
+              </Router>
+            </ConnectedRouter>
+          </IntlProvider>
+        </Provider>
+      )
+
+      const body = renderToString(app)
+
+      if (context.status) {
+        res.status(context.status)
+      }
+
+      if (context.error) {
+        throw context.error
+      }
+
+      if (context.url) {
+        return res.redirect(context.url)
+      }
+
+      res.render('index', {
+        body,
+        state: store.getState(),
+        helmet: Helmet.renderStatic()
       })
-      .catch(err => {
-        req.flash('error', {message: err.message, stack: err.stack})
-        req.session.save(() => res.status(500).redirect('/error'))
-      })
+
+    } catch (err) {
+
+      req.app.locals.logger.error({err})
+      req.flash('error', {message: err.message, stack: err.stack})
+      req.session.save(() => res.status(500).redirect('/error'))
+
+    }
   }
 ]

@@ -25,7 +25,6 @@ import {
   faPlus
 } from 'common/styles/font-awesome'
 
-import initialData from 'common/initial-data'
 import {
   getList,
   updateTodoText,
@@ -34,14 +33,6 @@ import {
   removeTodo
 } from 'common/redux/todo'
 
-@initialData({
-  keys: [
-    'todo.no-items',
-    'todo.todo',
-    'todo.delete',
-    'todo.create'
-  ]
-})
 @connect(
   state => getList(state),
   dispatch => ({

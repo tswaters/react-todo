@@ -23,21 +23,10 @@ import {
   helpBlock
 } from 'common/styles/bootstrap'
 
-import initialData from 'common/initial-data'
 import Form from 'common/components/Form'
 import FormInput from 'common/components/FormInput'
 import {login} from 'common/redux/user'
 
-@initialData({
-  keys: [
-    'login.title',
-    'login.no-account',
-    'auth.userName',
-    'auth.password',
-    'menu.register',
-    'menu.login'
-  ]
-})
 @connect()
 class LoginForm extends PureComponent {
 

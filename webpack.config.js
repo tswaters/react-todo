@@ -9,7 +9,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {DefinePlugin} = require('webpack')
 const path = require('path')
 const {parseSync} = require('env-file-parser')
-const StatsPlugin = require('stats-webpack-plugin')
 const webpackNodeExternals = require('webpack-node-externals')
 
 const dotEnv = parseSync(`./.env/${process.env.NODE_ENV}.env`)
@@ -21,9 +20,33 @@ const config = server => (_, argv) => {
   const name = server ? 'back-end' : 'front-end'
   const identifier = server ? 'server' : 'client'
   const target = server ? 'node' : 'web'
-
-  // Configure externals
   const externals = []
+
+  const css = [
+    {
+      loader: 'css-loader',
+      options: {
+        exportOnlyLocals: server,
+        sourceMap: true,
+        importLoaders: 1,
+        modules: true,
+        camelCase: true,
+        localIdentName: argv.mode === 'production'
+          ? '[hash:base64:5]'
+          : '[path][name]__[local]--[hash:base64:5]'
+      }
+    },
+    {
+      loader: 'less-loader',
+      options: {
+        sourceMap: true,
+        relativeUrls: true,
+        noIeCompat: true
+      }
+    }
+  ]
+
+  if (!server) css.unshift({loader: MiniCssExtractPlugin.loader})
 
   if (server) {
     externals.push(webpackNodeExternals())
@@ -56,35 +79,7 @@ const config = server => (_, argv) => {
     loader: 'file-loader'
   }, {
     test: /\.(css|less)$/,
-    use: [
-      {
-        loader: MiniCssExtractPlugin.loader
-      },
-      {
-        loader: 'css-loader',
-        options: {
-          exportOnlyLocals: server,
-          //sourceMap: true,
-          importLoaders: 1,
-          modules: true,
-          camelCase: true,
-          localIdentName: argv.mode === 'production'
-            ? '[hash:base64:5]'
-            : '[path][name]__[local]--[hash:base64:5]'
-        }
-      },
-      {
-        loader: 'less-loader',
-        options: {
-          //sourceMap: true,
-          relativeUrls: true,
-          noIeCompat: true,
-          // paths: [
-          //   path.resolve(__dirname, 'node_modules')
-          // ]
-        }
-      }
-    ]
+    use: css
   }]
 
   // Configure plugins
@@ -117,10 +112,6 @@ const config = server => (_, argv) => {
         minify: {
           collapseWhitespace: true
         }
-      }),
-      new StatsPlugin('../server/stats.json', {
-        chunkModules: true,
-        exclude: [/^\.\/~/]
       })
     )
   }
@@ -136,7 +127,7 @@ const config = server => (_, argv) => {
 
   return {
     name,
-    devtool: 'none',
+    devtool,
     entry: {
       [identifier]: `./src/${identifier}/index`
     },
